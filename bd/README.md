@@ -27,8 +27,21 @@ Después, las entidades más relacionadas empiezan por **"Competición"**, que r
 ### [Modelo relacional](https://dbdesigner.page.link/EctTiUCBiYPVZTbQA)
 El modelo relacional lo he desarrollado mediante la herramienta ["DB designer"](https://erd.dbdesigner.net).
      Y muestra las siguientes tablas:
-- **Usuario.** 
+- **Usuario.** Lo único que necesitamos es su nombre para mostrarlo, el email al que enviar los correos y si es admin
+     para que pueda subir entradas al blog.
+- **Blog.** En este insertaremos todas las entradas que dispondrán de un título, una descripción, una imágen y la fecha en
+     la que se subió.
+- **Competición.** Guardaremos el nombre que se mostrará de esta las fechas entre las que se celebra y a qué categoría pertenece.
+- **CompeticionEquipo.** Utilizaremos esta tabla para relacionar a todos los equipos con las competiciones que se llevan a cabo.
+- **Equipo.** En la que guardaremos su nombre, el lugar al que pertenece y su categoría.
+- **Categoría.** Simplemente se guarda el nombre que se mostrará en la página.
+- **Partido.** Se guardará la fecha en el que se discutió, el lugar, a que competición pertenece y los dos equipos que jugaron entre ellos.
+- **Jugador.** Necesitamos su nombre, los dos apellidos, su fecha de nacimiento para poder mostrar su edad, una foto de este y
+     al equipo al que pertenece.
+- **Evento.** Estos serán acciones que pueden suceder en un partido, sucederán en un minuto concreto del partido, serán de un tipo
+     de la tabla de tipos, estará relacionado con un jugador y guardaremos el partido en el que ha sucedido.
+- **Tipo.** En esta se guardaran los diferentes tipos de eventos que pueden suceder en un partido.
 
 <p align="center" width="100%">
-    <img src="../img/cochinillosvoladores-modeloBD.png" alt="Modelo relacional" title="Modelo relacional" />
+    <img src="./design/diagramaRelacionalCochinillos.png" alt="Modelo relacional" title="Modelo relacional" />
 </p>

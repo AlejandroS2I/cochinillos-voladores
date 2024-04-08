@@ -14,9 +14,13 @@ Este modelo se ha desarrollado para observar las relaciones de manera sencilla e
      ya que solo se utilizará para que los visitantes de la web se subscriban a un servicio de notificación mediante
      correos electrónicos de las noticias y futuros eventos.
 
-![Modelo E/R](../img/DiagramaERcochinillos.png "Modelo E/R")
+<p align="center" width="100%">
+    <img src="../img/DiagramaERcochinillos.png" alt="Modelo E/R" title="Modelo E/R" />
+</p>
 
 ### [Modelo relacional](https://dbdesigner.page.link/EctTiUCBiYPVZTbQA)
 Este es el [modelo inicial](https://dbdesigner.page.link/EctTiUCBiYPVZTbQA) de la base de datos:
 
-![Modelo inicial](../img/cochinillosvoladores-modeloBD.png "Modelo inicial")
+<p align="center" width="100%">
+    <img src="../img/cochinillosvoladores-modeloBD.png" alt="Modelo relacional" title="Modelo relacional" />
+</p>

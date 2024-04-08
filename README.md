@@ -2,7 +2,7 @@
 Este es un proyecto en el que se desarrollará una página web para el equipo de hockey línea "Cochinillos Voladores"
 
 ## Funcionales
-Los funcionales son documentos generados después de hablar con el cliente para determinar los objetivos de la aplicación,
+Los [funcionales](./funcionales/) son documentos generados después de hablar con el cliente para determinar los objetivos de la aplicación,
      pudiendo ser varios, en principio uno que se envía como borrador al cliente para tener una idea general y después
      uno algo más detallado para el desarrollo.
 

@@ -76,32 +76,38 @@ posiciones.
 
 - **Listado.**<a name="listadoPartidos"></a> En este se mostrará un listado de todos los partidos en
   los que ha participado el equipo y datos importantes de estos: fecha y hora, lugar,
-  equipos enfrentados y resultado
+  equipos enfrentados y resultado. Estos estarán filtrados por la categoría seleccionada en
+  la pantalla de resúmen.
 - **Detalles.**<a name="detallesPartidos"></a> En este se mostrarán los detalles del partido seleccionado,
   fecha y hora, lugar, equipos enfrentados, resultado, listado de eventos,
-  con tipo, jugador y minuto, y listado de jugadores, con su número.
+  con tipo, jugador y minuto, y listado de jugadores, con su número, apellidos, nombre y estadísticas.
 
-Las estadísticas contarán con los siguientes apartados:
+### Plantilla
 
-- **Resumen.** En el que se mostrará las estadísticas más importantes.
-- **Partidos.** En el que se listarán los partidos del equipo y se
-  podrán acceder a los detalles de cada uno de ellos.
-- **Plantilla.** En el que se mostrará la plantilla del equipo y
-  las estadísticas de cada jugador.
+- **Listado.**<a name="listadoPlantilla"></a> En este se mostrará un listado de todos los jugadores del
+    equipo con su imagen, número, apellidos, nombre y estadísticas.
+- **Detalles.**<a name="detallesPlantilla"></a> En este se mostrará la imagen del jugador, su número
+    sus apellidos, su nombre, y sus estadísticas dependiendo de si es jugador o portero.
 
 Posibles estadísticas:
 
-- Partidos jugados
-- Goles
-- Asistencias
-- Faltas
-- Puntos (Goles + Asistencias)
-- Puntos por partido
-- Minutos de sanción (Sumario faltas)
-- Goles por partido
-- Asistencias por partido
-- Totales por temporada
-- Totales histórico
+- General
+  - Partidos jugados
+- Jugadores:
+  - Goles
+  - Asistencias
+  - Faltas
+  - Puntos (Goles + Asistencias)
+  - Puntos por partido
+  - Minutos de sanción (Sumario faltas)
+  - Goles por partido
+  - Asistencias por partido
+  - Totales por temporada
+  - Totales histórico
+- Porteros:
+  - Goles en contra
+  - Tiros recibidos
+  - Porcentaje de parada
 
 ## Formulario
 
@@ -112,6 +118,8 @@ campos pedidos serán:
 - Apellidos
 - Edad
 - Fotografía
+- Email
+- Teléfono
 
 ## Blog
 

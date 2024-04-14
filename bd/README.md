@@ -64,5 +64,5 @@ El modelo relacional muestra las siguientes tablas:
     suceder en un partido.
 
 <p align="center" width="100%">
-    <img src="./design/diagramaRelacionalCochinillos.png" alt="Modelo relacional" title="Modelo relacional" />
+    <img src="./design/diagramaRelacionalCochinillos.drawio.png" alt="Modelo relacional" title="Modelo relacional" />
 </p>

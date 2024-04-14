@@ -32,10 +32,9 @@ de la plantilla. Y para conseguir las estadísticas se han creado los
     <img src="./design/diagramaERCochinillos.drawio.png" alt="Modelo E/R" title="Modelo E/R" />
 </p>
 
-### [Modelo relacional](https://dbdesigner.page.link/EctTiUCBiYPVZTbQA)
+### [Modelo relacional](./design/diagramaRelacionalCochinillos.drawio)
 
-El modelo relacional lo he desarrollado mediante la herramienta ["DB designer"](https://erd.dbdesigner.net).
-Y muestra las siguientes tablas:
+El modelo relacional muestra las siguientes tablas:
 
 - **Usuario.** Lo único que necesitamos es su nombre para mostrarlo, el email al
     que enviar los correos y si es admin para que pueda subir entradas al blog.
@@ -51,6 +50,8 @@ Y muestra las siguientes tablas:
     competición pertenece y los dos equipos que jugaron entre ellos.
 - **Jugador.** Necesitamos su número, nombre, los dos apellidos, su fecha de
     nacimiento para poder mostrar su edad, una foto de este y al equipo al que pertenece.
+- **TipoJugador.** Este es para poder saber la posición que ocupa el jugador, portero
+    o jugador.
 - **Evento.** Estos serán acciones que pueden suceder en un partido, serán de un
     tipo de la tabla de tipos, estará relacionado con un jugador y
     guardaremos el partido en el que ha sucedido. Además, dependiendo del tipo
@@ -59,7 +60,7 @@ Y muestra las siguientes tablas:
     será el número de tiros que ha recibido el portero apuntado en el valor, en "asistencia"
     será el id del evento tipo "gol" al que ha asistido en el valor y en "falta"
     será el minuto en el que ha sucedido y el valor los minutos que ha sido expulsado.
-- **Tipo.** En esta se guardaran los diferentes tipos de eventos que pueden
+- **TipoEvento.** En esta se guardaran los diferentes tipos de eventos que pueden
     suceder en un partido.
 
 <p align="center" width="100%">

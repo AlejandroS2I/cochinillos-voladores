@@ -69,7 +69,7 @@ rendimiento del equipo de forma conjunta e individual.
 En este resúmen se mostrarán los datos más importantes sobre el equipo,
 siendo estos, el logo, el nombre, partidos ganados, partidos perdidos,
 partidos empatados, jugadores destacados, listado de últimos partidos
-,con la categoría y el resultado, y listado de categorías con sus
+,con la categoría y el resultado, y listado de competiciones con sus
 posiciones.
 
 ### Partidos

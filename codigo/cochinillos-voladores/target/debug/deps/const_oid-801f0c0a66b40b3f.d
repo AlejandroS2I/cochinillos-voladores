@@ -1,0 +1,11 @@
+/home/alyu/personal/instituto/cochinillos-voladores/codigo/cochinillos-voladores/target/debug/deps/libconst_oid-801f0c0a66b40b3f.rmeta: /home/alyu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/const-oid-0.9.6/src/lib.rs /home/alyu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/const-oid-0.9.6/src/checked.rs /home/alyu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/const-oid-0.9.6/src/arcs.rs /home/alyu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/const-oid-0.9.6/src/encoder.rs /home/alyu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/const-oid-0.9.6/src/error.rs /home/alyu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/const-oid-0.9.6/src/parser.rs /home/alyu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/const-oid-0.9.6/src/../README.md
+
+/home/alyu/personal/instituto/cochinillos-voladores/codigo/cochinillos-voladores/target/debug/deps/const_oid-801f0c0a66b40b3f.d: /home/alyu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/const-oid-0.9.6/src/lib.rs /home/alyu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/const-oid-0.9.6/src/checked.rs /home/alyu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/const-oid-0.9.6/src/arcs.rs /home/alyu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/const-oid-0.9.6/src/encoder.rs /home/alyu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/const-oid-0.9.6/src/error.rs /home/alyu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/const-oid-0.9.6/src/parser.rs /home/alyu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/const-oid-0.9.6/src/../README.md
+
+/home/alyu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/const-oid-0.9.6/src/lib.rs:
+/home/alyu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/const-oid-0.9.6/src/checked.rs:
+/home/alyu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/const-oid-0.9.6/src/arcs.rs:
+/home/alyu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/const-oid-0.9.6/src/encoder.rs:
+/home/alyu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/const-oid-0.9.6/src/error.rs:
+/home/alyu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/const-oid-0.9.6/src/parser.rs:
+/home/alyu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/const-oid-0.9.6/src/../README.md:

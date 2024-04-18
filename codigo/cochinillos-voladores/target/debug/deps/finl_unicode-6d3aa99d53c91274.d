@@ -1,0 +1,10 @@
+/home/alyu/personal/instituto/cochinillos-voladores/codigo/cochinillos-voladores/target/debug/deps/libfinl_unicode-6d3aa99d53c91274.rmeta: /home/alyu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/finl_unicode-1.2.0/src/lib.rs /home/alyu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/finl_unicode-1.2.0/src/categories.rs /home/alyu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/finl_unicode-1.2.0/src/grapheme_clusters.rs /home/alyu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/finl_unicode-1.2.0/src/data/mod.rs /home/alyu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/finl_unicode-1.2.0/src/data/characters.rs /home/alyu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/finl_unicode-1.2.0/src/data/grapheme_property.rs
+
+/home/alyu/personal/instituto/cochinillos-voladores/codigo/cochinillos-voladores/target/debug/deps/finl_unicode-6d3aa99d53c91274.d: /home/alyu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/finl_unicode-1.2.0/src/lib.rs /home/alyu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/finl_unicode-1.2.0/src/categories.rs /home/alyu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/finl_unicode-1.2.0/src/grapheme_clusters.rs /home/alyu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/finl_unicode-1.2.0/src/data/mod.rs /home/alyu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/finl_unicode-1.2.0/src/data/characters.rs /home/alyu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/finl_unicode-1.2.0/src/data/grapheme_property.rs
+
+/home/alyu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/finl_unicode-1.2.0/src/lib.rs:
+/home/alyu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/finl_unicode-1.2.0/src/categories.rs:
+/home/alyu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/finl_unicode-1.2.0/src/grapheme_clusters.rs:
+/home/alyu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/finl_unicode-1.2.0/src/data/mod.rs:
+/home/alyu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/finl_unicode-1.2.0/src/data/characters.rs:
+/home/alyu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/finl_unicode-1.2.0/src/data/grapheme_property.rs:

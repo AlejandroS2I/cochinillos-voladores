@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS tblog (
     id MEDIUMINT UNSIGNED AUTO_INCREMENT,
     titulo VARCHAR(255) NOT NULL,
     descripcion TEXT,
-    fecha DATE NOT NULL DEFAULT CURRENT_DATE(),
+    fecha DATE NOT NULL,
     fotoURL TEXT,
     PRIMARY KEY (id)
 );

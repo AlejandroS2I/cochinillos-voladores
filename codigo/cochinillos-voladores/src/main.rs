@@ -10,6 +10,12 @@ use sqlx::{
 };
 use dotenvy::dotenv;
 
+pub use self::error::{Error, Result};
+
+mod error;
+mod tests;
+mod web;
+
 #[tokio::main]
 async fn main() {
     dotenv().ok();
@@ -28,13 +34,18 @@ async fn main() {
 
     println!("Escuchando en {:?}", listener.local_addr());
 
-    let app = Router::new()
-        .route("/", get(inicio))
+    let app = app()
         .layer(Extension(pool));
 
     axum::serve(listener, app.into_make_service())
         .await
         .unwrap();
+}
+
+fn app() -> Router {
+    Router::new()
+        .merge(web::rutas_login::routes())
+        .route("/", get(inicio))
 }
 
 #[derive(Template)]

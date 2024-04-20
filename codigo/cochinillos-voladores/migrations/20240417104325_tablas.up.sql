@@ -2,6 +2,7 @@ CREATE TABLE IF NOT EXISTS tusuarios (
     id MEDIUMINT UNSIGNED AUTO_INCREMENT,
     nombre VARCHAR(255) NOT NULL,
     mail VARCHAR(255) NOT NULL,
+    password TEXT NOT NULL,
     esAdministrador BOOLEAN NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 );

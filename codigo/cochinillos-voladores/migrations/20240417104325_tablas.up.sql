@@ -48,11 +48,12 @@ CREATE TABLE IF NOT EXISTS tequipos (
     id MEDIUMINT UNSIGNED AUTO_INCREMENT,
     nombre VARCHAR(255) NOT NULL,
     lugar VARCHAR(255) NOT NULL,
+    PRIMARY KEY(id)
 );
 
 CREATE TABLE IF NOT EXISTS rcompeticionesequipos (
     idCompeticion MEDIUMINT UNSIGNED,
-    idEquipo MEDIUMINT UNSIGNED
+    idEquipo MEDIUMINT UNSIGNED,
     PRIMARY KEY (idCompeticion, idEquipo),
     CONSTRAINT FK_tcompeticiones_r
         FOREIGN KEY (idCompeticion)

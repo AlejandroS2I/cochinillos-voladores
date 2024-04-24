@@ -2,6 +2,8 @@ use crate::app;
 
 #[cfg(test)]
 mod tests {
+    use crate::modelo::ControladorModelo;
+
     use super::*;
     use axum::{
         body::Body,

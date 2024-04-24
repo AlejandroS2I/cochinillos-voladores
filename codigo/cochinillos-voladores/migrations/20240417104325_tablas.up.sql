@@ -1,16 +1,16 @@
 CREATE TABLE IF NOT EXISTS tusuarios (
     id MEDIUMINT UNSIGNED AUTO_INCREMENT,
     nombre VARCHAR(255) NOT NULL,
-    mail VARCHAR(255) NOT NULL,
+    mail VARCHAR(255) UNIQUE NOT NULL,
     password TEXT NOT NULL,
     esAdministrador BOOLEAN NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 );
 
 CREATE TABLE IF NOT EXISTS tlogins (
-    uuid CHAR(36),
+    uuid BINARY(16),
     idUsuario MEDIUMINT UNSIGNED,
-    fechaCaducidad DATE,
+    fechaCaducidad DATE NOT NULL,
     PRIMARY KEY (uuid, idUsuario),
     CONSTRAINT FK_tusuarios_tlogins
         FOREIGN KEY (idUsuario)

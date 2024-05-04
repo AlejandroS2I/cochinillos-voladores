@@ -3,7 +3,7 @@ name: Compilar, probar y subir a producción
 on:
   push:
     branches:
-      - master
+      - main
 
 env:
   SQLX_OFFLINE: true

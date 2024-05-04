@@ -65,7 +65,7 @@ jobs:
       run: sshpass -v -p ${{ secrets.DROPLET_PASSWORD }} scp -o StrictHostKeyChecking=no codigo/cochinillos-voladores/docker-compose.yml root@${{ vars.DROPLET_IP }}:~
 
     - name: Deploy
-      uses: appleboy/ssh-action@1.0.3
+      uses: appleboy/ssh-action@v1.0.3
       with:
         host: ${{ vars.DROPLET_IP }}
         username: root

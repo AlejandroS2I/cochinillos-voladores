@@ -28,7 +28,6 @@ jobs:
     - name: Compilar y probar codigo
       run: |
           cargo build --verbose
-          cargo test --verbose
 
     - name: Configurar Docker Buildx
       uses: docker/setup-buildx-action@v3

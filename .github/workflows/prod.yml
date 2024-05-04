@@ -47,9 +47,6 @@ jobs:
   deploy:
     needs: build
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: 'codigo/cochinillos-voladores'
 
     steps:
     - name: Checkout codigo

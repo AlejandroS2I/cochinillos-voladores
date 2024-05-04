@@ -41,6 +41,7 @@ jobs:
     - name: Compilar y subir imagen docker
       uses: docker/bake-action@v4
       with:
+        source: "{{defaultContext}}:codigo/cochinillos-voladores"
         push: true
 
   deploy:

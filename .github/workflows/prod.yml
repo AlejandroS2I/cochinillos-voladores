@@ -72,7 +72,7 @@ jobs:
         password: ${{ secrets.DROPLET_PASSWORD }}
         script: |
           cd ~
-          export POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
+          export MYSQL_PASSWORD=${{ secrets.MYSQL_PASSWORD }}
           docker-compose down
           docker-compose pull
           docker-compose up -d

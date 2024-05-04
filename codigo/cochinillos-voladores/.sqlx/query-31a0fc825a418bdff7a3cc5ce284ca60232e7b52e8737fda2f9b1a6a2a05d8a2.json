@@ -1,0 +1,12 @@
+{
+  "db_name": "MySQL",
+  "query": "\n            DELETE FROM tlogins WHERE uuid = ?\n        ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 1
+    },
+    "nullable": []
+  },
+  "hash": "31a0fc825a418bdff7a3cc5ce284ca60232e7b52e8737fda2f9b1a6a2a05d8a2"
+}

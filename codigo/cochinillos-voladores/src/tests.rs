@@ -1,25 +1,28 @@
+pub type Result<T> = std::result::Result<T, Error>;
+pub type Error = Box<dyn std::error::Error>;
+
+use axum::{
+    body::Body,
+    http::{Request, StatusCode}
+};
+use tower::util::ServiceExt;
+use sqlx::{MySqlPool};
+
+use crate::modelo::ControladorModelo;
 use crate::app;
 
-#[cfg(test)]
-mod tests {
-    use crate::modelo::ControladorModelo;
+#[sqlx::test(fixtures(path="../fixtures", scripts("usuarios")))]
+async fn inicio(pool: MySqlPool) -> Result<()> {
+    let cm = ControladorModelo::new(pool).await?;
 
-    use super::*;
-    use axum::{
-        body::Body,
-        http::{Request, StatusCode}
-    };
-    use tower::util::ServiceExt;
+    let app = app(cm);
 
-    #[tokio::test]
-    async fn inicio() {
-        let app = app();
+    let response = app
+        .oneshot(Request::builder().uri("/").body(Body::empty()).unwrap())
+        .await
+        .unwrap();
 
-        let response = app
-            .oneshot(Request::builder().uri("/").body(Body::empty()).unwrap())
-            .await
-            .unwrap();
+    assert_eq!(response.status(), StatusCode::OK);
 
-        assert_eq!(response.status(), StatusCode::OK);
-    }
+    Ok(())
 }

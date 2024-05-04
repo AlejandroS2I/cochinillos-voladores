@@ -1,0 +1,33 @@
+main {
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+input {
+    width: 100%;
+
+    padding: 10px 20px;
+}
+
+input:focus-visible {
+    outline: none;
+}
+
+input[type=submit]:hover {
+    cursor: pointer;
+
+    color: var(--bg-color);
+    background: var(--fg-color);
+}

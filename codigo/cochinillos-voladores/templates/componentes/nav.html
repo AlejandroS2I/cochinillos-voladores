@@ -1,0 +1,16 @@
+{% macro nav(posicion, mostrarCuenta, mostrarAtras) %}
+<nav class="{{ posicion }}">
+        {% if mostrarAtras %}
+        <a href="javascript:history.back()"><img src="/assets/svg/back.svg" /></a>
+        {% else %}
+        <a href="#"><img src="/assets/svg/dashboard.svg" /></a>
+        {% endif %}
+        {% if mostrarCuenta %}
+        <div
+            hx-get="/perfil"
+            hx-trigger="load"
+            hx-swap="outterHTML"
+        ></div>
+        {% endif %}
+</nav>
+{% endmacro %}

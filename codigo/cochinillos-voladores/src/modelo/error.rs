@@ -1,16 +1,20 @@
 use derive_more::From;
+use serde::Serialize;
+use serde_with::{serde_as, DisplayFromStr};
 use sqlx::error::{DatabaseError, ErrorKind};
 use uuid::Uuid;
 
 pub type Result<T> = std::result::Result<T, Error>;
 
-#[derive(Debug, From)]
+#[serde_as]
+#[derive(Debug, From, Serialize)]
 pub enum Error {
     NoEncontrado {
         id: u32
     },
 
     NoEncontradoLogin {
+        #[serde_as(as = "DisplayFromStr")]
         uuid: Uuid
     },
 
@@ -24,7 +28,7 @@ pub enum Error {
     },
 
     #[from]
-    Sqlx(sqlx::Error)
+    Sqlx(#[serde_as(as = "DisplayFromStr")] sqlx::Error)
 }
 
 impl Error {

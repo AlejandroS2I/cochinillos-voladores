@@ -1,0 +1,12 @@
+{
+  "db_name": "MySQL",
+  "query": "\n            INSERT INTO tlogins (uuid, idUsuario, fechaCaducidad) \n            VALUES (?, ?, ?); \n        ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 3
+    },
+    "nullable": []
+  },
+  "hash": "4033f08190ee4942386fc84505d3788ea1ea5572030eb0297dcd5d7d2d2cf7d2"
+}

@@ -1,0 +1,14 @@
+{% if tieneCuenta %}
+<a 
+    hx-get="/api/logout" 
+    hx-trigger="click"
+>
+    <img src="/assets/svg/logout.svg" />
+</a>
+{% else %}
+<a 
+    href="/login"
+>
+    <img src="/assets/svg/usuario.svg" />
+</a>
+{% endif %}

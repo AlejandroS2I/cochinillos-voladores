@@ -2,6 +2,22 @@
 
 {% block titulo %}Inicio{% endblock %}
 
+{% block meta %}
+<link rel="stylesheet" href="/assets/css/inicio.css">
+{% endblock %}
+
 {% block contenido %}
-<h1>Cochinillos voladores</h1>
+<article id="portada">
+    <img class="fondo" src="/assets/img/equipo_negro.jpg" />
+    <section class="titulo">
+        <h1>COCHINILLOS</h1>
+        <h1>VOLADORES</h1>
+    </section>
+    <img src="/assets/img/logo.png" />
+</article>
+<article id="quienesSomos">
+    <section class="titulo">
+        <h2>Quienes somos?</h2>
+    </section>
+</article>
 {% endblock %}

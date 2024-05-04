@@ -1,4 +1,5 @@
 use serde::Deserialize;
+use crate::ctx::Ctx;
 use crate::modelo::{Error, Result};
 use crate::modelo::ControladorModelo;
 
@@ -23,7 +24,11 @@ pub struct ControladorUsuario;
 
 
 impl ControladorUsuario {
-    pub async fn crear_usuario(cm: ControladorModelo, usuario: UsuarioCrear) -> Result<Usuario> {
+    pub async fn crear_usuario(
+        ctx: Ctx,
+        cm: ControladorModelo, 
+        usuario: UsuarioCrear
+    ) -> Result<Usuario> {
         let pool = cm.conexion;
         let mut txn = pool.begin().await?;
 
@@ -64,7 +69,10 @@ impl ControladorUsuario {
         Ok(usuario)
     }
 
-    pub async fn listar_usuarios(cm: ControladorModelo) -> Result<Vec<Usuario>> {
+    pub async fn listar_usuarios(
+        ctx: Ctx,
+        cm: ControladorModelo
+    ) -> Result<Vec<Usuario>> {
         let pool = cm.conexion;
 
         let usuarios: Vec<Usuario> = sqlx::query_as("
@@ -76,7 +84,11 @@ impl ControladorUsuario {
         Ok(usuarios)
     }
 
-    pub async fn eliminar_usuario(cm: ControladorModelo, id: u32) -> Result<Usuario> {
+    pub async fn eliminar_usuario(
+        ctx: Ctx,
+        cm: ControladorModelo, 
+        id: u32
+    ) -> Result<Usuario> {
         let pool = cm.conexion;
         let mut txn = pool.begin().await?;
 
@@ -116,6 +128,23 @@ impl ControladorUsuario {
             WHERE mail = ?
         ",
             mail
+        )
+        .fetch_optional(&pool)
+        .await?;
+
+        Ok(usuario)
+    }
+
+    pub async fn usuario_id(cm: ControladorModelo, id: u32) -> Result<Option<Usuario>> {
+        let pool = cm.conexion;
+
+        let usuario = sqlx::query_as!(
+        Usuario,
+        "
+            SELECT id, nombre, mail, password, esAdministrador as `esAdministrador: _` FROM tusuarios
+            WHERE id = ?
+        ",
+            id
         )
         .fetch_optional(&pool)
         .await?;

@@ -3,7 +3,7 @@ services:
   api:
     image: alejandros2i/cochinillos-voladores
     environment:
-      DATABASE_URL: "mysql://root:prueba@db:3306/cochinillos"
+      DATABASE_URL: "mysql://root:${MYSQL_PASSWORD}@db:3306/cochinillos"
     build:
       context: .
       dockerfile: Dockerfile

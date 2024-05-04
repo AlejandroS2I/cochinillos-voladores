@@ -73,4 +73,6 @@ jobs:
         script: |
           cd ~
           export MYSQL_PASSWORD=${{ secrets.MYSQL_PASSWORD }}
-          ls -al
+          docker compose down
+          docker compose pull
+          docker compose up -d

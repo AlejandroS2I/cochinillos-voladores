@@ -1,5 +1,6 @@
 use serde::Deserialize;
 use crate::ctx::Ctx;
+use crate::modelo::pwd::hash_password;
 use crate::modelo::{Error, Result};
 use crate::modelo::ControladorModelo;
 
@@ -25,7 +26,6 @@ pub struct ControladorUsuario;
 
 impl ControladorUsuario {
     pub async fn crear_usuario(
-        ctx: Ctx,
         cm: ControladorModelo, 
         usuario: UsuarioCrear
     ) -> Result<Usuario> {
@@ -38,7 +38,7 @@ impl ControladorUsuario {
         ",
             usuario.nombre,
             usuario.mail,
-            usuario.password
+            hash_password(usuario.password)?
         )
         .execute(txn.as_mut())
         .await?;

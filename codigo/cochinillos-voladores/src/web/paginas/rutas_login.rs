@@ -15,6 +15,7 @@ pub fn routes(cm: ControladorModelo) -> Router {
     Router::new()
         .route("/perfil", get(perfil))
         .route("/login", get(login))
+        .route("/registrar", get(registrar))
         .with_state(cm)
 }
 
@@ -38,10 +39,20 @@ async fn perfil(
 #[template(path = "login.html")]
 struct LoginTemplate;
 
-
 async fn login(
     State(cm): State<ControladorModelo>,
     ctx: Option<Ctx>,
 ) -> LoginTemplate {
     LoginTemplate
+}
+
+#[derive(Template)]
+#[template(path = "registrar.html")]
+struct RegistrarTemplate;
+
+async fn registrar(
+    State(cm): State<ControladorModelo>,
+    ctx: Option<Ctx>,
+) -> RegistrarTemplate {
+    RegistrarTemplate
 }

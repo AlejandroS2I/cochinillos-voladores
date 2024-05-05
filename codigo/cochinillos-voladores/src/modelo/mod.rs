@@ -2,6 +2,7 @@ mod error;
 
 pub mod usuario;
 pub mod login;
+pub mod pwd;
 
 use serde::Deserialize;
 use sqlx::{Pool, MySql, Row, Transaction, error::DatabaseError};

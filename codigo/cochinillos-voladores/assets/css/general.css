@@ -6,6 +6,8 @@
 
 html {
     scroll-behavior: smooth;
+
+    overflow: hidden;
 }
 
 * {
@@ -23,6 +25,8 @@ html {
 body {
     width: 100vw;
     height: 100vh;
+
+    overflow: hidden;
 
     background: var(--bg-color);
 }
@@ -52,6 +56,11 @@ nav {
     align-items: center;
 }
 
+nav.izquierda {
+    right: unset;
+    left: 0;
+}
+
 nav a {
     width: 80%;
 }
@@ -60,7 +69,7 @@ nav a:hover {
     cursor: pointer;
 }
 
-nav a img {
+nav a svg {
     width: 100%;
     height: auto;
 }

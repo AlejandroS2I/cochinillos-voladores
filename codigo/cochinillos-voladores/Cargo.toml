@@ -24,6 +24,7 @@ lazy-regex = "3"
 async-trait = "0.1"
 strum_macros = "0.26"
 axum-htmx = "0.5"
+bcrypt = "0.15"
 
 [dev-dependencies]
 anyhow = "1"

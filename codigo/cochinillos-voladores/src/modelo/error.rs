@@ -27,6 +27,9 @@ pub enum Error {
         regla: String
     },
 
+    ErrorPasswordHashing,
+    ErrorVerificandoPassword,
+
     #[from]
     Sqlx(#[serde_as(as = "DisplayFromStr")] sqlx::Error)
 }

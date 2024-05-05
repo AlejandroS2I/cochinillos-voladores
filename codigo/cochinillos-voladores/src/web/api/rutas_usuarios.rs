@@ -30,7 +30,7 @@ async fn crear_usuario(
         return Err(Error::SinPermisos);
     }
 
-    let usuario = ControladorUsuario::crear_usuario(ctx, cm, usuario_crear).await?;
+    let usuario = ControladorUsuario::crear_usuario(cm, usuario_crear).await?;
 
     Ok(StatusCode::CREATED)
 }

@@ -19,11 +19,11 @@ jobs:
     services:
       mysql:
         image: mysql:latest
-        environment:
+        env:
           MYSQL_DATABASE: cochinillos
           MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
         ports:
-          - "3306:3306"
+          - 3306:3306
 
     steps:
     - name: Checkout codigo

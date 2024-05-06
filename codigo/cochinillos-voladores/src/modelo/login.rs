@@ -23,8 +23,6 @@ impl ControladorLogin {
         let caducidad = OffsetDateTime::now_utc().date() + Duration::days(30);
         let uuid = Uuid::now_v7();
 
-        println!("CADUCIDAD: {}", caducidad.to_string());
-        println!("HOY: {}", OffsetDateTime::now_utc().to_string());
         sqlx::query!("
             INSERT INTO tlogins (uuid, idUsuario, fechaCaducidad) 
             VALUES (?, ?, ?); 

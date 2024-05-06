@@ -1,0 +1,12 @@
+{
+  "db_name": "MySQL",
+  "query": "\n            UPDATE tlogins SET uuid = ?, fechaCaducidad = ?\n            WHERE uuid = ?; \n        ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 3
+    },
+    "nullable": []
+  },
+  "hash": "460cac234e4584be856f2ad47e8f55c16b51781a74bbabd5599121c985ae885d"
+}

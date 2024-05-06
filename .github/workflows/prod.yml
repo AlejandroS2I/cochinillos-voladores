@@ -101,4 +101,4 @@ jobs:
           export MYSQL_PASSWORD=${{ secrets.MYSQL_PASSWORD }}
           docker compose down
           docker compose pull
-          docker compose up -f docker-compose.yml -f docker-compose.prod.yml -d
+          docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d

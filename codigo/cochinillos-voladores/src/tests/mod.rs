@@ -11,7 +11,9 @@ use sqlx::{MySqlPool};
 use crate::modelo::ControladorModelo;
 use crate::app;
 
-#[sqlx::test(fixtures(path="../fixtures", scripts("usuarios")))]
+mod usuarios;
+
+#[sqlx::test]
 async fn inicio(pool: MySqlPool) -> Result<()> {
     let cm = ControladorModelo::new(pool).await?;
 

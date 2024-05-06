@@ -1,5 +1,6 @@
 services:
   api:
+    container_name: api
     image: alejandros2i/cochinillos-voladores
     environment:
       DATABASE_URL: "mysql://root:${MYSQL_PASSWORD}@db:3306/cochinillos"
@@ -10,7 +11,11 @@ services:
       - "3000:3000"
     depends_on:
       - db
+    networks:
+        - app_network
+
   db:
+    container_name: db
     image: mysql:latest
     restart: always
     environment:
@@ -20,7 +25,11 @@ services:
       - "3306:3306"
     volumes:
       - db:/var/lib/mysql
+    networks:
+        - app_network
 
 volumes:
   db:
-    driver: local
+
+networks:
+  app_network:

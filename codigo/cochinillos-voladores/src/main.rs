@@ -24,7 +24,6 @@ pub use self::error::{Error, Result};
 
 mod ctx;
 mod error;
-mod log;
 mod modelo;
 mod web;
 mod assets;

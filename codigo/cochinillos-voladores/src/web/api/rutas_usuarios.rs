@@ -24,8 +24,6 @@ async fn crear_usuario(
     ctx: Ctx,
     Form(usuario_crear): Form<UsuarioCrear>
 ) -> Result<StatusCode> {
-    println!("->> {:<12} - crear usuario", "CONTROLADOR");
-
     if !ctx.esAdministrador() {
         return Err(Error::SinPermisos);
     }
@@ -45,8 +43,6 @@ async fn listar_usuarios(
     State(cm): State<ControladorModelo>,
     ctx: Ctx,
 ) -> Result<ListaUsuarioTemplate> {
-    println!("->> {:<12} - listar usuarios", "CONTROLADOR");
-
     if !ctx.esAdministrador() {
         return Err(Error::SinPermisos);
     }
@@ -61,8 +57,6 @@ async fn eliminar_usuario(
     ctx: Ctx,
     Path(id): Path<u32>
 ) -> Result<StatusCode> {
-    println!("->> {:<12} - listar usuarios", "CONTROLADOR");
-
     if !ctx.esAdministrador() {
         return Err(Error::SinPermisos);
     }

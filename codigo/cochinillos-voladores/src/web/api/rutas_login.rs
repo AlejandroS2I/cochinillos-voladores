@@ -1,6 +1,6 @@
 use std::str::FromStr;
 
-use crate::{modelo::{login::ControladorLogin, pwd::verificar_password, usuario::{ControladorUsuario, UsuarioCrear}, ControladorModelo}, web::{self, AUTH_TOKEN}, Error, Result};
+use crate::{ctx::Ctx, modelo::{login::ControladorLogin, pwd::verificar_password, usuario::{ControladorUsuario, UsuarioCrear}, ControladorModelo}, web::{self, AUTH_TOKEN}, Error, Result};
 use axum_htmx::HxRedirect;
 use serde::Deserialize;
 use axum::{extract::State, http::{StatusCode, Uri}, response::{Html, IntoResponse, Redirect}, routing::{get, post}, Form, Json, Router};
@@ -24,10 +24,13 @@ struct LoginPayload {
 
 async fn api_login(
     State(cm): State<ControladorModelo>,
+    ctx: Option<Ctx>,
     cookies: Cookies, 
     Form(payload): Form<LoginPayload>
 ) -> Result<impl IntoResponse> {
-    println!("->> {:<12} - api_login", "HANDLER");
+    if ctx.is_some() {
+        return Err(Error::LoginExistente);
+    }
 
     let usuario = ControladorUsuario::usuario_mail(cm.clone(), payload.mail).await?
         .ok_or(Error::ErrorLoginMailNoEncontrado)?;
@@ -69,6 +72,10 @@ async fn api_registrar(
     cookies: Cookies, 
     Form(usuario): Form<UsuarioCrear>
 ) -> Result<impl IntoResponse> {
+    if (usuario.nombre == "" || usuario.mail == "" || usuario.password == "") {
+        return Err(Error::ErrorRegistro);
+    }
+
     let usuario = ControladorUsuario::crear_usuario(cm.clone(), usuario).await?;
 
     let login = ControladorLogin::crear_login(cm.clone(), usuario.id).await?;

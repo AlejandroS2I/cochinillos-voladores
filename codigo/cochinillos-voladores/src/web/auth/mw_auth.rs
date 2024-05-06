@@ -11,7 +11,7 @@ use axum::{
 use lazy_regex::regex_captures;
 use serde::Serialize;
 use time::macros::format_description;
-use time::Date;
+use time::{Date, OffsetDateTime};
 use tower_cookies::{Cookie, Cookies};
 use uuid::Uuid;
 
@@ -27,8 +27,6 @@ pub async fn mw_requerir_auth(
     req: Request<Body>, 
     next: Next
 ) -> Result<Response> {
-    println!("->> {:<12} - mw_requerir_auth", "MIDDLEWARE");
-
     ctx?;
 
     Ok(next.run(req).await)
@@ -40,8 +38,6 @@ pub async fn mw_resolvedor_ctx(
     mut req: Request<Body>,
     next: Next,
 ) -> Response {
-    println!("->> {:<12} - mw_ctx_resolver", "MIDDLEWARE");
-
     let result_ctx = resolver_ctx(cm, &cookies).await;
 
     if result_ctx.is_err()
@@ -67,8 +63,16 @@ async fn resolver_ctx(cm: ControladorModelo, cookies: &Cookies) -> CtxExtResult 
         .ok_or(CtxExtError::LoginNoEncontrado)?;
 
     // Validar token
+    if login.fechaCaducidad <= OffsetDateTime::now_utc().date() {
+        ControladorLogin::eliminar_login(cm.clone(), uuid).await
+            .map_err(|err| CtxExtError::ErrorModelo(err.to_string()))?;
 
-    // Actualizar token
+        let mut cookie = Cookie::from(AUTH_TOKEN);
+        cookie.set_path("/");
+        cookies.remove(cookie);
+
+        return Err(CtxExtError::TokenExpirado);
+    }
 
     let usuario = ControladorUsuario::usuario_id(cm, login.idUsuario).await
         .map_err(|err| CtxExtError::ErrorModelo(err.to_string()))?
@@ -82,8 +86,6 @@ impl<S: Send + Sync> FromRequestParts<S> for Ctx {
     type Rejection = Error;
 
     async fn from_request_parts(parts: &mut Parts, _state: &S) -> Result<Self> {
-        println!("->> {:<12} - Ctx", "EXTRACTOR");
-
         parts
             .extensions
             .get::<CtxExtResult>()
@@ -100,6 +102,7 @@ pub enum CtxExtError {
     NoCtxEnExtension,
     NoTokenEnCookies,
     TokenFormatoIncorrecto,
+    TokenExpirado,
     ErrorModelo(String),
     LoginNoEncontrado,
     UsuarioNoEncontrado

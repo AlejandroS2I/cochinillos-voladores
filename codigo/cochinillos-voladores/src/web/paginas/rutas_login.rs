@@ -26,7 +26,7 @@ struct PerfilTemplate{
 }
 
 async fn perfil(
-    State(cm): State<ControladorModelo>,
+    State(_cm): State<ControladorModelo>,
     ctx: Option<Ctx>,
 ) -> PerfilTemplate {
     match ctx {

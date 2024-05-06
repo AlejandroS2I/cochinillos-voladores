@@ -23,6 +23,8 @@ impl ControladorLogin {
         let caducidad = OffsetDateTime::now_utc().date() + Duration::days(30);
         let uuid = Uuid::now_v7();
 
+        println!("CADUCIDAD: {}", caducidad.to_string());
+        println!("HOY: {}", OffsetDateTime::now_utc().to_string());
         sqlx::query!("
             INSERT INTO tlogins (uuid, idUsuario, fechaCaducidad) 
             VALUES (?, ?, ?); 
@@ -30,6 +32,40 @@ impl ControladorLogin {
             uuid,
             idUsuario,
             caducidad
+        )
+        .execute(txn.as_mut())
+        .await?;
+
+        let login = sqlx::query_as!(
+        Login,
+        "
+            SELECT uuid as `uuid: uuid::Uuid`, idUsuario, fechaCaducidad FROM tlogins
+            WHERE uuid = ?;
+        ",
+            uuid
+        )
+        .fetch_one(txn.as_mut())
+        .await?;
+
+        txn.commit().await?;
+
+        Ok(login)
+    }
+
+    pub async fn actualizar_login(cm: ControladorModelo, login_anterior: Login) -> Result<Login> {
+        let pool = cm.conexion;
+        let mut txn = pool.begin().await?;
+
+        let caducidad = OffsetDateTime::now_utc().date() + Duration::days(30);
+        let uuid = Uuid::now_v7();
+
+        sqlx::query!("
+            UPDATE tlogins SET uuid = ?, fechaCaducidad = ?
+            WHERE uuid = ?; 
+        ",
+            uuid,
+            caducidad,
+            login_anterior.uuid
         )
         .execute(txn.as_mut())
         .await?;

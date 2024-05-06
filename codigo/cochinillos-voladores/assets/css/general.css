@@ -59,6 +59,8 @@ nav {
 nav.izquierda {
     right: unset;
     left: 0;
+
+    transform: scaleX(-1);
 }
 
 nav a {

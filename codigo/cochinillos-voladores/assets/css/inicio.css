@@ -1,6 +1,8 @@
 main {
     height: 100vh;
     overflow: auto;
+
+    scroll-snap-type: y mandatory;
 }
 
 article {
@@ -9,6 +11,8 @@ article {
     
     position: relative;
     overflow: hidden;
+
+    scroll-snap-align: start;
 }
 
 /* Portada */
@@ -72,4 +76,53 @@ article#quienesSomos section.cuerpo p {
     font-size: 120%;
 
     text-align: justify;
+}
+
+/* Dónde estamos? */
+article#dondeEstamos {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+
+    padding: 10%;
+}
+
+article#dondeEstamos div.mapa {
+    height: 100%;
+    width: fit-content;
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+
+    transform: translate(-55%, -50%);
+}
+
+article#dondeEstamos img.fondo {
+    width: auto;
+    height: 100%;
+}
+
+article#dondeEstamos a.marcador {
+    width: 15vmin;
+
+    position: absolute;
+    bottom: 53%;
+    right: 39%;
+    z-index: 10000;
+}
+
+article#dondeEstamos a.marcador img {
+    width: 100%;
+    height: auto;
+}
+
+article#dondeEstamos section.cuerpo h2 {
+    position: relative;
+    z-index: 2;
+    
+    font-size: 550%;
+    font-weight: 900;
+
+    color: var(--red-color) !important;
 }

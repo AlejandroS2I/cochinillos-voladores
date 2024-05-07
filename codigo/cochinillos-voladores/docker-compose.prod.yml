@@ -13,6 +13,6 @@ services:
     networks:
       - app_network
 
-  volumes:
-    caddy_data:
-    caddy_config:
+volumes:
+  caddy_data:
+  caddy_config:

@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+{%- import "componentes/nav.html" as navegacion -%}
+
+{% block titulo %}Perfil{% endblock %}
+
+{% block meta %}
+<link rel="stylesheet" href="/assets/css/perfil.css">
+{% endblock %}
+
+{% block nav %}{% call navegacion::nav(posicion="derecha", mostrarCuenta=false, mostrarAtras=true, mostrarDashboard=false) %}{% endblock %}
+
+{% block contenido %}
+<h1>Perfil</h1>
+<div class="cuerpo">
+    <form 
+        id="datos" 
+        hx-put="/api/usuarios" 
+        hx-target-error="#contenedorError" 
+        hx-swap="none"
+        hx-on::after-request="recargar(event)"
+    >
+        <input type="text" name="id" value="{{ usuario.id }}" hidden>
+        <div>
+            <label for="nombre">Nombre:</label>
+            <input type="text"  name="nombre" value="{{ usuario.nombre }}" disabled>
+        </div>
+        <div>
+            <label for="mail">Mail:</label>
+            <input type="email" name="mail" value="{{ usuario.mail }}" disabled>
+        </div>
+        <div id="botonesDatos" class="botones esconder">
+            <input type="submit" class="confirmar" value="Actualizar">
+            <input type="button" class="cancelar" value="Cancelar" onclick="modificarDatos(false)">
+        </div>
+    </form>
+    <div id="contenedorError" class="esconder" hx-on::after-settle="this.classList.remove('esconder')"></div>
+    <form 
+        id="datosPassword" 
+        class="esconder"
+        hx-put="/api/cambiarPassword" 
+        hx-target-error="#contenedorErrorPassword" 
+        hx-swap="none"
+        hx-on::after-request="recargar(event)"
+    >
+        <input type="text" name="id" value="{{ usuario.id }}" hidden>
+        <div>
+            <label for="passwordActual">Contraseña actual:</label>
+            <input type="password"  name="passwordActual" disabled>
+        </div>
+        <div>
+            <label for="passwordNueva">Nueva contraseña:</label>
+            <input type="password"  name="passwordNueva" disabled>
+        </div>
+        <div>
+            <label for="passwordRepetir">Repite la contraseña:</label>
+            <input type="password"  name="passwordRepetir" disabled>
+        </div>
+        <div id="botonesPassword" class="botones esconder">
+            <input type="submit" class="confirmar" value="Cambiar">
+            <input type="button" class="cancelar" value="Cancelar" onclick="cambiarPassword(false)">
+        </div>
+    </form>
+    <div id="contenedorErrorPassword" class="esconder" hx-on::after-settle="this.classList.remove('esconder')"></div>
+    <div id="accionesPerfil">
+        <button
+            onclick="modificarDatos(true)"
+        >
+            Modificar datos
+        </button>
+        <button
+            onclick="cambiarPassword(true)"
+        >
+            Cambiar contraseña
+        </button>
+        <button
+            hx-get="/api/logout"
+            hx-trigger="click"
+            class="cancelar"
+        >
+            Cerrar sesión
+        </button>
+    </div>
+</div>
+
+<script>
+    function modificarDatos(_modificar) {
+        document.getElementById('botonesDatos').classList.toggle('esconder', !_modificar);
+        document.getElementById('accionesPerfil').classList.toggle('esconder', _modificar);
+        [...document.getElementById('datos').getElementsByTagName('input')]
+            .forEach((_campo) => {
+                _campo.disabled = !_modificar;
+            });
+    };
+
+    function cambiarPassword(_modificar) {
+        document.getElementById('botonesPassword').classList.toggle('esconder', !_modificar);
+        document.getElementById('datosPassword').classList.toggle('esconder', !_modificar);
+        document.getElementById('accionesPerfil').classList.toggle('esconder', _modificar);
+        document.getElementById('datos').classList.toggle('esconder', _modificar);
+        [...document.getElementById('datosPassword').getElementsByTagName('input')]
+            .forEach((_campo) => {
+                _campo.disabled = !_modificar;
+            });
+    };
+
+    function recargar(e) {
+        if (e.detail?.successful) {
+            location.reload();
+        };
+    };
+</script>
+{% endblock %}

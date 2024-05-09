@@ -3,3 +3,9 @@ cochinillosvoladores.org {
         header_down Strict-Transport-Security max-age=31536000;
     }
 }
+
+www.cochinillosvoladores.org {
+    reverse_proxy api:3000 {
+        header_down Strict-Transport-Security max-age=31536000;
+    }
+}

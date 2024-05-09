@@ -1,5 +1,5 @@
 # Proyecto final
-Este es un proyecto en el que se desarrollará una página web para el equipo de hockey línea "Cochinillos Voladores"
+Este es un proyecto en el que se desarrollará una página web para el equipo de hockey línea "Cochinillos Voladores", puedes acceder a ella en [cochinillosvoladores.org](https://cochinillosvoladores.org)
 
 ## Funcionales
 Los [funcionales](./funcionales/) son documentos generados después de hablar con el cliente para determinar los objetivos de la aplicación,

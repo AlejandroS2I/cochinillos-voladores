@@ -1,14 +1,15 @@
 use axum::extract::{Path, State};
-use axum::http::StatusCode;
+use axum::http::{StatusCode, Uri};
 use axum::routing::{delete, get, post};
 use axum::{Form, Router};
-use axum::response::{IntoResponse, Response};
+use axum::response::{IntoResponse, Redirect, Response};
 use axum::debug_handler;
 use askama::Template;
+use axum_htmx::HxRedirect;
 
 use crate::ctx::Ctx;
-use crate::modelo::{ControladorModelo};
-use crate::modelo::usuario::{Usuario, UsuarioCrear, ControladorUsuario};
+use crate::modelo::usuario::Usuario;
+use crate::modelo::ControladorModelo;
 use crate::{Result, Error};
 
 pub fn routes(cm: ControladorModelo) -> Router {
@@ -20,18 +21,18 @@ pub fn routes(cm: ControladorModelo) -> Router {
 }
 
 #[derive(Template)]
-#[template(path = "componentes/perfil.html")]
-struct PerfilTemplate{
-    tieneCuenta: bool
+#[template(path = "perfil.html")]
+struct PerfilTemplate {
+    usuario: Usuario
 }
 
 async fn perfil(
     State(_cm): State<ControladorModelo>,
     ctx: Option<Ctx>,
-) -> PerfilTemplate {
+) -> impl IntoResponse {
     match ctx {
-        Some(_) => PerfilTemplate { tieneCuenta: true },
-        None => PerfilTemplate { tieneCuenta: false }
+        Some(ctx) => PerfilTemplate { usuario: ctx.usuario() }.into_response(),
+        None => (HxRedirect(Uri::from_static("/login")), Redirect::to("/login")).into_response()
     }
 }
 
@@ -40,10 +41,11 @@ async fn perfil(
 struct LoginTemplate;
 
 async fn login(
-    State(cm): State<ControladorModelo>,
+    State(_cm): State<ControladorModelo>,
     ctx: Option<Ctx>,
-) -> LoginTemplate {
-    LoginTemplate
+) -> impl IntoResponse {
+    if let Some(_) = ctx { return (HxRedirect(Uri::from_static("/perfil")), Redirect::to("/perfil")).into_response(); }
+    LoginTemplate.into_response()
 }
 
 #[derive(Template)]
@@ -51,8 +53,9 @@ async fn login(
 struct RegistrarTemplate;
 
 async fn registrar(
-    State(cm): State<ControladorModelo>,
+    State(_cm): State<ControladorModelo>,
     ctx: Option<Ctx>,
-) -> RegistrarTemplate {
-    RegistrarTemplate
+) -> impl IntoResponse {
+    if let Some(_) = ctx { return (HxRedirect(Uri::from_static("/perfil")), Redirect::to("/perfil")).into_response(); }
+    RegistrarTemplate.into_response()
 }

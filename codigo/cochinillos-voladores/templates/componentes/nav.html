@@ -1,28 +1,45 @@
-{% macro nav(posicion, mostrarCuenta, mostrarAtras) %}
-<nav class="{{ posicion }}">
-        {% if mostrarAtras %}
-        <a href="javascript:history.back()">
-            <svg viewBox="0 0 24 24">
-                <path d="M12.0678 2.14611C12.3883 2.00663 12.7431 1.96564 13.0874 2.02906C13.4316 2.09244 13.7478 2.25698 13.9973 2.49935L22.459 10.7164C22.6312 10.8837 22.7672 11.0838 22.8599 11.3041C22.9525 11.5244 23 11.7609 23 11.9994C23 12.238 22.9525 12.4744 22.8599 12.6947C22.7672 12.9151 22.6309 13.1154 22.4587 13.2827L13.9972 21.4997C13.7476 21.742 13.4316 21.9064 13.0874 21.9698C12.7431 22.0332 12.3883 21.9922 12.0678 21.8528C11.7474 21.7134 11.4771 21.4826 11.2883 21.1916C11.0997 20.9008 11.0001 20.5617 11 20.2164L11 17.0208C8.70545 17.1206 7.26436 17.5717 6.17555 18.2297C4.90572 18.9971 4.01283 20.0973 2.77837 21.6278C2.5122 21.9578 2.06688 22.0841 1.66711 21.943C1.26733 21.8018 1 21.424 1 21C1 17.4414 1.5013 13.9586 3.15451 11.341C4.72577 8.85318 7.25861 7.26795 11 7.03095L11 3.78241C11.0001 3.43711 11.0997 3.09808 11.2883 2.80727C11.4771 2.51629 11.7474 2.2855 12.0678 2.14611Z" fill="#EBDBB2"></path>
-            </svg>
-        </a>
-        {% else %}
-        <a href="#">
-            <svg fill="#EBDBB2" viewBox="0 0 24 24">
-                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                <g id="SVGRepo_iconCarrier">
+{% macro nav(posicion, mostrarCuenta, mostrarAtras, mostrarDashboard) %}
+<nav 
+    class="{{ posicion }}"
+>
+    {% if mostrarDashboard %}
+    <a href="#dashboard">
+        <svg fill="#EBDBB2" viewBox="0 0 24 24">
+            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+            <g id="SVGRepo_iconCarrier">
                 <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"></path>
-                </g>
-            </svg>
-        </a>
-        {% endif %}
-        {% if mostrarCuenta %}
-        <div
-            hx-get="/perfil"
-            hx-trigger="load"
-            hx-swap="outterHTML"
-        ></div>
-        {% endif %}
+            </g>
+        </svg>
+    </a>
+    {% endif %}
+    {% if mostrarAtras %}
+    <a href="javascript:history.back()">
+        <svg fill="#000000" viewBox="0 0 512.053 512.053">
+            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+            <g id="SVGRepo_iconCarrier"> <g> <g> 
+                <path d="M496.197,343.5C461.595,226.721,356.4,145.057,234.672,139.34V53.793c0-8.619-5.184-16.405-13.163-19.712 c-7.979-3.328-17.152-1.472-23.253,4.629l-192,192c-8.341,8.341-8.341,21.824,0,30.165l192,192 c6.101,6.101,15.275,7.957,23.253,4.629c7.979-3.285,13.163-11.093,13.163-19.712v-109.78 c41.429-4.203,153.195,0.043,237.675,142.037c3.755,6.336,10.453,9.557,17.536,9.557c2.155,0,4.309-0.299,6.464-0.875 c9.237-2.539,15.68-11.947,15.68-21.547C512.475,418.636,507.141,380.385,496.197,343.5z"></path> 
+            </g> </g> </g>
+        </svg>
+    </a>
+    {% endif %}
+    {% if mostrarCuenta %}
+    <a 
+        hx-get="/perfil"
+        hx-swap="innerHTML transition:true"
+        hx-push-url="true"
+        hx-target="#root"
+    >
+        <svg viewBox="0 0 24 24">
+            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+            <g id="SVGRepo_iconCarrier"> 
+                <path d="M12 12C14.7614 12 17 9.76142 17 7C17 4.23858 14.7614 2 12 2C9.23858 2 7 4.23858 7 7C7 9.76142 9.23858 12 12 12Z" fill="#EBDBB2"></path>
+                <path d="M12.0002 14.5C6.99016 14.5 2.91016 17.86 2.91016 22C2.91016 22.28 3.13016 22.5 3.41016 22.5H20.5902C20.8702 22.5 21.0902 22.28 21.0902 22C21.0902 17.86 17.0102 14.5 12.0002 14.5Z" fill="#EBDBB2"></path>
+            </g>
+        </svg>
+    </a>
+    {% endif %}
 </nav>
 {% endmacro %}

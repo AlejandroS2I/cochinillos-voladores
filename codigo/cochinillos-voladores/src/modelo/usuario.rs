@@ -21,6 +21,19 @@ pub struct UsuarioCrear {
     pub password: String
 }
 
+#[derive(Deserialize)]
+pub struct UsuarioActualizar {
+    pub id: u32,
+    pub nombre: String,
+    pub mail: String,
+}
+
+#[derive(Deserialize)]
+pub struct UsuarioPassword {
+    pub id: u32,
+    pub password: String
+}
+
 pub struct ControladorUsuario;
 
 
@@ -41,7 +54,15 @@ impl ControladorUsuario {
             hash_password(usuario.password)?
         )
         .execute(txn.as_mut())
-        .await?;
+        .await
+        .map_err(|err| {
+                Error::resolver_unico(
+                    Error::Sqlx(err), 
+                    Some(|| {
+                        Some(Error::UsuarioExiste { mail: usuario.mail })
+                    })
+                )
+        })?;
 
         let usuario = sqlx::query_as!(
         Usuario,
@@ -50,19 +71,82 @@ impl ControladorUsuario {
             WHERE id = LAST_INSERT_ID();
         ")
         .fetch_one(txn.as_mut())
+        .await?;
+
+        txn.commit().await?;
+
+        Ok(usuario)
+    }
+
+    pub async fn actualizar_usuario(
+        cm: ControladorModelo, 
+        usuario: UsuarioActualizar
+    ) -> Result<Usuario> {
+        let pool = cm.conexion;
+        let mut txn = pool.begin().await?;
+
+        sqlx::query!("
+            UPDATE tusuarios SET nombre = ?, mail = ?
+            WHERE id = ?
+        ",
+            usuario.nombre,
+            usuario.mail,
+            usuario.id
+        )
+        .execute(txn.as_mut())
         .await
         .map_err(|err| {
                 Error::resolver_unico(
                     Error::Sqlx(err), 
-                    Some(|tabla: &str, regla: &str| {
-                        if tabla == "tusuarios" && regla.contains("mail") {
-                            Some(Error::UsuarioExiste { mail: usuario.mail })
-                        } else {
-                            None
-                        }
+                    Some(|| {
+                        Some(Error::UsuarioExiste { mail: usuario.mail })
                     })
                 )
         })?;
+
+        let usuario = sqlx::query_as!(
+        Usuario,
+        "
+            SELECT id, nombre, mail, password, esAdministrador as `esAdministrador: _` FROM tusuarios
+            WHERE id = ?;
+        ",
+            usuario.id
+        )
+        .fetch_one(txn.as_mut())
+        .await?;
+
+        txn.commit().await?;
+
+        Ok(usuario)
+    }
+
+    pub async fn cambiar_password(
+        cm: ControladorModelo, 
+        usuario: UsuarioPassword
+    ) -> Result<Usuario> {
+        let pool = cm.conexion;
+        let mut txn = pool.begin().await?;
+
+        sqlx::query!("
+            UPDATE tusuarios SET password = ?
+            WHERE id = ?
+        ",
+            hash_password(usuario.password)?,
+            usuario.id
+        )
+        .execute(txn.as_mut())
+        .await?;
+
+        let usuario = sqlx::query_as!(
+        Usuario,
+        "
+            SELECT id, nombre, mail, password, esAdministrador as `esAdministrador: _` FROM tusuarios
+            WHERE id = ?;
+        ",
+            usuario.id
+        )
+        .fetch_one(txn.as_mut())
+        .await?;
 
         txn.commit().await?;
 

@@ -1,3 +1,5 @@
+use std::borrow::Cow;
+
 use derive_more::From;
 use serde::Serialize;
 use serde_with::{serde_as, DisplayFromStr};
@@ -22,13 +24,10 @@ pub enum Error {
         mail: String
     },
 
-    ViolacionUnico {
-        tabla: String,
-        regla: String
-    },
+    ViolacionUnico,
 
     ErrorPasswordHashing,
-    ErrorVerificandoPassword,
+    ErrorVerificandoPassword{ error: String },
 
     #[from]
     Sqlx(#[serde_as(as = "DisplayFromStr")] sqlx::Error)
@@ -37,18 +36,16 @@ pub enum Error {
 impl Error {
     pub fn resolver_unico<F>(self, funcion: Option<F>) -> Self
     where
-        F: FnOnce(&str, &str) -> Option<Self>
+        F: FnOnce() -> Option<Self>,
     {
         match self.convertir_errorbd().map(|error_bd| {
-            (error_bd.kind(), error_bd.table(), error_bd.constraint())
+            error_bd.is_unique_violation()
         }) {
-            Some((ErrorKind::UniqueViolation, Some(tabla), Some(regla))) => {
+            // Error unico mysql: 23000
+            Some(true) => {
                 funcion
-                    .and_then(|fun| fun(tabla, regla))
-                    .unwrap_or_else(|| Error::ViolacionUnico { 
-                        tabla: tabla.to_string(), 
-                        regla: regla.to_string() 
-                    })
+                    .and_then(|fun| fun())
+                    .unwrap_or_else(|| Error::ViolacionUnico)
             }
             _ => self
         }

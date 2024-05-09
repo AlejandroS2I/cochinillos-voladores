@@ -1,22 +1,19 @@
+use crate::modelo::usuario::Usuario;
+
 
 #[derive(Clone, Debug)]
 pub struct Ctx {
-    idUsuario: u32,
-    esAdministrador: bool
+    usuario: Usuario
 }
 
 impl Ctx {
-    pub fn new(idUsuario: u32, esAdministrador: bool) -> Self {
-        Self { idUsuario, esAdministrador }
+    pub fn new(usuario: Usuario) -> Self {
+        Self { usuario }
     }
 }
 
 impl Ctx {
-    pub fn idUsuario(&self) -> u32 {
-        self.idUsuario
-    }
-
-    pub fn esAdministrador(&self) -> bool {
-        self.esAdministrador
+    pub fn usuario(&self) -> Usuario {
+        self.usuario.clone()
     }
 }

@@ -78,7 +78,7 @@ async fn resolver_ctx(cm: ControladorModelo, cookies: &Cookies) -> CtxExtResult 
         .map_err(|err| CtxExtError::ErrorModelo(err.to_string()))?
         .ok_or(CtxExtError::UsuarioNoEncontrado)?;
     
-    Ok(Ctx::new(login.idUsuario, usuario.esAdministrador))
+    Ok(Ctx::new(usuario))
 }
 
 #[async_trait]

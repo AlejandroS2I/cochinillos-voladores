@@ -35,7 +35,7 @@ async fn api_login(
     let usuario = ControladorUsuario::usuario_mail(cm.clone(), payload.mail).await?
         .ok_or(Error::ErrorLoginMailNoEncontrado)?;
     if !verificar_password(payload.password, &usuario.password)? {
-        return Err(Error::ErrorLogin);
+        return Err(Error::PasswordIncorrecta);
     }
 
     let login = ControladorLogin::crear_login(cm.clone(), usuario.id).await?;

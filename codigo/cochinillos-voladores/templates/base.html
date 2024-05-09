@@ -2,18 +2,22 @@
 
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <title>{% block titulo %}{{ titulo }}{% endblock %} | Cochinillos</title>
-    <link href='https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900' rel='stylesheet'>
-    <script src="https://unpkg.com/htmx.org@1.9.11" integrity="sha384-0gxUXCCR8yv9FM2b+U3FDbsKthCI66oH5IA9fHppQq9DDMHuMauqq1ZHBpJxQ0J0" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="/assets/css/general.css">
-    {% block meta %}{% endblock %}
-  </head>
-  <body>
-    {% block nav %}{% call navegacion::nav(posicion="derecha", mostrarCuenta=true, mostrarAtras=false) %}{% endblock %}
-    <main id="root">
-      {% block contenido %}{% endblock %}
-    </main>
-  </body>
+    <head hx-head="merge">
+        <meta charset="utf-8" />
+        <title>{% block titulo %}{{ titulo }}{% endblock %} | Cochinillos</title>
+        <link href='https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900' rel='stylesheet'>
+        <script src="https://unpkg.com/htmx.org@1.9.11" integrity="sha384-0gxUXCCR8yv9FM2b+U3FDbsKthCI66oH5IA9fHppQq9DDMHuMauqq1ZHBpJxQ0J0" crossorigin="anonymous"></script>
+        <script src="https://unpkg.com/htmx.org@1.9.12/dist/ext/head-support.js"></script>
+        <script src="https://unpkg.com/htmx.org@1.9.12/dist/ext/response-targets.js"></script>
+        <link rel="stylesheet" href="/assets/css/general.css">
+        {% block meta %}{% endblock %}
+    </head>
+    <body hx-ext="head-support, response-targets">
+        <main id="root">
+            {% block nav %}{% call navegacion::nav(posicion="derecha", mostrarCuenta=true, mostrarAtras=false, mostrarDashboard=true) %}{% endblock %}
+            {% block contenido %}{% endblock %}
+        </main>
+
+        {% include "componentes/dashboard.html" %}
+    </body>
 </html>

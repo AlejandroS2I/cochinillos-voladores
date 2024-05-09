@@ -14,20 +14,3 @@ form {
     flex-direction: column;
     gap: 10px;
 }
-
-input {
-    width: 100%;
-
-    padding: 10px 20px;
-}
-
-input:focus-visible {
-    outline: none;
-}
-
-input[type=submit]:hover {
-    cursor: pointer;
-
-    color: var(--bg-color);
-    background: var(--fg-color);
-}

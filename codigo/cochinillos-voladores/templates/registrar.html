@@ -1,17 +1,17 @@
 {% extends "base.html" %}
 {%- import "componentes/nav.html" as navegacion -%}
 
-{% block titulo %}Login{% endblock %}
+{% block titulo %}Registrarse{% endblock %}
 
 {% block meta %}
 <link rel="stylesheet" href="/assets/css/login.css">
 {% endblock %}
 
-{% block nav %}{% call navegacion::nav(posicion="izquierda", mostrarCuenta=false, mostrarAtras=true) %}{% endblock %}
+{% block nav %}{% call navegacion::nav(posicion="derecha", mostrarCuenta=false, mostrarAtras=true, mostrarDashboard=false) %}{% endblock %}
 
 {% block contenido %}
 <h1>Registrarse</h1>
-<form hx-post="/api/registrar">
+<form hx-post="/api/registrar" hx-target-error="#contenedorError">
     <div>
         <label for="nombre">Nombre:</label>
         <input type="text" name="nombre">
@@ -24,6 +24,7 @@
         <label for="password">Contraseña:</label>
         <input type="password" name="password">
     </div>
-    <input type="submit" value="Registrarse">
+    <input type="submit" class="confirmar" value="Registrarse">
 </form>
+<div id="contenedorError" class="esconder" hx-on::after-settle="this.classList.remove('esconder')"></div>
 {% endblock %}

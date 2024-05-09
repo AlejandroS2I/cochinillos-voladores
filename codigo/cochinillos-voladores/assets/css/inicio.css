@@ -95,7 +95,7 @@ article#dondeEstamos div.mapa {
     top: 50%;
     left: 50%;
 
-    transform: translate(-55%, -50%);
+    transform: translate(-50%, -50%);
 }
 
 article#dondeEstamos img.fondo {

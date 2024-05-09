@@ -6,5 +6,5 @@ pub fn hash_password(password: String) -> Result<String> {
 }
 
 pub fn verificar_password(password: String, hash: &str) -> Result<bool> {
-    verify(password, hash).map_err(|_| Error::ErrorVerificandoPassword)
+    verify(password, hash).map_err(|err| Error::ErrorVerificandoPassword{ error: err.to_string() })
 }

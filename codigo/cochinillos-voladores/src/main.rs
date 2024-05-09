@@ -61,9 +61,13 @@ fn app(cm: ControladorModelo) -> Router {
     let rutas_auth = api::rutas_usuarios::routes(cm.clone())
         .route_layer(middleware::from_fn(auth::mw_auth::mw_requerir_auth));
 
+    let rutas_admin = paginas::rutas_gestion::routes(cm.clone())
+        .route_layer(middleware::from_fn(auth::mw_auth::mw_requerir_admin));
+
     Router::new()
         .merge(paginas::rutas_inicio::routes(cm.clone()))
         .merge(paginas::rutas_login::routes(cm.clone()))
+        .merge(rutas_admin)
         .nest("/api", api::rutas_login::routes(cm.clone()))
         .nest("/api", rutas_auth)
         .layer(middleware::map_response(mapeador_respuestas_central))

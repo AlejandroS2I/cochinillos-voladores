@@ -25,6 +25,7 @@ struct ErrorTemplate {
 pub enum Error {
     UriInvalida,
     ErrorTemplate,
+    NoEncontradoPorId,
 
     // Login
     ErrorLogin,
@@ -33,6 +34,7 @@ pub enum Error {
     LoginExistente,
     PasswordIncorrecta,
     PasswordNoCoinciden,
+    CamposVacios{ campos: Vec<String> },
 
     // Registro
     ErrorRegistro,
@@ -70,9 +72,19 @@ impl IntoResponse for Error {
                 StatusCode::FORBIDDEN.into_response(),
             Self::LoginExistente =>
                 (HxRedirect(Uri::from_static("/")), ()).into_response(),
+            Self::SinPermisos | Self::CtxExt(auth::mw_auth::CtxExtError::NoTokenEnCookies) =>
+                (HxRedirect(Uri::from_static("/")), Redirect::temporary("/login")).into_response(),
             Self::ErrorLoginMailNoEncontrado | Self::PasswordIncorrecta => (
                 StatusCode::BAD_REQUEST,
                 ErrorTemplate { error: format!("Mail o contraseña incorrecta") }
+            ).into_response(),
+            Self::PasswordNoCoinciden => (
+                StatusCode::BAD_REQUEST,
+                ErrorTemplate { error: format!("Las contraseñas no coinciden") }
+            ).into_response(),
+            Self::CamposVacios { campos } => (
+                StatusCode::BAD_REQUEST,
+                ErrorTemplate { error: format!("Debes rellenar los siguientes campos: {}", campos.join(", ")) }
             ).into_response(),
             Self::CtxExt(auth::mw_auth::CtxExtError::TokenExpirado) =>
                 Redirect::temporary("/login").into_response(),

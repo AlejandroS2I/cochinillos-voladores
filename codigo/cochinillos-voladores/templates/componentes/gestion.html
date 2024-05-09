@@ -1,0 +1,71 @@
+<head>
+    <link rel="stylesheet" href="/assets/css/gestion.css">
+</head>
+
+<div class="cuerpo">
+    <form 
+        id="datos" 
+        hx-put="/api/{{ url }}" 
+        hx-target-error="#contenedorError" 
+        hx-swap="none"
+        hx-on::after-request="recargar(event)"
+    >
+        <input type="text" name="id" value="{{ id }}" hidden>
+        {% for campo in campos %}
+        <div>
+            <label for="{{ campo.nombre }}">{{ campo.titulo }}:</label>
+            <input type="text"  name="{{ campo.nombre }}" value="{{ campo.valor }}" disabled>
+        </div>
+        {% endfor %}
+        <div id="botonesDatos" class="botones esconder">
+            <input type="submit" class="confirmar" value="Actualizar">
+            <input type="button" class="cancelar" value="Cancelar" onclick="modificarDatos(false)">
+        </div>
+    </form>
+    <div id="contenedorError" class="esconder" hx-on::after-settle="this.classList.remove('esconder')"></div>
+    <div id="accionesDatos">
+        <button
+            onclick="modificarDatos(true)"
+        >
+            Modificar datos
+        </button>
+        <button
+            hx-delete="/api/{{ url }}/{{ id }}"
+            hx-trigger="click"
+            hx-swap="none"
+            hx-on::after-request="volver(event)"
+        >
+            Borrar
+        </button>
+        <button
+            hx-get="/gestion/{{ url }}"
+            hx-target="#cuerpo"
+            hx-trigger="click"
+        >
+            Volver
+        </button>
+    </div>
+</div>
+
+<script>
+    function modificarDatos(_modificar) {
+        document.getElementById('botonesDatos').classList.toggle('esconder', !_modificar);
+        document.getElementById('accionesDatos').classList.toggle('esconder', _modificar);
+        [...document.getElementById('datos').getElementsByTagName('input')]
+            .forEach((_campo) => {
+                _campo.disabled = !_modificar;
+            });
+    };
+
+    function recargar(e) {
+        if (e.detail?.successful) {
+            htmx.ajax('GET', '/gestion/{{ url }}/{{ id }}', '#cuerpo');
+        };
+    };
+
+    function volver(e) {
+        if (e.detail?.successful) {
+            htmx.ajax('GET', '/gestion/{{ url }}', '#cuerpo');
+        };
+    };
+</script>

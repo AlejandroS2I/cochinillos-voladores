@@ -1,0 +1,26 @@
+<div class="botones">
+    <button
+        hx-get="/gestion/menu"
+        hx-trigger="click"
+        hx-target="#cuerpo"
+        hx-swap="innerHTML"
+    >
+        Menú
+    </button>
+    <button>Filtro</button>
+</div>
+<div class="registros">
+    {% for registro in lista %}
+    <a
+        hx-get="gestion/{{ url }}/{{ registro.id }}"
+        hx-trigger="click"
+        hx-target="#cuerpo"
+        hx-swap="innerHTML"
+    >
+        <h2>{{ registro.titulo }}</h2>
+        {% for (titulo, valor) in registro.valores %}
+        <p>{{ titulo }}: {{ valor }}</p>
+        {% endfor %}
+    </a>
+    {% endfor %}
+</div>

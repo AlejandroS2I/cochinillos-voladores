@@ -1,0 +1,11 @@
+{% for seccion in secciones %}
+<button
+    hx-get="/gestion/{{ seccion.url }}"
+    hx-trigger="click"
+    hx-target="#cuerpo"
+    hx-swap="innerHTML"
+    class="seccion"
+>
+    {{ seccion.titulo }}
+</button>
+{% endfor %}

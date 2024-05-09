@@ -32,6 +32,18 @@ pub async fn mw_requerir_auth(
     Ok(next.run(req).await)
 }
 
+pub async fn mw_requerir_admin(
+    ctx: Result<Ctx>,
+    req: Request<Body>, 
+    next: Next
+) -> Result<Response> {
+    if !ctx?.usuario().esAdministrador {
+        return Err(Error::SinPermisos);
+    };
+
+    Ok(next.run(req).await)
+}
+
 pub async fn mw_resolvedor_ctx(
     State(cm): State<ControladorModelo>,
     cookies: Cookies,

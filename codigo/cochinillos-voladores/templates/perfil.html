@@ -72,6 +72,16 @@
         >
             Cambiar contraseña
         </button>
+        {% if usuario.esAdministrador %}
+        <button
+            hx-get="/panelControl"
+            hx-swap="innerHTML"
+            hx-push-url="true"
+            hx-target="#root"
+        >
+            Panel de control
+        </button>
+        {% endif %}
         <button
             hx-get="/api/logout"
             hx-trigger="click"

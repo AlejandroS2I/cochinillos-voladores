@@ -80,20 +80,20 @@ input:disabled {
 
 .confirmar {
     color: var(--aqua-color);
-    border-color: var(--aqua-color);
+    border-color: var(--aqua-color) !important;
 }
 
 .confirmar:hover {
-    background-color: var(--aqua-color);
+    background-color: var(--aqua-color) !important;
 }
 
 .cancelar {
     color: var(--red-color);
-    border-color: var(--red-color);
+    border-color: var(--red-color) !important;
 }
 
 .cancelar:hover {
-    background-color: var(--red-color);
+    background-color: var(--red-color) !important;
 }
 
 /* Nav */
@@ -197,34 +197,4 @@ div#dashboard div a {
 div#dashboard div a svg {
     width: 20%;
     height: auto;
-}
-
-/* Transicion */
-@keyframes fade-in {
-    from { opacity: 0; }
-}
-
-@keyframes fade-out {
-    to { opacity: 0; }
-}
-
-@keyframes slide-from-right {
-    from { transform: translateX(90px); }
-}
-
-@keyframes slide-to-left {
-    to { transform: translateX(-90px); }
-}
-
-#root {
-    view-transition-name: root;
-}
-
-::view-transition-old(root) {
-    animation: 180ms cubic-bezier(0.4, 0, 1, 1) both fade-out,
-        600ms cubic-bezier(0.4, 0, 0.2, 1) both slide-to-left;
-}
-::view-transition-new(root) {
-    animation: 420ms cubic-bezier(0, 0, 0.2, 1) 90ms both fade-in,
-        600ms cubic-bezier(0.4, 0, 0.2, 1) both slide-from-right;
 }

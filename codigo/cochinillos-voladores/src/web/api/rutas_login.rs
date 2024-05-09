@@ -67,14 +67,33 @@ async fn api_logout(
     Ok((HxRedirect("/".parse().map_err(|_| Error::UriInvalida)?), ()).into_response())
 }
 
+#[derive(Debug, Deserialize)]
+struct RegistrarPayload {
+    nombre: String,
+    mail: String,
+    password: String,
+    passwordRepetir: String
+}
+
 async fn api_registrar(
     State(cm): State<ControladorModelo>,
     cookies: Cookies, 
-    Form(usuario): Form<UsuarioCrear>
+    Form(usuario): Form<RegistrarPayload>
 ) -> Result<impl IntoResponse> {
-    if (usuario.nombre == "" || usuario.mail == "" || usuario.password == "") {
-        return Err(Error::ErrorRegistro);
+    if (usuario.nombre.is_empty() || usuario.mail.is_empty() || usuario.password.is_empty() || usuario.passwordRepetir.is_empty()) {
+        let mut campos = Vec::new();
+        usuario.nombre.is_empty().then(|| { campos.push(format!("Nombre"))});
+        usuario.mail.is_empty().then(|| { campos.push(format!("Mail"))});
+        usuario.password.is_empty().then(|| { campos.push(format!("Contraseña"))});
+        usuario.passwordRepetir.is_empty().then(|| { campos.push(format!("Confirmación contraseña"))});
+        return Err(Error::CamposVacios { campos });
     }
+
+    if usuario.password != usuario.passwordRepetir {
+        return Err(Error::PasswordNoCoinciden);
+    }
+
+    let usuario = UsuarioCrear { nombre: usuario.nombre, mail: usuario.mail, password: usuario.password };
 
     let usuario = ControladorUsuario::crear_usuario(cm.clone(), usuario).await?;
 

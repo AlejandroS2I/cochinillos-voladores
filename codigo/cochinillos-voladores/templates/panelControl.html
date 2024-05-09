@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{%- import "componentes/nav.html" as navegacion -%}
+
+{% block titulo %}Panel de control{% endblock %}
+
+{% block meta %}
+<link rel="stylesheet" href="/assets/css/panelControl.css">
+{% endblock %}
+
+{% block nav %}{% call navegacion::nav(posicion="derecha", mostrarCuenta=false, mostrarAtras=true, mostrarDashboard=true) %}{% endblock %}
+
+{% block contenido %}
+<h1>Panel de control</h1>
+<article id="cuerpo">
+    <div
+        hx-get="/gestion/menu"
+        hx-trigger="load"
+        hx-target="#cuerpo"
+        hx-swap="innerHTML"
+    >
+    </div>
+</article>
+{% endblock %}

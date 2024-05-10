@@ -9,6 +9,7 @@ use axum_htmx::HxRedirect;
 use serde::Deserialize;
 
 use crate::ctx::Ctx;
+use crate::modelo::categorias::ControladorCategoria;
 use crate::modelo::usuario::{ControladorUsuario, Usuario};
 use crate::modelo::ControladorModelo;
 use crate::{Result, Error};
@@ -16,8 +17,10 @@ use crate::{Result, Error};
 pub fn routes(cm: ControladorModelo) -> Router {
     let gestiones = Router::new()
         .route("/menu", get(menu))
-        .route("/usuarios", get(lista_usuarios))
+        .route("/usuarios", get(lista_usuarios).post(crear_usuario))
         .route("/usuarios/:id", get(gestion_usuarios))
+        .route("/categorias", get(lista_categorias).post(crear_categoria))
+        .route("/categorias/:id", get(gestion_categorias))
         .with_state(cm.clone());
     
     Router::new()
@@ -32,8 +35,8 @@ pub const SECCIONES_CONTROL: &'static [&'static Seccion] = &[
         titulo: "Usuarios"
     },
     &Seccion {
-        url: "blogs",
-        titulo: "Blogs"
+        url: "categorias",
+        titulo: "Categorias"
     }
 ];
 
@@ -57,7 +60,15 @@ async fn panelControl(
 }
 
 // Gestiones
+#[derive(Debug, Deserialize)]
+pub enum TipoCampo {
+    TEXT,
+    PASSWORD,
+    MAIL,
+    CHECK
+}
 
+// Listado
 #[derive(Debug, Deserialize)]
 pub struct RegistroListaGestion {
     id: u32,
@@ -72,10 +83,12 @@ struct ListaGestionTemplate {
     lista: Vec<RegistroListaGestion>
 }
 
+// Gestion 
 #[derive(Debug, Deserialize)]
 pub struct CampoGestion {
     titulo: String,
     nombre: String,
+    tipo: TipoCampo,
     valor: String
 }
 
@@ -85,6 +98,21 @@ struct GestionTemplate {
     id: u32,
     url: String,
     campos: Vec<CampoGestion>
+}
+
+//Creacion
+#[derive(Debug, Deserialize)]
+pub struct CampoCreacion {
+    titulo: String,
+    nombre: String,
+    tipo: TipoCampo,
+}
+
+#[derive(Template)]
+#[template(path = "componentes/gestionCreacion.html")]
+struct CreacionTemplate {
+    url: String,
+    campos: Vec<CampoCreacion>
 }
 
 #[derive(Template)]
@@ -138,12 +166,101 @@ async fn gestion_usuarios(
             CampoGestion {
                 titulo: format!("Nombre"),
                 nombre: format!("nombre"),
+                tipo: TipoCampo::TEXT,
                 valor: usuario.nombre
             },
             CampoGestion {
                 titulo: format!("Mail"),
                 nombre: format!("mail"),
+                tipo: TipoCampo::MAIL,
                 valor: usuario.mail
+            },
+            CampoGestion {
+                titulo: format!("Es administrador"),
+                nombre: format!("esAdministrador"),
+                tipo: TipoCampo::CHECK,
+                valor: usuario.esAdministrador.to_string()
+            },
+        ]
+    })
+}
+
+async fn crear_usuario(
+    State(cm): State<ControladorModelo>,
+    ctx: Option<Ctx>,
+) -> Result<CreacionTemplate> {
+    Ok(CreacionTemplate {
+        url: format!("usuarios"),
+        campos: vec![
+            CampoCreacion {
+                titulo: format!("Nombre"),
+                nombre: format!("nombre"),
+                tipo: TipoCampo::TEXT,
+            },
+            CampoCreacion {
+                titulo: format!("Mail"),
+                nombre: format!("mail"),
+                tipo: TipoCampo::MAIL,
+            },
+            CampoCreacion {
+                titulo: format!("Contraseña"),
+                nombre: format!("password"),
+                tipo: TipoCampo::PASSWORD,
+            },
+        ]
+    })
+}
+
+async fn lista_categorias(
+    State(cm): State<ControladorModelo>,
+    ctx: Option<Ctx>,
+) -> Result<ListaGestionTemplate> {
+    let categorias = ControladorCategoria::listar_categorias(ctx.ok_or(Error::SinPermisos)?, cm).await?;
+
+    Ok(ListaGestionTemplate {
+        url: format!("categorias"),
+        lista: categorias.iter().map(|categoria| {
+            RegistroListaGestion {
+                id: categoria.id.clone(),
+                titulo: categoria.nombre.clone(),
+                valores: vec![]
+            }
+        }).collect()
+    })
+}
+
+async fn gestion_categorias(
+    State(cm): State<ControladorModelo>,
+    ctx: Option<Ctx>,
+    Path(id): Path<u32>
+) -> Result<GestionTemplate> {
+    let categoria = ControladorCategoria::categoria_id(cm, id).await?.ok_or(Error::NoEncontradoPorId)?;
+
+    Ok(GestionTemplate {
+        id,
+        url: format!("categorias"),
+        campos: vec![
+            CampoGestion {
+                titulo: format!("Nombre"),
+                nombre: format!("nombre"),
+                tipo: TipoCampo::TEXT,
+                valor: categoria.nombre
+            },
+        ]
+    })
+}
+
+async fn crear_categoria(
+    State(cm): State<ControladorModelo>,
+    ctx: Option<Ctx>,
+) -> Result<CreacionTemplate> {
+    Ok(CreacionTemplate {
+        url: format!("categorias"),
+        campos: vec![
+            CampoCreacion {
+                titulo: format!("Nombre"),
+                nombre: format!("nombre"),
+                tipo: TipoCampo::TEXT,
             },
         ]
     })

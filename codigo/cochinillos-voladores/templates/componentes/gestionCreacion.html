@@ -1,0 +1,58 @@
+<head>
+    <link rel="stylesheet" href="/assets/css/gestion.css">
+</head>
+
+<div class="cuerpo">
+    <form 
+        id="datos" 
+        hx-post="/api/{{ url }}" 
+        hx-target-error="#contenedorError" 
+        hx-on::after-request="volver(event)"
+    >
+        {% for campo in campos %}
+        {% match campo.tipo %}
+            {% when TipoCampo::TEXT %}
+            <div>
+                <label for="{{ campo.nombre }}">{{ campo.titulo }}:</label>
+                <input type="text"  name="{{ campo.nombre }}">
+            </div>
+            {% when TipoCampo::MAIL %}
+            <div>
+                <label for="{{ campo.nombre }}">{{ campo.titulo }}:</label>
+                <input type="mail"  name="{{ campo.nombre }}">
+            </div>
+            {% when TipoCampo::PASSWORD %}
+            <div>
+                <label for="{{ campo.nombre }}">{{ campo.titulo }}:</label>
+                <input type="password"  name="{{ campo.nombre }}">
+            </div>
+            {% else %}
+            <div>
+                <label for="{{ campo.nombre }}">{{ campo.titulo }}:</label>
+                <input type="text"  name="{{ campo.nombre }}">
+            </div>
+        {% endmatch %}
+        {% endfor %}
+        <div id="botonesDatos" class="botones">
+            <input type="submit" class="confirmar" value="Crear">
+            <input 
+                type="button" 
+                class="cancelar" 
+                value="Cancelar" 
+                hx-get="/gestion/{{ url }}"
+                hx-trigger="click"
+                hx-target="#cuerpo"
+                hx-swap="innerHTML"
+            >
+        </div>
+    </form>
+    <div id="contenedorError" class="esconder" hx-on::after-settle="this.classList.remove('esconder')"></div>
+</div>
+
+<script>
+    function volver(e) {
+        if (e.detail?.xhr?.status < 300) {
+            htmx.ajax('GET', '/gestion/{{ url }}', '#cuerpo');
+        };
+    };
+</script>

@@ -54,13 +54,20 @@ article div.botones button {
 }
 
 .registros {
+    width: 100%;
+    height: auto;
+
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    gap: 10px;
 
     overflow: auto;
+    border: 1px solid var(--fg-color);
+}
+
+.registros p {
+    padding: 10px 30px;
 }
 
 .registros a {
@@ -73,7 +80,11 @@ article div.botones button {
     gap: 20px;
 
     padding: 10px 30px;
-    border: 1px solid var(--fg-color);
+    border-bottom: 1px solid var(--fg-color);
+}
+
+.registros a:last-child {
+    border-bottom: none;
 }
 
 .registros a:hover {

@@ -1,6 +1,7 @@
 mod error;
 
 pub mod usuario;
+pub mod categorias;
 pub mod login;
 pub mod pwd;
 

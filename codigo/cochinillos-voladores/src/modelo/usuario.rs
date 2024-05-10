@@ -26,6 +26,7 @@ pub struct UsuarioActualizar {
     pub id: u32,
     pub nombre: String,
     pub mail: String,
+    pub esAdministrador: bool,
 }
 
 #[derive(Deserialize)]
@@ -50,7 +51,7 @@ impl ControladorUsuario {
             VALUES (?, ?, ?); 
         ",
             usuario.nombre,
-            usuario.mail,
+            usuario.mail.to_lowercase(),
             hash_password(usuario.password)?
         )
         .execute(txn.as_mut())
@@ -59,7 +60,7 @@ impl ControladorUsuario {
                 Error::resolver_unico(
                     Error::Sqlx(err), 
                     Some(|| {
-                        Some(Error::UsuarioExiste { mail: usuario.mail })
+                        Some(Error::UsuarioExiste { mail: usuario.mail.to_lowercase() })
                     })
                 )
         })?;
@@ -86,11 +87,12 @@ impl ControladorUsuario {
         let mut txn = pool.begin().await?;
 
         sqlx::query!("
-            UPDATE tusuarios SET nombre = ?, mail = ?
+            UPDATE tusuarios SET nombre = ?, mail = ?, esAdministrador = ?
             WHERE id = ?
         ",
             usuario.nombre,
-            usuario.mail,
+            usuario.mail.to_lowercase(),
+            usuario.esAdministrador,
             usuario.id
         )
         .execute(txn.as_mut())
@@ -99,7 +101,7 @@ impl ControladorUsuario {
                 Error::resolver_unico(
                     Error::Sqlx(err), 
                     Some(|| {
-                        Some(Error::UsuarioExiste { mail: usuario.mail })
+                        Some(Error::UsuarioExiste { mail: usuario.mail.to_lowercase() })
                     })
                 )
         })?;

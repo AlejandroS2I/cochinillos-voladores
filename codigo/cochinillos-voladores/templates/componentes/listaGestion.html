@@ -7,20 +7,78 @@
     >
         Menú
     </button>
-    <button>Filtro</button>
+    <button onclick="document.getElementById('filtro').showModal()">
+        Filtro
+    </button>
 </div>
 <div class="registros">
+    {% if lista.len() > 0 %}
     {% for registro in lista %}
     <a
         hx-get="gestion/{{ url }}/{{ registro.id }}"
         hx-trigger="click"
         hx-target="#cuerpo"
         hx-swap="innerHTML"
+        class="registro"
     >
         <h2>{{ registro.titulo }}</h2>
         {% for (titulo, valor) in registro.valores %}
-        <p>{{ titulo }}: {{ valor }}</p>
+        <p><b>{{ titulo }}</b>: <span>{{ valor }}</span></p>
         {% endfor %}
     </a>
     {% endfor %}
+    {% else %}
+    <p>No hay registros</p>
+    {% endif %}
 </div>
+<button
+    hx-post="/gestion/{{ url }}"
+    hx-trigger="click"
+    hx-target="#cuerpo"
+    hx-swap="innerHTML"
+>
+    +
+</button>
+<dialog id="filtro">
+    <h3>Filtro</h3>
+    <input 
+        type="text" 
+        id="campoFiltro" 
+        name="filtro" 
+        onkeyup="filtrar()"
+    >
+    <button onclick="document.getElementById('filtro').close()">
+        Cerrar
+    </button>
+</dialog>
+
+<script>
+htmx.onLoad(cargar());
+function cargar() {
+    let _url = new URL(location.href);
+    let _filtro = _url.searchParams.get('q');
+    console.log(document.getElementById('campoFiltro').value);
+    document.getElementById('campoFiltro').value = document.getElementById('campoFiltro').value == "" ?
+        _filtro : document.getElementById('campoFiltro').value;
+    filtrar();
+};
+function filtrar() {
+    let _url = new URL(location.href);
+    let _valor = document.getElementById('campoFiltro').value;
+    let _registros = [...document.getElementsByClassName('registro')];
+    let _filtrados = _registros.filter((registro) => {
+        return !registro.getElementsByTagName('h2')[0].textContent.toLowerCase().includes(_valor)
+            && [...registro.getElementsByTagName('span')].every((campo) => {
+                return !campo.textContent.toLowerCase().includes(_valor);
+            });
+    }).map(registro => { 
+        registro.classList.add('esconder'); 
+        return registro;
+    });
+    _registros.filter((registro) => {
+        return !_filtrados.includes(registro);
+    }).forEach(registro => { registro.classList.remove('esconder')});
+    _url.searchParams.set('q', _valor);
+    history.pushState({}, null, _url);
+};
+</script>

@@ -7,15 +7,37 @@
         id="datos" 
         hx-put="/api/{{ url }}" 
         hx-target-error="#contenedorError" 
-        hx-swap="none"
         hx-on::after-request="recargar(event)"
     >
         <input type="text" name="id" value="{{ id }}" hidden>
         {% for campo in campos %}
-        <div>
-            <label for="{{ campo.nombre }}">{{ campo.titulo }}:</label>
-            <input type="text"  name="{{ campo.nombre }}" value="{{ campo.valor }}" disabled>
-        </div>
+        {% match campo.tipo %}
+            {% when TipoCampo::TEXT %}
+            <div>
+                <label for="{{ campo.nombre }}">{{ campo.titulo }}:</label>
+                <input type="text"  name="{{ campo.nombre }}" value="{{ campo.valor }}" disabled>
+            </div>
+            {% when TipoCampo::MAIL %}
+            <div>
+                <label for="{{ campo.nombre }}">{{ campo.titulo }}:</label>
+                <input type="mail"  name="{{ campo.nombre }}" value="{{ campo.valor }}" disabled>
+            </div>
+            {% when TipoCampo::PASSWORD %}
+            <div>
+                <label for="{{ campo.nombre }}">{{ campo.titulo }}:</label>
+                <input type="password"  name="{{ campo.nombre }}" value="{{ campo.valor }}" disabled>
+            </div>
+            {% when TipoCampo::CHECK %}
+            <div>
+                <label for="{{ campo.nombre }}">{{ campo.titulo }}:</label>
+            <input type="checkbox"  name="{{ campo.nombre }}" {% if campo.valor == "true" %}checked{% endif %} disabled>
+            </div>
+            {% else %}
+            <div>
+                <label for="{{ campo.nombre }}">{{ campo.titulo }}:</label>
+                <input type="text"  name="{{ campo.nombre }}" value="{{ campo.valor }}" disabled>
+            </div>
+        {% endmatch %}
         {% endfor %}
         <div id="botonesDatos" class="botones esconder">
             <input type="submit" class="confirmar" value="Actualizar">
@@ -50,6 +72,7 @@
 <script>
     function modificarDatos(_modificar) {
         document.getElementById('botonesDatos').classList.toggle('esconder', !_modificar);
+        document.getElementById('contenedorError').classList.toggle('esconder', !_modificar);
         document.getElementById('accionesDatos').classList.toggle('esconder', _modificar);
         [...document.getElementById('datos').getElementsByTagName('input')]
             .forEach((_campo) => {
@@ -58,13 +81,13 @@
     };
 
     function recargar(e) {
-        if (e.detail?.successful) {
+        if (e.detail?.xhr?.status < 300) {
             htmx.ajax('GET', '/gestion/{{ url }}/{{ id }}', '#cuerpo');
         };
     };
 
     function volver(e) {
-        if (e.detail?.successful) {
+        if (e.detail?.xhr?.status < 300) {
             htmx.ajax('GET', '/gestion/{{ url }}', '#cuerpo');
         };
     };

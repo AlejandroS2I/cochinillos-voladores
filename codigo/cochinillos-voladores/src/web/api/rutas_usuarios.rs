@@ -18,6 +18,7 @@ pub fn routes(cm: ControladorModelo) -> Router {
         .route("/usuarios", post(crear_usuario).get(listar_usuarios).put(actualizar_usuario))
         .route("/usuarios/:id", delete(eliminar_usuario))
         .route("/cambiarPassword", put(cambiar_password))
+        .route("/perfil", put(actualizar_perfil))
         .with_state(cm)
 }
 
@@ -35,19 +36,68 @@ async fn crear_usuario(
     Ok(StatusCode::CREATED)
 }
 
+#[derive(Deserialize)]
+struct PayloadActualizar {
+    id: u32,
+    nombre: String,
+    mail: String,
+    #[serde(default = "administrador_defecto")]
+    esAdministrador: String
+}
+
+fn administrador_defecto() -> String {
+    "off".to_string()
+}
+
 async fn actualizar_usuario(
     State(cm): State<ControladorModelo>,
     ctx: Ctx,
-    Form(usuario_actualizar): Form<UsuarioActualizar>
+    Form(payload_actualizar): Form<PayloadActualizar>
 ) -> Result<StatusCode> {
-    if !ctx.usuario().esAdministrador && ctx.usuario().id != usuario_actualizar.id {
+    if !ctx.usuario().esAdministrador {
         return Err(Error::SinPermisos);
     }
+
+    let usuario_actualizar = UsuarioActualizar {
+        id: payload_actualizar.id,
+        nombre: payload_actualizar.nombre,
+        mail: payload_actualizar.mail,
+        esAdministrador: matches!(payload_actualizar.esAdministrador.as_str(), "on")
+    };
 
     let usuario = ControladorUsuario::actualizar_usuario(cm, usuario_actualizar).await?;
 
     Ok(StatusCode::CREATED)
 }
+
+#[derive(Deserialize)]
+pub struct PerfilActualizar {
+    pub id: u32,
+    pub nombre: String,
+    pub mail: String,
+}
+
+async fn actualizar_perfil(
+    State(cm): State<ControladorModelo>,
+    ctx: Ctx,
+    Form(perfil_actualizar): Form<PerfilActualizar>
+) -> Result<StatusCode> {
+    if ctx.usuario().id == perfil_actualizar.id {
+        return Err(Error::SinPermisos);
+    }
+
+    let usuario_actualizar = UsuarioActualizar {
+        id: perfil_actualizar.id,
+        nombre: perfil_actualizar.nombre,
+        mail: perfil_actualizar.mail,
+        esAdministrador: false
+    };
+
+    let usuario = ControladorUsuario::actualizar_usuario(cm, usuario_actualizar).await?;
+
+    Ok(StatusCode::CREATED)
+}
+
 
 #[derive(Deserialize)]
 struct PasswordPayload {

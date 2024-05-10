@@ -8,4 +8,12 @@
 >
     {{ seccion.titulo }}
 </button>
+<script>
+htmx.onLoad(cargar());
+function cargar() {
+    let _url = new URL(location.href);
+    _url.searchParams.delete('q');
+    history.pushState({}, null, _url);
+};
+</script>
 {% endfor %}

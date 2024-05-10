@@ -58,10 +58,13 @@ async fn main() -> Result<()> {
 }
 
 fn app(cm: ControladorModelo) -> Router {
-    let rutas_auth = api::rutas_usuarios::routes(cm.clone())
+    let rutas_auth = Router::new()
+        .merge(api::rutas_usuarios::routes(cm.clone()))
         .route_layer(middleware::from_fn(auth::mw_auth::mw_requerir_auth));
 
-    let rutas_admin = paginas::rutas_gestion::routes(cm.clone())
+    let rutas_admin = Router::new()
+        .merge(paginas::rutas_gestion::routes(cm.clone()))
+        .nest("/api", api::rutas_categorias::routes(cm.clone()))
         .route_layer(middleware::from_fn(auth::mw_auth::mw_requerir_admin));
 
     Router::new()

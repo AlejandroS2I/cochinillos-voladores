@@ -29,6 +29,9 @@ jobs:
         sparse-checkout: |
           codigo/cochinillos-voladores/
     
+    - name: Comprobar archivos
+      run: ls
+    
     - name: Instalar rust
       uses: actions-rs/toolchain@v1
       with:

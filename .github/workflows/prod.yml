@@ -26,8 +26,10 @@ jobs:
     - name: Checkout codigo
       uses: actions/checkout@v4
       with:
+        path: '~'
         sparse-checkout: |
-          codigo/cochinillos-voladores/*
+          codigo/cochinillos-voladores
+        sparse-checkout-cone-mode: false
     
     - name: Comprobar archivos
       run: ls
@@ -74,8 +76,10 @@ jobs:
     - name: Checkout codigo
       uses: actions/checkout@v4
       with:
+        path: '~'
         sparse-checkout: |
-          codigo/cochinillos-voladores/*
+          codigo/cochinillos-voladores
+        sparse-checkout-cone-mode: false
 
     - name: Iniciar sesión en docker
       uses: docker/login-action@v3

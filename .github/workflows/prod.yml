@@ -26,7 +26,7 @@ jobs:
     - name: Checkout codigo
       uses: actions/checkout@v4
       with:
-        path: '~'
+        path: ./
         sparse-checkout: |
           codigo/cochinillos-voladores
         sparse-checkout-cone-mode: false
@@ -76,7 +76,7 @@ jobs:
     - name: Checkout codigo
       uses: actions/checkout@v4
       with:
-        path: '~'
+        path: ./
         sparse-checkout: |
           codigo/cochinillos-voladores
         sparse-checkout-cone-mode: false

@@ -1,0 +1,12 @@
+{
+  "db_name": "MySQL",
+  "query": "\n            INSERT INTO tcategorias (nombre) \n            VALUES (?); \n        ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 1
+    },
+    "nullable": []
+  },
+  "hash": "4da3e19a8f875e1c03c2e11ccfdb981feb3361c9dbc11e3e4635335f155aa2b1"
+}

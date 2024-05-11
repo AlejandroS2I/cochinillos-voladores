@@ -1,0 +1,12 @@
+{
+  "db_name": "MySQL",
+  "query": "\n            UPDATE tusuarios SET nombre = ?, mail = ?, esAdministrador = ?\n            WHERE id = ?\n        ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 4
+    },
+    "nullable": []
+  },
+  "hash": "725279996fdb31d0a3d1df4a12d66f8427d4192a05a99a5ab17bf8a518094a72"
+}

@@ -12,9 +12,6 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: 'codigo/cochinillos-voladores'
     
     services:
       mysql:
@@ -28,6 +25,9 @@ jobs:
     steps:
     - name: Checkout codigo
       uses: actions/checkout@v4
+      with:
+        sparse-checkout: |
+          codigo/cochinillos-voladores/
     
     - name: Instalar rust
       uses: actions-rs/toolchain@v1
@@ -61,7 +61,6 @@ jobs:
     - name: Compilar y subir imagen docker
       uses: docker/bake-action@v4
       with:
-        source: "{{defaultContext}}:codigo/cochinillos-voladores"
         push: true
 
   deploy:
@@ -71,6 +70,9 @@ jobs:
     steps:
     - name: Checkout codigo
       uses: actions/checkout@v4
+      with:
+        sparse-checkout: |
+          codigo/cochinillos-voladores/
 
     - name: Iniciar sesión en docker
       uses: docker/login-action@v3
@@ -82,13 +84,13 @@ jobs:
       run: sudo apt-get install sshpass
 
     - name: Copiar Caddyfile
-      run: sshpass -v -p ${{ secrets.DROPLET_PASSWORD }} scp -o StrictHostKeyChecking=no codigo/cochinillos-voladores/Caddyfile root@${{ vars.DROPLET_IP }}:~
+      run: sshpass -v -p ${{ secrets.DROPLET_PASSWORD }} scp -o StrictHostKeyChecking=no Caddyfile root@${{ vars.DROPLET_IP }}:~
 
     - name: Copiar docker-compose.yml
-      run: sshpass -v -p ${{ secrets.DROPLET_PASSWORD }} scp -o StrictHostKeyChecking=no codigo/cochinillos-voladores/docker-compose.yml root@${{ vars.DROPLET_IP }}:~
+      run: sshpass -v -p ${{ secrets.DROPLET_PASSWORD }} scp -o StrictHostKeyChecking=no docker-compose.yml root@${{ vars.DROPLET_IP }}:~
 
     - name: Copiar docker-compose.prod.yml
-      run: sshpass -v -p ${{ secrets.DROPLET_PASSWORD }} scp -o StrictHostKeyChecking=no codigo/cochinillos-voladores/docker-compose.prod.yml root@${{ vars.DROPLET_IP }}:~
+      run: sshpass -v -p ${{ secrets.DROPLET_PASSWORD }} scp -o StrictHostKeyChecking=no docker-compose.prod.yml root@${{ vars.DROPLET_IP }}:~
 
     - name: Deploy
       uses: appleboy/ssh-action@v1.0.3

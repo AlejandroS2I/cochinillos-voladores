@@ -1,0 +1,12 @@
+{
+  "db_name": "MySQL",
+  "query": "\n            UPDATE tcategorias SET nombre = ?\n            WHERE id = ?\n        ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 2
+    },
+    "nullable": []
+  },
+  "hash": "828549e4ae99929ed9ef0cf00c69c32ffdb32726ce645601832f9b7ecbc7b72d"
+}

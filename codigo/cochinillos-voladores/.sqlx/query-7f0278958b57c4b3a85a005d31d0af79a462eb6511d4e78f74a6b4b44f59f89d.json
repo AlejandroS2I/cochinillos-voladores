@@ -1,0 +1,69 @@
+{
+  "db_name": "MySQL",
+  "query": "\n                        SELECT id, titulo, descripcion, fecha, fotoURL FROM tnoticias\n                        ORDER BY fecha DESC\n                        LIMIT ?\n                    ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "id",
+        "type_info": {
+          "type": "Int24",
+          "flags": "NOT_NULL | PRIMARY_KEY | UNSIGNED | AUTO_INCREMENT",
+          "char_set": 63,
+          "max_size": 8
+        }
+      },
+      {
+        "ordinal": 1,
+        "name": "titulo",
+        "type_info": {
+          "type": "VarString",
+          "flags": "NOT_NULL | NO_DEFAULT_VALUE",
+          "char_set": 224,
+          "max_size": 1020
+        }
+      },
+      {
+        "ordinal": 2,
+        "name": "descripcion",
+        "type_info": {
+          "type": "Blob",
+          "flags": "NOT_NULL | BLOB | NO_DEFAULT_VALUE",
+          "char_set": 224,
+          "max_size": 262140
+        }
+      },
+      {
+        "ordinal": 3,
+        "name": "fecha",
+        "type_info": {
+          "type": "Date",
+          "flags": "NOT_NULL | BINARY | NO_DEFAULT_VALUE",
+          "char_set": 63,
+          "max_size": 10
+        }
+      },
+      {
+        "ordinal": 4,
+        "name": "fotoURL",
+        "type_info": {
+          "type": "Blob",
+          "flags": "BLOB",
+          "char_set": 224,
+          "max_size": 262140
+        }
+      }
+    ],
+    "parameters": {
+      "Right": 1
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      false,
+      true
+    ]
+  },
+  "hash": "7f0278958b57c4b3a85a005d31d0af79a462eb6511d4e78f74a6b4b44f59f89d"
+}

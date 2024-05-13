@@ -1,0 +1,12 @@
+{
+  "db_name": "MySQL",
+  "query": "\n            INSERT INTO tnoticias (titulo, descripcion, fecha, fotoURL) \n            VALUES (?, ?, ?, ?); \n        ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 4
+    },
+    "nullable": []
+  },
+  "hash": "e85866cdd3586df40a4d9ba034e41ea1cf8f83696289eefcba2c9219d07e55e2"
+}

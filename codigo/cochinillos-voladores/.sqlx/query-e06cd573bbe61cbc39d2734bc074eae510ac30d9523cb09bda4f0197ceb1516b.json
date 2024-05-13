@@ -1,0 +1,12 @@
+{
+  "db_name": "MySQL",
+  "query": "\n            DELETE FROM tnoticias WHERE id = ?\n        ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 1
+    },
+    "nullable": []
+  },
+  "hash": "e06cd573bbe61cbc39d2734bc074eae510ac30d9523cb09bda4f0197ceb1516b"
+}

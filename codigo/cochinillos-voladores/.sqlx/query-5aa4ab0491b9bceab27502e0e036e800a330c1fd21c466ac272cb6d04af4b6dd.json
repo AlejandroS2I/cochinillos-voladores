@@ -1,0 +1,12 @@
+{
+  "db_name": "MySQL",
+  "query": "\n                    UPDATE tnoticias SET titulo = ?, descripcion = ?, fecha = ?, fotoURL = ?\n                    WHERE id = ?\n                ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 5
+    },
+    "nullable": []
+  },
+  "hash": "5aa4ab0491b9bceab27502e0e036e800a330c1fd21c466ac272cb6d04af4b6dd"
+}

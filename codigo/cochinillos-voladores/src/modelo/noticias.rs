@@ -122,7 +122,6 @@ impl ControladorNoticia {
     }
 
     pub async fn listar_noticias(
-        ctx: Ctx,
         cm: ControladorModelo,
         limite: Option<u32>
     ) -> Result<Vec<Noticia>> {

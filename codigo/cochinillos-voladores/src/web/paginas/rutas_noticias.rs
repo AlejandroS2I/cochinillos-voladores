@@ -25,8 +25,8 @@ struct PeriodicosTemplate {
 
 async fn lista_periodicos(
     State(cm): State<ControladorModelo>,
-    ctx: Ctx,
+    ctx: Option<Ctx>,
 ) -> Result<PeriodicosTemplate> {
-    let periodicos = ControladorNoticia::listar_noticias(ctx, cm, Some(5)).await?;
+    let periodicos = ControladorNoticia::listar_noticias(cm, Some(5)).await?;
     Ok(PeriodicosTemplate { periodicos })
 }

@@ -228,7 +228,8 @@ async fn lista_noticias(
     State(cm): State<ControladorModelo>,
     ctx: Option<Ctx>,
 ) -> Result<ListaGestionTemplate> {
-    let noticias = ControladorNoticia::listar_noticias(ctx.ok_or(Error::SinPermisos)?, cm, None).await?;
+    ctx.ok_or(Error::SinPermisos)?;
+    let noticias = ControladorNoticia::listar_noticias(cm, None).await?;
 
     Ok(ListaGestionTemplate {
         url: format!("noticias"),

@@ -70,6 +70,7 @@ async fn panelControl(
 #[derive(Debug, Deserialize)]
 pub enum TipoCampo {
     TEXT,
+    TEXTAREA,
     PASSWORD,
     MAIL,
     CHECK,
@@ -269,12 +270,6 @@ async fn gestion_noticias(
                 valor: Some(noticia.titulo)
             },
             CampoGestion {
-                titulo: format!("Descripción"),
-                nombre: format!("descripcion"),
-                tipo: TipoCampo::TEXT,
-                valor: Some(noticia.descripcion)
-            },
-            CampoGestion {
                 titulo: format!("Fecha"),
                 nombre: format!("fecha"),
                 tipo: TipoCampo::DATE,
@@ -285,6 +280,12 @@ async fn gestion_noticias(
                 nombre: format!("imagen"),
                 tipo: TipoCampo::FILE,
                 valor: noticia.fotoURL
+            },
+            CampoGestion {
+                titulo: format!("Descripción"),
+                nombre: format!("descripcion"),
+                tipo: TipoCampo::TEXTAREA,
+                valor: Some(noticia.descripcion)
             },
         ]
     })
@@ -304,11 +305,6 @@ async fn crear_noticia(
                 tipo: TipoCampo::TEXT,
             },
             CampoCreacion {
-                titulo: format!("Descripción"),
-                nombre: format!("descripcion"),
-                tipo: TipoCampo::TEXT,
-            },
-            CampoCreacion {
                 titulo: format!("Fecha"),
                 nombre: format!("fecha"),
                 tipo: TipoCampo::DATE,
@@ -317,6 +313,11 @@ async fn crear_noticia(
                 titulo: format!("Imagen"),
                 nombre: format!("imagen"),
                 tipo: TipoCampo::FILE,
+            },
+            CampoCreacion {
+                titulo: format!("Descripción"),
+                nombre: format!("descripcion"),
+                tipo: TipoCampo::TEXTAREA,
             },
         ]
     })

@@ -13,6 +13,7 @@ use crate::{Result, Error};
 
 pub fn routes(cm: ControladorModelo) -> Router {
     Router::new()
+        .route("/noticias", get(noticias))
         .route("/periodicos", get(lista_periodicos))
         .with_state(cm)
 }
@@ -29,4 +30,19 @@ async fn lista_periodicos(
 ) -> Result<PeriodicosTemplate> {
     let periodicos = ControladorNoticia::listar_noticias(cm, Some(5)).await?;
     Ok(PeriodicosTemplate { periodicos })
+}
+
+#[derive(Template)]
+#[template(path = "noticias.html")]
+struct NoticiasTemplate {
+    noticias: Vec<Noticia>
+}
+
+async fn noticias(
+    State(cm): State<ControladorModelo>,
+    ctx: Option<Ctx>,
+) -> Result<NoticiasTemplate> {
+    let noticias = ControladorNoticia::listar_noticias(cm, None).await?;
+
+    Ok(NoticiasTemplate { noticias })
 }

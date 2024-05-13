@@ -42,16 +42,20 @@
     +
 </button>
 <dialog id="filtro">
-    <h3>Filtro</h3>
-    <input 
-        type="text" 
-        id="campoFiltro" 
-        name="filtro" 
-        onkeyup="filtrar()"
-    >
-    <button onclick="document.getElementById('filtro').close()">
-        Cerrar
-    </button>
+    <div class="cuerpo">
+        <h3>Filtro</h3>
+        <input 
+            type="text" 
+            id="campoFiltro" 
+            name="filtro" 
+            onkeyup="filtrar()"
+        >
+    </div>
+    <div class="acciones">
+        <button onclick="document.getElementById('filtro').close()">
+            Cerrar
+        </button>
+    </div>
 </dialog>
 
 <script>

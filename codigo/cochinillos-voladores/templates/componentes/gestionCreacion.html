@@ -37,10 +37,36 @@
                 <label for="{{ campo.nombre }}">{{ campo.titulo }}:</label>
                 <input type="date"  name="{{ campo.nombre }}">
             </div>
-            {% when TipoCampo::FILE %}
-            <div>
+            {% when TipoCampo::TEXTAREA %}
+            <div class="campo">
                 <label for="{{ campo.nombre }}">{{ campo.titulo }}:</label>
-                <input type="file"  name="{{ campo.nombre }}">
+                <textarea 
+                    name="{{ campo.nombre }}" 
+                    rows="5" 
+                    cols="10" 
+                ></textarea>
+            </div>
+            {% when TipoCampo::FILE %}
+            <div class="campo">
+                <label for="{{ campo.nombre }}">{{ campo.titulo }}:</label>
+                <button 
+                    hx-on:click="abrirImagen()"
+                    type="button"
+                >
+                    Ver imagen
+                </button>
+                <button 
+                    hx-on:click="abrirArchivo('{{ campo.nombre }}')"
+                    type="button"
+                >
+                    Subir imagen
+                </button>
+                <input 
+                    type="file" 
+                    name="{{ campo.nombre }}" 
+                    hx-on:change="cargarImagen(event)"
+                    hidden
+                >
             </div>
             {% else %}
             <div>
@@ -64,6 +90,19 @@
     </form>
     <div id="contenedorError" class="esconder" hx-on::after-settle="this.classList.remove('esconder')"></div>
 </div>
+<dialog id="imagenDialog">
+    <div class="cuerpo">
+        <img 
+            id="imagen" 
+            alt="Imagen"
+        >
+    </div>
+    <div class="acciones">
+        <button onclick="document.getElementById('imagenDialog').close()">
+            Cerrar
+        </button>
+    </div>
+</dialog>
 
 <script>
     function cargar(){}    
@@ -73,4 +112,17 @@
             htmx.ajax('GET', '/gestion/{{ url }}', '#cuerpo');
         };
     };
+
+    function cargarImagen(e) {
+        var src = URL.createObjectURL(e.target.files[0])
+        document.getElementById('imagen').src = src
+    }
+
+    function abrirArchivo(nombre) {
+        document.getElementsByName(nombre)[0].click();
+    }
+
+    function abrirImagen() {
+        document.getElementById('imagenDialog').showModal();
+    }
 </script>

@@ -74,8 +74,19 @@
                         disabled
                     >
                 </div>
+                {% when TipoCampo::TEXTAREA %}
+                <div class="campo">
+                    <label for="{{ campo.nombre }}">{{ campo.titulo }}:</label>
+                    <textarea 
+                        name="{{ campo.nombre }}" 
+                        rows="5" 
+                        cols="10" 
+                        disabled
+                    >{% if let Some(valor) = campo.valor %}{{ valor }}{% endif %}</textarea>
+                </div>
                 {% when TipoCampo::FILE %}
                 <div class="campo">
+                    <label for="{{ campo.nombre }}">{{ campo.titulo }}:</label>
                     <button 
                         hx-on:click="abrirImagen({% if let Some(valor) = campo.valor %}'{{valor}}'{% endif %})"
                         type="button"
@@ -141,13 +152,17 @@
     </div>
 </div>
 <dialog id="imagenDialog">
-    <img 
-        id="imagen" 
-        alt="Imagen"
-    >
-    <button onclick="document.getElementById('imagenDialog').close()">
-        Cerrar
-    </button>
+    <div class="cuerpo">
+        <img 
+            id="imagen" 
+            alt="Imagen"
+        >
+    </div>
+    <div class="acciones">
+        <button onclick="document.getElementById('imagenDialog').close()">
+            Cerrar
+        </button>
+    </div>
 </dialog>
 
 <script>
@@ -158,6 +173,10 @@
         document.getElementById('contenedorError').classList.toggle('esconder', !_modificar);
         document.getElementById('accionesDatos').classList.toggle('esconder', _modificar);
         [...document.getElementById('datos').getElementsByTagName('input')]
+            .forEach((_campo) => {
+                _campo.disabled = !_modificar;
+            });
+        [...document.getElementById('datos').getElementsByTagName('textarea')]
             .forEach((_campo) => {
                 _campo.disabled = !_modificar;
             });
@@ -185,7 +204,9 @@
     }
 
     function abrirImagen(url) {
-        document.getElementById('imagen').src = '/uploads/' + url;
+        if (url != undefined && document.getElementById('imagen').src == "") {
+            document.getElementById('imagen').src = '/uploads/' + url;
+        }
         document.getElementById('imagenDialog').showModal();
     }
 </script>

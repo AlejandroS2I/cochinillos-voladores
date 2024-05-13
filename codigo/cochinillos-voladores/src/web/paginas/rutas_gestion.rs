@@ -10,6 +10,7 @@ use serde::Deserialize;
 
 use crate::ctx::Ctx;
 use crate::modelo::categorias::ControladorCategoria;
+use crate::modelo::noticias::ControladorNoticia;
 use crate::modelo::usuario::{ControladorUsuario, Usuario};
 use crate::modelo::ControladorModelo;
 use crate::{Result, Error};
@@ -19,6 +20,8 @@ pub fn routes(cm: ControladorModelo) -> Router {
         .route("/menu", get(menu))
         .route("/usuarios", get(lista_usuarios).post(crear_usuario))
         .route("/usuarios/:id", get(gestion_usuarios))
+        .route("/noticias", get(lista_noticias).post(crear_noticia))
+        .route("/noticias/:id", get(gestion_noticias))
         .route("/categorias", get(lista_categorias).post(crear_categoria))
         .route("/categorias/:id", get(gestion_categorias))
         .with_state(cm.clone());
@@ -33,6 +36,10 @@ pub const SECCIONES_CONTROL: &'static [&'static Seccion] = &[
     &Seccion {
         url: "usuarios",
         titulo: "Usuarios"
+    },
+    &Seccion {
+        url: "noticias",
+        titulo: "Noticias"
     },
     &Seccion {
         url: "categorias",
@@ -65,7 +72,9 @@ pub enum TipoCampo {
     TEXT,
     PASSWORD,
     MAIL,
-    CHECK
+    CHECK,
+    DATE,
+    FILE
 }
 
 // Listado
@@ -89,7 +98,7 @@ pub struct CampoGestion {
     titulo: String,
     nombre: String,
     tipo: TipoCampo,
-    valor: String
+    valor: Option<String>
 }
 
 #[derive(Template)]
@@ -97,6 +106,7 @@ pub struct CampoGestion {
 struct GestionTemplate {
     id: u32,
     url: String,
+    encoding: String,
     campos: Vec<CampoGestion>
 }
 
@@ -112,6 +122,7 @@ pub struct CampoCreacion {
 #[template(path = "componentes/gestionCreacion.html")]
 struct CreacionTemplate {
     url: String,
+    encoding: String,
     campos: Vec<CampoCreacion>
 }
 
@@ -162,24 +173,25 @@ async fn gestion_usuarios(
     Ok(GestionTemplate {
         id,
         url: format!("usuarios"),
+        encoding: format!("application/x-www-form-urlencoded"),
         campos: vec![
             CampoGestion {
                 titulo: format!("Nombre"),
                 nombre: format!("nombre"),
                 tipo: TipoCampo::TEXT,
-                valor: usuario.nombre
+                valor: Some(usuario.nombre)
             },
             CampoGestion {
                 titulo: format!("Mail"),
                 nombre: format!("mail"),
                 tipo: TipoCampo::MAIL,
-                valor: usuario.mail
+                valor: Some(usuario.mail)
             },
             CampoGestion {
                 titulo: format!("Es administrador"),
                 nombre: format!("esAdministrador"),
                 tipo: TipoCampo::CHECK,
-                valor: usuario.esAdministrador.to_string()
+                valor: Some(usuario.esAdministrador.to_string())
             },
         ]
     })
@@ -191,6 +203,7 @@ async fn crear_usuario(
 ) -> Result<CreacionTemplate> {
     Ok(CreacionTemplate {
         url: format!("usuarios"),
+        encoding: format!("application/x-www-form-urlencoded"),
         campos: vec![
             CampoCreacion {
                 titulo: format!("Nombre"),
@@ -206,6 +219,103 @@ async fn crear_usuario(
                 titulo: format!("Contraseña"),
                 nombre: format!("password"),
                 tipo: TipoCampo::PASSWORD,
+            },
+        ]
+    })
+}
+
+async fn lista_noticias(
+    State(cm): State<ControladorModelo>,
+    ctx: Option<Ctx>,
+) -> Result<ListaGestionTemplate> {
+    let noticias = ControladorNoticia::listar_noticias(ctx.ok_or(Error::SinPermisos)?, cm, None).await?;
+
+    Ok(ListaGestionTemplate {
+        url: format!("noticias"),
+        lista: noticias.iter().map(|noticia| {
+            RegistroListaGestion {
+                id: noticia.id.clone(),
+                titulo: noticia.titulo.clone(),
+                valores: vec![
+                    (format!("Fecha"), noticia.fecha.to_string().clone()),
+                    match noticia.fotoURL {
+                        Some(_) => (format!("Foto"), format!("Si")),
+                        None => (format!("Foto"), format!("No"))
+                    },
+                    (format!("Descripción"), noticia.descripcion.clone()),
+                ]
+            }
+        }).collect()
+    })
+}
+
+async fn gestion_noticias(
+    State(cm): State<ControladorModelo>,
+    ctx: Option<Ctx>,
+    Path(id): Path<u32>
+) -> Result<GestionTemplate> {
+    let noticia = ControladorNoticia::noticia_id(cm, id).await?.ok_or(Error::NoEncontradoPorId)?;
+
+    Ok(GestionTemplate {
+        id,
+        url: format!("noticias"),
+        encoding: format!("multipart/form-data"),
+        campos: vec![
+            CampoGestion {
+                titulo: format!("Titulo"),
+                nombre: format!("titulo"),
+                tipo: TipoCampo::TEXT,
+                valor: Some(noticia.titulo)
+            },
+            CampoGestion {
+                titulo: format!("Descripción"),
+                nombre: format!("descripcion"),
+                tipo: TipoCampo::TEXT,
+                valor: Some(noticia.descripcion)
+            },
+            CampoGestion {
+                titulo: format!("Fecha"),
+                nombre: format!("fecha"),
+                tipo: TipoCampo::DATE,
+                valor: Some(noticia.fecha.to_string())
+            },
+            CampoGestion {
+                titulo: format!("Imagen"),
+                nombre: format!("imagen"),
+                tipo: TipoCampo::FILE,
+                valor: noticia.fotoURL
+            },
+        ]
+    })
+}
+
+async fn crear_noticia(
+    State(cm): State<ControladorModelo>,
+    ctx: Option<Ctx>,
+) -> Result<CreacionTemplate> {
+    Ok(CreacionTemplate {
+        url: format!("noticias"),
+        encoding: format!("multipart/form-data"),
+        campos: vec![
+            CampoCreacion {
+                titulo: format!("Titulo"),
+                nombre: format!("titulo"),
+                tipo: TipoCampo::TEXT,
+            },
+            CampoCreacion {
+                titulo: format!("Descripción"),
+                nombre: format!("descripcion"),
+                tipo: TipoCampo::TEXT,
+            },
+            CampoCreacion {
+                titulo: format!("Fecha"),
+                nombre: format!("fecha"),
+                tipo: TipoCampo::DATE,
+            },
+            CampoCreacion {
+                titulo: format!("Imagen"),
+                nombre: format!("imagen"),
+                tipo: TipoCampo::FILE,
             },
         ]
     })
@@ -239,12 +349,13 @@ async fn gestion_categorias(
     Ok(GestionTemplate {
         id,
         url: format!("categorias"),
+        encoding: format!("application/x-www-form-urlencoded"),
         campos: vec![
             CampoGestion {
                 titulo: format!("Nombre"),
                 nombre: format!("nombre"),
                 tipo: TipoCampo::TEXT,
-                valor: categoria.nombre
+                valor: Some(categoria.nombre)
             },
         ]
     })
@@ -256,6 +367,7 @@ async fn crear_categoria(
 ) -> Result<CreacionTemplate> {
     Ok(CreacionTemplate {
         url: format!("categorias"),
+        encoding: format!("application/x-www-form-urlencoded"),
         campos: vec![
             CampoCreacion {
                 titulo: format!("Nombre"),

@@ -15,7 +15,7 @@ use crate::{Result, Error};
 
 pub fn routes(cm: ControladorModelo) -> Router {
     Router::new()
-        .route("/categorias", post(crear_categoria).get(listar_categorias).put(actualizar_categoria))
+        .route("/categorias", post(crear_categoria).put(actualizar_categoria))
         .route("/categorias/:id", delete(eliminar_categoria))
         .with_state(cm)
 }
@@ -38,21 +38,6 @@ async fn actualizar_categoria(
     let categoria = ControladorCategoria::actualizar_categoria(cm, categoria_actualizar).await?;
 
     Ok(StatusCode::CREATED)
-}
-
-#[derive(Template)]
-#[template(path = "componentes/listaCategoria.html")]
-pub struct ListaCategoriaTemplate {
-    categorias: Vec<Categoria>
-}
-
-async fn listar_categorias(
-    State(cm): State<ControladorModelo>,
-    ctx: Ctx,
-) -> Result<ListaCategoriaTemplate> {
-    let categorias = ControladorCategoria::listar_categorias(ctx, cm).await?;
-
-    Ok(ListaCategoriaTemplate { categorias })
 }
 
 async fn eliminar_categoria(

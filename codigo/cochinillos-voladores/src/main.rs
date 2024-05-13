@@ -12,6 +12,7 @@ use sqlx::{
 use dotenvy::dotenv;
 use tower_cookies::CookieManagerLayer;
 use tower_http::services::ServeDir;
+use uploads::RUTA_UPLOADS;
 use web::res_map::mapeador_respuestas_central;
 
 use crate::{
@@ -26,7 +27,7 @@ mod ctx;
 mod error;
 mod modelo;
 mod web;
-mod assets;
+mod uploads;
 
 #[tokio::main]
 async fn main() -> Result<()> {
@@ -65,11 +66,13 @@ fn app(cm: ControladorModelo) -> Router {
     let rutas_admin = Router::new()
         .merge(paginas::rutas_gestion::routes(cm.clone()))
         .nest("/api", api::rutas_categorias::routes(cm.clone()))
+        .nest("/api", api::rutas_noticias::routes(cm.clone()))
         .route_layer(middleware::from_fn(auth::mw_auth::mw_requerir_admin));
 
     Router::new()
         .merge(paginas::rutas_inicio::routes(cm.clone()))
         .merge(paginas::rutas_login::routes(cm.clone()))
+        .merge(paginas::rutas_noticias::routes(cm.clone()))
         .merge(rutas_admin)
         .nest("/api", api::rutas_login::routes(cm.clone()))
         .nest("/api", rutas_auth)
@@ -80,6 +83,7 @@ fn app(cm: ControladorModelo) -> Router {
         ))
         .layer(CookieManagerLayer::new())
         .nest_service("/assets", ServeDir::new("assets"))
+        .nest_service("/uploads", ServeDir::new(RUTA_UPLOADS))
 }
 
 #[cfg(test)]

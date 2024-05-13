@@ -22,9 +22,11 @@
         class="registro"
     >
         <h2>{{ registro.titulo }}</h2>
-        {% for (titulo, valor) in registro.valores %}
-        <p><b>{{ titulo }}</b>: <span>{{ valor }}</span></p>
-        {% endfor %}
+        <div>
+            {% for (titulo, valor) in registro.valores %}
+            <p><b>{{ titulo }}</b>: <span>{{ valor }}</span></p>
+            {% endfor %}
+        </div>
     </a>
     {% endfor %}
     {% else %}
@@ -53,15 +55,13 @@
 </dialog>
 
 <script>
-htmx.onLoad(cargar());
-function cargar() {
+function cargar(e) {
     let _url = new URL(location.href);
     let _filtro = _url.searchParams.get('q');
-    console.log(document.getElementById('campoFiltro').value);
     document.getElementById('campoFiltro').value = document.getElementById('campoFiltro').value == "" ?
         _filtro : document.getElementById('campoFiltro').value;
     filtrar();
-};
+}
 function filtrar() {
     let _url = new URL(location.href);
     let _valor = document.getElementById('campoFiltro').value;
@@ -79,6 +79,6 @@ function filtrar() {
         return !_filtrados.includes(registro);
     }).forEach(registro => { registro.classList.remove('esconder')});
     _url.searchParams.set('q', _valor);
-    history.pushState({}, null, _url);
+    history.replaceState(null, null, _url);
 };
 </script>

@@ -11,7 +11,7 @@
 
 {% block contenido %}
 <h1>Panel de control</h1>
-<article id="cuerpo">
+<article id="cuerpo" hx-on::after-settle="cargar(event)">
     <div
         hx-get="/gestion/menu"
         hx-trigger="load"

@@ -41,11 +41,11 @@ struct PayloadActualizar {
     id: u32,
     nombre: String,
     mail: String,
-    #[serde(default = "administrador_defecto")]
+    #[serde(default = "administrador_pordefecto")]
     esAdministrador: String
 }
 
-fn administrador_defecto() -> String {
+fn administrador_pordefecto() -> String {
     "off".to_string()
 }
 

@@ -7,6 +7,11 @@
 {% endblock %}
 
 {% block contenido %}
+<a id="arriba" href="#portada">
+    <p>
+        >
+    </p>
+</a>
 <article id="portada">
     <img class="fondo" src="/assets/img/equipo_negro.jpg" />
     <section class="titulo">
@@ -16,6 +21,8 @@
     <img src="/assets/img/logo.png" />
 </article>
 <article id="quienesSomos">
+    <img id="puck" src="/assets/img/puck.png" alt="Puck">
+    <img id="stick" src="/assets/img/stick.png" alt="Stick">
     <section class="cuerpo">
         <h2>Quienes somos?</h2>
         <p>
@@ -34,4 +41,153 @@
         <h2>Dónde estamos?</h2>
     </section>
 </article>
+<article 
+    id="noticias"
+    hx-get="/periodicos"
+    hx-trigger="load"
+    hx-swap="outerHTML"
+    hx-target="#contenedorNoticias"
+>
+    <div
+        id="contenedorNoticias"
+    ></div>
+    <div class="botones">
+        <button id="noticiaAnterior" hx-on:click="noticiaAnterior()">
+            <
+        </button>
+        <button id="noticiaSiguiente" hx-on:click="noticiaSiguiente()">
+            >
+        </button>
+    </div>
+</article>
+<article 
+    id="conocenos"
+>
+    <h2>Conócenos</h2>
+    <button id="noticiaAnterior" hx-on:click="trabajadorAnterior()">
+        <
+    </button>
+    <button id="noticiaSiguiente" hx-on:click="trabajadorSiguiente()">
+        >
+    </button>
+    <div id="trabajadores">
+        <div class="trabajador">
+            <div class="imagen">
+                <img src="/assets/img/equipo_tecnico/ignacio-rubio.png" alt="Ignacio Rubio">
+            </div>
+            <div class="cuerpo">
+                <h3>Ignacio Rubio</h3>
+                <ul>
+                    <li>MASTER INSTRUCTOR LEVEL II SUP IOSUP-FESURFING</li>
+                    <li>TD1 HOCKEY LINEA de RFEP</li>
+                    <li>Monitor Básico Regional de Hockey Línea (FCYLP)(Federación Castilla y León patinaje)</li>
+                    <li>Graduado en Trabajo Social</li>
+                    <li>TAFAD</li>
+                    <li>Monitor de Natación</li>
+                    <li>Socorrista Acuático y Primeros Auxilios</li>
+                    <li>Cursando TD1 Esqui Alpino</li>
+                    <li>Certificado Formación interna profesorado CPS</li>
+                    <li>COORDINADOR EQUIPOS HOCKEY LINEA CPS</li>
+                    <li>COORDINADOR SUP CPS</li>
+                </ul>
+                <p>610-49-54-40</p>
+            </div>
+        </div>
+        <div class="trabajador">
+            <div class="imagen">
+                <img src="/assets/img/equipo_tecnico/juan-rubio.png" alt="Juan Rubio">
+            </div>
+            <div class="cuerpo">
+                <h3>Juan Rubio</h3>
+                <ul>
+                    <li>MASTER INSTRUCTOR LEVEL II SUP IOSUP-FESURFING</li>
+                    <li>TD1 PATINAJE VELOCIDAD de RFEP</li>
+                    <li>Monitor Básico Regional de Hockey Linea (FCYLP)(Federación Castilla y León patinaje)</li>
+                    <li>TAFAD</li>
+                    <li>Monitor Natación</li>
+                    <li>Socorrista Acuático y Primeros Auxilios</li>
+                    <li>Cursando TD1 Esqui Alpino</li>
+                    <li>Certificado Formación interna profesorado CPS</li>
+                    <li>COORDINADOR PATINAJE VELOCIDAD CPS</li>
+                </ul>
+            </div>
+        </div>
+        <div class="trabajador">
+            <div class="imagen">
+                <img src="/assets/img/equipo_tecnico/juan-rojo.png" alt="Juan Rojo">
+            </div>
+            <div class="cuerpo">
+                <h3>Juan Rojo</h3>
+                <ul>
+                    <li>MASTER INSTRUCTOR LEVEL II SUP IOSUP-FESURFING</li>
+                    <li>TD1 HOCKEY LINEA de RFEP</li>
+                    <li>TD1 y TD2 Esquí Alpino</li>
+                    <li>Diplomado en Educación Física</li>
+                    <li>Master en Alto Rendimiento Deportivo</li>
+                    <li>Monitor Básico Regional de Hockey Linea (FCYLP)(Federación Castilla y León patinaje)</li>
+                    <li>Entrenador Nivel 3 en Natación y Triatlon</li>
+                    <li>Entrenador Nivel 2 Waterpolo</li>
+                    <li>Socorrista Acuático y Primeros Auxilios</li>
+                    <li>Certificado Formación interna profesorado CPS</li>
+                    <li>COORDINADOR ENTRENADORES, PROFESORADO Y ALUMNADO CPS</li>
+                    <li>COORDINADOR SUP CPS</li>
+                </ul>
+            </div>
+        </div>
+        <div class="trabajador">
+            <div class="imagen">
+                <img src="/assets/img/equipo_tecnico/jaime-serrano.png" alt="Jaime Serrano">
+            </div>
+            <div class="cuerpo">
+                <h3>Jaime Serrano</h3>
+                <ul>
+                    <li>Primeros auxilios</li>
+                    <li>Monitor de natación</li>
+                    <li>Certificado de formación interna CPS</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</article>
+<script>
+var trabajadorCentrado = 0;
+htmx.onLoad(function(evt) {
+    document.getElementById('root').addEventListener('scroll', (e) => {
+        if ((window.innerHeight || document.documentElement.clientHeight) - (e.target.scrollTop + 200) > 0) {
+            document.getElementById('arriba').classList.remove('subir')
+        } else {
+            document.getElementById('arriba').classList.add('subir')
+        }
+    })
+})
+function noticiaSiguiente() {
+    let contenedor = document.getElementById('contenedorNoticias');
+    contenedor.insertBefore(
+            contenedor.lastElementChild,
+            contenedor.firstElementChild
+        );
+}
+function noticiaAnterior() {
+    let contenedor = document.getElementById('contenedorNoticias');
+    contenedor.appendChild(
+            contenedor.firstElementChild
+        );
+}
+function trabajadorSiguiente() {
+    let contenedores = document.getElementById('trabajadores');
+    let trabajadores = [...contenedores.children];
+    if (trabajadorCentrado == (trabajadores.length - 1)) return;
+    trabajadorCentrado += 1;
+    trabajadores[trabajadorCentrado].scrollIntoView({ behaviour: "smooth", block: "center" });
+    console.log(trabajadores);
+}
+function trabajadorAnterior() {
+    let contenedores = document.getElementById('trabajadores');
+    let trabajadores = [...contenedores.children];
+    if (trabajadorCentrado == 0) return;
+    trabajadorCentrado -= 1;
+    trabajadores[trabajadorCentrado].scrollIntoView({ behaviour: "smooth", block: "center" });
+    console.log(trabajadores);
+}
+</script>
 {% endblock %}

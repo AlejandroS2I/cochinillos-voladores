@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS tlogins (
 CREATE TABLE IF NOT EXISTS tblog (
     id MEDIUMINT UNSIGNED AUTO_INCREMENT,
     titulo VARCHAR(255) NOT NULL,
-    descripcion TEXT,
+    descripcion TEXT NOT NULL,
     fecha DATE NOT NULL,
     fotoURL TEXT,
     PRIMARY KEY (id)

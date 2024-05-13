@@ -1,7 +1,7 @@
 use std::sync::Arc;
 
 use askama::Template;
-use axum::{http::{StatusCode, Uri}, response::{
+use axum::{extract::multipart::MultipartError, http::{StatusCode, Uri}, response::{
     IntoResponse, Redirect, Response
 }};
 use axum_htmx::{HxRedirect, HxReswap, HxRetarget, HxTarget, HX_RESWAP, HX_RETARGET};
@@ -23,9 +23,14 @@ struct ErrorTemplate {
 #[derive(Debug, From, strum_macros::AsRefStr, Serialize)]
 #[serde(tag = "tipo", content = "datos")]
 pub enum Error {
+    Generico{ error: String },
     UriInvalida,
     ErrorTemplate,
     NoEncontradoPorId,
+    CamposVacios{ campos: Vec<String> },
+    FormularioInvalido{error: String},
+    ErrorAlCrearArchivo{error: String},
+    ErrorAlBorrarArchivo{error: String},
 
     // Login
     ErrorLogin,
@@ -34,7 +39,6 @@ pub enum Error {
     LoginExistente,
     PasswordIncorrecta,
     PasswordNoCoinciden,
-    CamposVacios{ campos: Vec<String> },
 
     // Registro
     ErrorRegistro,
@@ -52,6 +56,9 @@ pub enum Error {
 
     #[from]
     Uuid(#[serde_as(as = "DisplayFromStr")] uuid::Error),
+
+    #[from]
+    Multipart(#[serde_as(as = "DisplayFromStr")] MultipartError),
 }
 
 impl std::fmt::Display for Error {

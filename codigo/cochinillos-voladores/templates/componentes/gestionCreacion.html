@@ -6,6 +6,7 @@
     <form 
         id="datos" 
         hx-post="/api/{{ url }}" 
+        hx-encoding="{{ encoding }}"
         hx-target-error="#contenedorError" 
         hx-on::after-request="volver(event)"
     >
@@ -25,6 +26,21 @@
             <div>
                 <label for="{{ campo.nombre }}">{{ campo.titulo }}:</label>
                 <input type="password"  name="{{ campo.nombre }}">
+            </div>
+            {% when TipoCampo::CHECK %}
+            <div>
+                <label for="{{ campo.nombre }}">{{ campo.titulo }}:</label>
+            <input type="checkbox"  name="{{ campo.nombre }}">
+            </div>
+            {% when TipoCampo::DATE %}
+            <div>
+                <label for="{{ campo.nombre }}">{{ campo.titulo }}:</label>
+                <input type="date"  name="{{ campo.nombre }}">
+            </div>
+            {% when TipoCampo::FILE %}
+            <div>
+                <label for="{{ campo.nombre }}">{{ campo.titulo }}:</label>
+                <input type="file"  name="{{ campo.nombre }}">
             </div>
             {% else %}
             <div>
@@ -50,6 +66,8 @@
 </div>
 
 <script>
+    function cargar(){}    
+
     function volver(e) {
         if (e.detail?.xhr?.status < 300) {
             htmx.ajax('GET', '/gestion/{{ url }}', '#cuerpo');

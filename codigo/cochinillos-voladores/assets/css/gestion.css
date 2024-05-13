@@ -1,4 +1,7 @@
 div.cuerpo {
+    height: 100%;
+    width: 100%;
+
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -7,22 +10,56 @@ div.cuerpo {
 }
 
 form {
+
     display: flex;
     flex-direction: column;
     gap: 10px;
 }
 
+form div.campos {
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+form div.campo {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+form div.campo:has(input:disabled) button {
+    border-color: var(--gray-color);
+}
+
+form div.campo:has(input:disabled) button:hover {
+    cursor: auto;
+    color: var(--fg-color);
+    background-color: var(--bg-color);
+}
+
 form div.botones {
     display: flex;
     gap: 10px;
+
+    background: var(--bg-color);
+}
+
+div.campo:has(input[type=file]:not(:disabled)) img:hover {
+    cursor: pointer;
 }
 
 div#accionesDatos {
     width: 100%;
 
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    justify-content: stretch;
+    flex-wrap: wrap;
     gap: 10px;
+}
+
+div#accionesDatos * {
+    flex: 1 1 200px;
+    width: auto;
 }

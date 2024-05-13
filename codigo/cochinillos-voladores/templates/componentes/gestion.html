@@ -6,39 +6,111 @@
     <form 
         id="datos" 
         hx-put="/api/{{ url }}" 
+        hx-encoding="{{ encoding }}"
         hx-target-error="#contenedorError" 
         hx-on::after-request="recargar(event)"
     >
-        <input type="text" name="id" value="{{ id }}" hidden>
-        {% for campo in campos %}
-        {% match campo.tipo %}
-            {% when TipoCampo::TEXT %}
-            <div>
-                <label for="{{ campo.nombre }}">{{ campo.titulo }}:</label>
-                <input type="text"  name="{{ campo.nombre }}" value="{{ campo.valor }}" disabled>
-            </div>
-            {% when TipoCampo::MAIL %}
-            <div>
-                <label for="{{ campo.nombre }}">{{ campo.titulo }}:</label>
-                <input type="mail"  name="{{ campo.nombre }}" value="{{ campo.valor }}" disabled>
-            </div>
-            {% when TipoCampo::PASSWORD %}
-            <div>
-                <label for="{{ campo.nombre }}">{{ campo.titulo }}:</label>
-                <input type="password"  name="{{ campo.nombre }}" value="{{ campo.valor }}" disabled>
-            </div>
-            {% when TipoCampo::CHECK %}
-            <div>
-                <label for="{{ campo.nombre }}">{{ campo.titulo }}:</label>
-            <input type="checkbox"  name="{{ campo.nombre }}" {% if campo.valor == "true" %}checked{% endif %} disabled>
-            </div>
-            {% else %}
-            <div>
-                <label for="{{ campo.nombre }}">{{ campo.titulo }}:</label>
-                <input type="text"  name="{{ campo.nombre }}" value="{{ campo.valor }}" disabled>
-            </div>
-        {% endmatch %}
-        {% endfor %}
+        <div class="campos">
+            <input type="text" name="id" value="{{ id }}" hidden>
+            {% for campo in campos %}
+            {% match campo.tipo %}
+                {% when TipoCampo::TEXT %}
+                <div class="campo">
+                    <label for="{{ campo.nombre }}">{{ campo.titulo }}:</label>
+                    <input 
+                        type="text"  
+                        name="{{ campo.nombre }}" 
+                        {% if let Some(valor) = campo.valor %}
+                        value="{{ valor }}" 
+                        {% endif %}
+                        disabled
+                    >
+                </div>
+                {% when TipoCampo::MAIL %}
+                <div class="campo">
+                    <label for="{{ campo.nombre }}">{{ campo.titulo }}:</label>
+                    <input 
+                        type="mail"  
+                        name="{{ campo.nombre }}" 
+                        {% if let Some(valor) = campo.valor %}
+                        value="{{ valor }}" 
+                        {% endif %}
+                        disabled
+                    >
+                </div>
+                {% when TipoCampo::PASSWORD %}
+                <div class="campo">
+                    <label for="{{ campo.nombre }}">{{ campo.titulo }}:</label>
+                    <input 
+                        type="password"  
+                        name="{{ campo.nombre }}" 
+                        {% if let Some(valor) = campo.valor %}
+                        value="{{ valor }}" 
+                        {% endif %}
+                        disabled
+                    >
+                </div>
+                {% when TipoCampo::CHECK %}
+                <div class="campo">
+                    <label for="{{ campo.nombre }}">{{ campo.titulo }}:</label>
+                    <input 
+                        type="checkbox"  
+                        name="{{ campo.nombre }}" 
+                        {% if let Some(valor) = campo.valor %}
+                        {% if valor == "true" %}checked{% endif %} 
+                        {% endif %}
+                        disabled
+                    >
+                </div>
+                {% when TipoCampo::DATE %}
+                <div class="campo">
+                    <label for="{{ campo.nombre }}">{{ campo.titulo }}:</label>
+                    <input 
+                        type="date" 
+                        name="{{ campo.nombre }}" 
+                        {% if let Some(valor) = campo.valor %}
+                        value="{{ valor }}" 
+                        {% endif %}
+                        disabled
+                    >
+                </div>
+                {% when TipoCampo::FILE %}
+                <div class="campo">
+                    <button 
+                        hx-on:click="abrirImagen({% if let Some(valor) = campo.valor %}'{{valor}}'{% endif %})"
+                        type="button"
+                    >
+                        Ver imagen
+                    </button>
+                    <button 
+                        hx-on:click="abrirArchivo('{{ campo.nombre }}')"
+                        type="button"
+                    >
+                        Subir imagen
+                    </button>
+                    <input 
+                        type="file" 
+                        name="{{ campo.nombre }}" 
+                        hx-on:change="cargarImagen(event)"
+                        disabled
+                        hidden
+                    >
+                </div>
+                {% else %}
+                <div class="campo">
+                    <label for="{{ campo.nombre }}">{{ campo.titulo }}:</label>
+                    <input 
+                        type="text"  
+                        name="{{ campo.nombre }}" 
+                        {% if let Some(valor) = campo.valor %}
+                        value="{{ valor }}" 
+                        {% endif %}
+                        disabled
+                    >
+                </div>
+            {% endmatch %}
+            {% endfor %}
+        </div>
         <div id="botonesDatos" class="botones esconder">
             <input type="submit" class="confirmar" value="Actualizar">
             <input type="button" class="cancelar" value="Cancelar" onclick="modificarDatos(false)">
@@ -68,8 +140,19 @@
         </button>
     </div>
 </div>
+<dialog id="imagenDialog">
+    <img 
+        id="imagen" 
+        alt="Imagen"
+    >
+    <button onclick="document.getElementById('imagenDialog').close()">
+        Cerrar
+    </button>
+</dialog>
 
 <script>
+    function cargar(){}
+
     function modificarDatos(_modificar) {
         document.getElementById('botonesDatos').classList.toggle('esconder', !_modificar);
         document.getElementById('contenedorError').classList.toggle('esconder', !_modificar);
@@ -91,4 +174,18 @@
             htmx.ajax('GET', '/gestion/{{ url }}', '#cuerpo');
         };
     };
+
+    function cargarImagen(e) {
+        var src = URL.createObjectURL(e.target.files[0])
+        document.getElementById('imagen').src = src
+    }
+
+    function abrirArchivo(nombre) {
+        document.getElementsByName(nombre)[0].click();
+    }
+
+    function abrirImagen(url) {
+        document.getElementById('imagen').src = '/uploads/' + url;
+        document.getElementById('imagenDialog').showModal();
+    }
 </script>

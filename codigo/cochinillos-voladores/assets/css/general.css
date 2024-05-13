@@ -22,6 +22,7 @@ html {
     box-sizing: border-box;
     color: var(--fg-color);
     font-family: Roboto, Arial, Helvetica, sans-serif;
+    color-scheme: dark;
 }
 
 ::-webkit-scrollbar {
@@ -84,11 +85,16 @@ input:focus-visible {
     outline: none;
 }
 
+input:disabled {
+    border-color: var(--gray-color);
+}
+
 input[type=submit]:hover, input[type=button]:hover, button:hover {
     cursor: pointer;
 
     color: var(--bg-color);
     background: var(--fg-color);
+    border-color: var(--bg-color);
 }
 
 div:has(input[type=checkbox]) {
@@ -120,8 +126,30 @@ input[type=checkbox]:not(:disabled):hover {
     background: var(--fg-color);
 }
 
-input:disabled {
-    border-color: var(--gray-color);
+input[type="date"] {
+    position: relative;
+}
+
+input[type="date"]:not(:disabled):hover {
+    cursor: pointer;
+    color: var(--bg-color);
+    background: var(--fg-color);
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: auto;
+    height: auto;
+    color: transparent;
+    background: transparent;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator:hover {
+    cursor: pointer;
 }
 
 .confirmar {

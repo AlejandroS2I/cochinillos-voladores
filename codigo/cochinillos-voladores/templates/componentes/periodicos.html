@@ -1,0 +1,29 @@
+<div id="contenedorNoticias">
+    {% for noticia in periodicos %}
+    <div class="noticia">
+        <div class="titulo">
+            <div class="linea"></div>
+            <h3>Noticias</h3>
+            <div class="linea"></div>
+        </div>
+        <div class="separador">
+            <b><p class="fecha">{{ noticia.fecha }}</p></b>
+            <div></div>
+        </div>
+        <div class="cuerpo">
+            {% if let Some(url) = noticia.fotoURL %}
+            <div class="imagen">
+                <img src="/uploads/{{ url }}" alt="imagen">
+            </div>
+            {% endif %}
+            <div class="texto">
+                <h4>{{ noticia.titulo }}</h4>
+                <p>
+                    {{ noticia.descripcion }}
+                </p>
+            </div>
+        </div>
+        <div class="fondo"></div>
+    </div>
+    {% endfor %}
+</div>

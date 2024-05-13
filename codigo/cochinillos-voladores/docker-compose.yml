@@ -12,7 +12,7 @@ services:
     depends_on:
       - db
     volumes:
-      - uploads:./uploads
+      - uploads:/cochinillos-voladores/uploads
     networks:
         - app_network
 

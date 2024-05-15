@@ -14,7 +14,7 @@ RUN cargo chef cook --release --recipe-path recipe.json
 COPY . .
 RUN cargo build --release --bin cochinillos-voladores
 
-FROM debian:bookworm-slim AS runtime
+FROM debian:bullseye AS runtime
 WORKDIR /cochinillos-voladores
 COPY --from=builder /cochinillos-voladores/target/release/cochinillos-voladores /cochinillos-voladores
 COPY --from=builder /cochinillos-voladores/assets /cochinillos-voladores/assets

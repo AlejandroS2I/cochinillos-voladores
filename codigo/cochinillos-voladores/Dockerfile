@@ -1,5 +1,6 @@
 FROM rust:bullseye as chef
 ENV SQLX_OFFLINE=true
+RUN apt-get install libssl-dev
 RUN cargo install cargo-chef
 WORKDIR /cochinillos-voladores
 

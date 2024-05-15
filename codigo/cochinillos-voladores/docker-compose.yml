@@ -4,6 +4,10 @@ services:
     image: alejandros2i/cochinillos-voladores
     environment:
       DATABASE_URL: "mysql://root:${MYSQL_PASSWORD}@db:3306/cochinillos"
+      RUTA_UPLOADS: ${ RUTA_UPLOADS }
+      MAIL: ${ MAIL }
+      USUARIO_MAIL: ${ USUARIO_MAIL }
+      CONTRA_MAIL: ${ CONTRA_MAIL }
     build:
       context: .
       dockerfile: Dockerfile

@@ -18,10 +18,7 @@ mod usuarios;
 async fn inicio(pool: MySqlPool) -> Result<()> {
     let cm = ControladorModelo::new(pool).await?;
 
-    dotenv().ok();
-    let ruta_uploads = std::env::var("RUTA_UPLOADS").expect("ERROR: Ruta uploads no especificada");
-
-    let app = app(cm, ruta_uploads);
+    let app = app(cm, "".to_string());
 
     let response = app
         .oneshot(Request::builder().uri("/").body(Body::empty()).unwrap())

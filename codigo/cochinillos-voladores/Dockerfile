@@ -11,6 +11,9 @@ FROM chef AS builder
 COPY --from=planner /cochinillos-voladores/recipe.json recipe.json
 RUN cargo chef cook --release --recipe-path recipe.json
 COPY . .
+RUN apt-get update \
+&& apt-get upgrade \
+&& sudo apt-get install pkg-config libssl-dev
 RUN cargo build --release --bin cochinillos-voladores
 
 FROM debian:bookworm-slim AS runtime

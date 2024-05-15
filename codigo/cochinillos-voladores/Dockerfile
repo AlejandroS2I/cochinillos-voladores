@@ -17,6 +17,7 @@ FROM debian:bullseye AS runtime
 WORKDIR /cochinillos-voladores
 COPY --from=builder /cochinillos-voladores/target/release/cochinillos-voladores /cochinillos-voladores
 COPY --from=builder /cochinillos-voladores/assets /cochinillos-voladores/assets
+RUN apt-get update
 RUN apt-get install pkg-config libssl-dev
 ENTRYPOINT ["/cochinillos-voladores/cochinillos-voladores"]
 EXPOSE 3000

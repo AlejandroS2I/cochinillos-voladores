@@ -1,5 +1,8 @@
 FROM rust:slim-bullseye as chef
 ENV SQLX_OFFLINE=true
+RUN apt-get update \
+&& apt-get upgrade \
+&& apt-get install pkg-config libssl-dev
 RUN cargo install cargo-chef
 WORKDIR /cochinillos-voladores
 
@@ -9,9 +12,6 @@ RUN cargo chef prepare --recipe-path recipe.json
 
 FROM chef AS builder
 COPY --from=planner /cochinillos-voladores/recipe.json recipe.json
-RUN sudo apt-get update
-RUN sudo apt-get upgrade
-RUN sudo apt-get install pkg-config libssl-dev
 RUN cargo chef cook --release --recipe-path recipe.json
 COPY . .
 RUN cargo build --release --bin cochinillos-voladores

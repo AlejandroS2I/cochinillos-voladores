@@ -1,8 +1,8 @@
 FROM rust:slim-bullseye as chef
 ENV SQLX_OFFLINE=true
-RUN apt-get update \
-&& apt-get upgrade \
-&& sudo apt-get install pkg-config libssl-dev
+RUN sudo apt-get update
+RUN sudo apt-get upgrade
+RUN sudo apt-get install pkg-config libssl-dev
 RUN cargo install cargo-chef
 WORKDIR /cochinillos-voladores
 

@@ -82,15 +82,18 @@ async fn actualizar_perfil(
     ctx: Ctx,
     Form(perfil_actualizar): Form<PerfilActualizar>
 ) -> Result<StatusCode> {
-    if ctx.usuario().id == perfil_actualizar.id {
+    if ctx.usuario().id != perfil_actualizar.id {
         return Err(Error::SinPermisos);
     }
+
+    let usuario_anteriormente = ControladorUsuario::usuario_id(cm.clone(), perfil_actualizar.id).await?
+        .ok_or(Error::NoEncontradoPorId)?;
 
     let usuario_actualizar = UsuarioActualizar {
         id: perfil_actualizar.id,
         nombre: perfil_actualizar.nombre,
         mail: perfil_actualizar.mail,
-        esAdministrador: false
+        esAdministrador: usuario_anteriormente.esAdministrador
     };
 
     let usuario = ControladorUsuario::actualizar_usuario(cm, usuario_actualizar).await?;

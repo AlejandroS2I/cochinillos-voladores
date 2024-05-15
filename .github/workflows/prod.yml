@@ -119,6 +119,10 @@ jobs:
         script: |
           cd ~
           export MYSQL_PASSWORD=${{ secrets.MYSQL_PASSWORD }}
+          export RUTA_UPLOADS=${{ vars.RUTA_UPLOADS }}
+          export MAIL=${{ vars.MAIL }}
+          export USUARIO_MAIL=${{ secrets.USUARIO_MAIL }}
+          export CONTRA_MAIL=${{ secrets.CONTRA_MAIL }}
           docker compose down
           docker compose pull
           docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d

@@ -58,7 +58,13 @@ pub enum Error {
     Uuid(#[serde_as(as = "DisplayFromStr")] uuid::Error),
 
     #[from]
+    IO(#[serde_as(as = "DisplayFromStr")] std::io::Error),
+
+    #[from]
     Multipart(#[serde_as(as = "DisplayFromStr")] MultipartError),
+
+    #[from]
+    Lettre(#[serde_as(as = "DisplayFromStr")] lettre::error::Error),
 }
 
 impl std::fmt::Display for Error {

@@ -66,6 +66,8 @@ div#noticias div.noticia div.cabeza {
 }
 
 div#noticias div.noticia div.cabeza h2 {
+    padding-top: 20px;
+
     font-weight: 900;
 }
 

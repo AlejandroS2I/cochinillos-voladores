@@ -1,0 +1,26 @@
+main {
+    width: 100vw;
+    height: 90vh;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 20px;
+    overflow: hidden;
+    padding-top: 5vh;
+}
+
+form {
+    width: 70vw;
+
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+form div.campo {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}

@@ -5,6 +5,7 @@ use axum::{
     body::Body,
     http::{Request, StatusCode}
 };
+use dotenvy::dotenv;
 use tower::util::ServiceExt;
 use sqlx::{MySqlPool};
 
@@ -17,7 +18,10 @@ mod usuarios;
 async fn inicio(pool: MySqlPool) -> Result<()> {
     let cm = ControladorModelo::new(pool).await?;
 
-    let app = app(cm);
+    dotenv().ok();
+    let ruta_uploads = std::env::var("RUTA_UPLOADS").expect("ERROR: Ruta uploads no especificada");
+
+    let app = app(cm, ruta_uploads);
 
     let response = app
         .oneshot(Request::builder().uri("/").body(Body::empty()).unwrap())

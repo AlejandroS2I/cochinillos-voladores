@@ -1,6 +1,6 @@
 use std::str::FromStr;
 
-use crate::{ctx::Ctx, modelo::{login::ControladorLogin, pwd::verificar_password, usuario::{ControladorUsuario, UsuarioCrear}, ControladorModelo}, web::{self, AUTH_TOKEN}, Error, Result};
+use crate::{ctx::Ctx, mail::enviar_mail, modelo::{login::ControladorLogin, pwd::verificar_password, usuario::{ControladorUsuario, UsuarioCrear}, ControladorModelo}, web::{self, AUTH_TOKEN}, Error, Result};
 use axum_htmx::HxRedirect;
 use serde::Deserialize;
 use axum::{extract::State, http::{StatusCode, Uri}, response::{Html, IntoResponse, Redirect}, routing::{get, post}, Form, Json, Router};

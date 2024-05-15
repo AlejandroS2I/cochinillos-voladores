@@ -170,6 +170,22 @@ impl ControladorUsuario {
         Ok(usuarios)
     }
 
+    pub async fn listar_administradores(
+        ctx: Ctx,
+        cm: ControladorModelo
+    ) -> Result<Vec<Usuario>> {
+        let pool = cm.conexion;
+
+        let usuarios: Vec<Usuario> = sqlx::query_as("
+            SELECT id, nombre, mail, password, esAdministrador FROM tusuarios
+            WHERE esAdministrador = 1
+        ")
+        .fetch_all(&pool)
+        .await?;
+
+        Ok(usuarios)
+    }
+
     pub async fn eliminar_usuario(
         ctx: Ctx,
         cm: ControladorModelo, 

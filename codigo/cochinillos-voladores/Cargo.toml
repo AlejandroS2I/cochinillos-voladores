@@ -25,6 +25,7 @@ async-trait = "0.1"
 strum_macros = "0.26"
 axum-htmx = "0.5"
 bcrypt = "0.15"
+lettre = { version = "0.11", features = ["builder", "tokio1-native-tls"]}
 
 [dev-dependencies]
 anyhow = "1"

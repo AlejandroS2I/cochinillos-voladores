@@ -1,18 +1,21 @@
 use axum::body::Bytes;
+use dotenvy::dotenv;
 use time::{macros::format_description, OffsetDateTime};
 use tokio::{fs::{self, File}, io::AsyncWriteExt};
 
 use crate::{Result, Error};
-
-pub const RUTA_UPLOADS: &str = "./uploads";
 
 pub async fn subir_archivo(
     carpeta: String,
     datos_archivo: Bytes,
     nombre_archivo: String
 ) -> Result<String> {
-    if !fs::try_exists(format!("{}/{}", RUTA_UPLOADS, carpeta)).await.map_err(|_|Error::Generico { error: "Error comprobando carpeta".to_string() })? == true {
-        fs::create_dir_all(format!("{}/{}", RUTA_UPLOADS, carpeta)).await.map_err(|_|Error::Generico { error: "Error creando carpeta".to_string() })?;
+    dotenv().ok();
+
+    let ruta_uploads = std::env::var("RUTA_UPLOADS").expect("ERROR: Ruta uploads no especificada");
+
+    if !fs::try_exists(format!("{}/{}", ruta_uploads, carpeta)).await.map_err(|_|Error::Generico { error: "Error comprobando carpeta".to_string() })? == true {
+        fs::create_dir_all(format!("{}/{}", ruta_uploads, carpeta)).await.map_err(|_|Error::Generico { error: "Error creando carpeta".to_string() })?;
     }
 
     let timestamp = OffsetDateTime::now_utc()
@@ -21,7 +24,7 @@ pub async fn subir_archivo(
         .to_string();
     let nombre = format!("{}/{}-{}", carpeta, timestamp, nombre_archivo);
 
-    let mut archivo = File::create(format!("{}/{}", RUTA_UPLOADS, nombre.clone())).await.map_err(|err| Error::ErrorAlCrearArchivo{ error: err.to_string() })?;
+    let mut archivo = File::create(format!("{}/{}", ruta_uploads, nombre.clone())).await.map_err(|err| Error::ErrorAlCrearArchivo{ error: err.to_string() })?;
     archivo.write(&datos_archivo).await.map_err(|err| Error::ErrorAlCrearArchivo{ error: err.to_string() })?;
 
     Ok(nombre)
@@ -30,7 +33,11 @@ pub async fn subir_archivo(
 pub async fn eliminar_archivo(
     url: String
 ) -> Result<()> {
-    fs::remove_file(format!("{}/{}", RUTA_UPLOADS, url)).await.map_err(|err| Error::ErrorAlBorrarArchivo{ error: err.to_string() })?;
+    dotenv().ok();
+
+    let ruta_uploads = std::env::var("RUTA_UPLOADS").expect("ERROR: Ruta uploads no especificada");
+
+    fs::remove_file(format!("{}/{}", ruta_uploads, url)).await.map_err(|err| Error::ErrorAlBorrarArchivo{ error: err.to_string() })?;
 
     Ok(())
 }

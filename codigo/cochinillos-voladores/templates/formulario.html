@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{%- import "componentes/nav.html" as navegacion -%}
+
+{% block titulo %}Formulario{% endblock %}
+
+{% block meta %}
+<link rel="stylesheet" href="/assets/css/formulario.css">
+{% endblock %}
+
+{% block nav %}{% call navegacion::nav(posicion="derecha", mostrarCuenta=true, mostrarAtras=false, mostrarDashboard=true) %}{% endblock %}
+
+{% block contenido %}
+<h1>Formulario inscripción</h1>
+{% if iniciado %}
+    <form 
+        hx-post="/api/apuntarse" 
+        hx-encoding="multipart/form-data"
+        hx-target="#contenedorExito"
+        hx-target-error="#contenedorError"
+    >
+        <div class="campo">
+            <label for="nombre">Nombre:</label>
+            <input type="text" name="nombre">
+        </div>
+        <div class="campo">
+            <label for="apellidos">Apellidos:</label>
+            <input type="text" name="apellidos">
+        </div>
+        <div class="campo">
+            <label for="edad">Edad:</label>
+            <input type="number" name="edad">
+        </div>
+        <div class="campo">
+            <label for="mail">Mail:</label>
+            <input type="email" name="mail">
+        </div>
+        <div class="campo">
+            <label for="telefono">Teléfono:</label>
+            <input type="text" name="telefono">
+        </div>
+        <div class="campo">
+            <label for="imagen">Imagen:</label>
+            <button 
+                hx-on:click="abrirImagen()"
+                type="button"
+            >
+                Ver imagen
+            </button>
+            <button 
+                hx-on:click="abrirArchivo('imagen')"
+                type="button"
+            >
+                Subir imagen
+            </button>
+            <input 
+                type="file" 
+                name="imagen" 
+                hx-on:change="cargarImagen(event)"
+                hidden
+            >
+        </div>
+        <input type="submit" class="confirmar" value="Apuntarse">
+    </form>
+    <div id="contenedorError" class="esconder" hx-on::after-settle="this.classList.remove('esconder')"></div>
+    <div id="contenedorExito" class="esconder" hx-on::after-settle="this.classList.remove('esconder')"></div>
+    <dialog id="imagenDialog">
+        <div class="cuerpo">
+            <img 
+                id="imagen" 
+                alt="Imagen"
+            >
+        </div>
+        <div class="acciones">
+            <button onclick="document.getElementById('imagenDialog').close()">
+                Cerrar
+            </button>
+        </div>
+    </dialog>
+    <script>
+        function cargarImagen(e) {
+            var src = URL.createObjectURL(e.target.files[0])
+            document.getElementById('imagen').src = src
+        }
+
+        function abrirArchivo(nombre) {
+            document.getElementsByName(nombre)[0].click();
+        }
+
+        function abrirImagen() {
+            document.getElementById('imagenDialog').showModal();
+        }
+    </script>
+{% else %}
+    <p>Debes iniciar sesión para poder acceder al formulario de registro</p>
+{% endif %}
+{% endblock %}

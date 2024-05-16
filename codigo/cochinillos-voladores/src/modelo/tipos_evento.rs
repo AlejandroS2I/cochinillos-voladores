@@ -6,46 +6,46 @@ use crate::modelo::ControladorModelo;
 
 
 #[derive(Clone, Debug, sqlx::FromRow)]
-pub struct Categoria {
+pub struct TipoEvento {
     pub id: u32,
     pub nombre: String,
 }
 
 #[derive(Deserialize)]
-pub struct CategoriaCrear {
+pub struct TipoEventoCrear {
     pub nombre: String,
 }
 
 #[derive(Deserialize)]
-pub struct CategoriaActualizar {
+pub struct TipoEventoActualizar {
     pub id: u32,
     pub nombre: String,
 }
 
-pub struct ControladorCategoria;
+pub struct ControladorTipoEvento;
 
 
-impl ControladorCategoria {
-    pub async fn crear_categoria(
+impl ControladorTipoEvento {
+    pub async fn crear_tipo_evento(
         cm: ControladorModelo, 
-        categoria: CategoriaCrear
-    ) -> Result<Categoria> {
+        tipo_evento: TipoEventoCrear
+    ) -> Result<TipoEvento> {
         let pool = cm.conexion;
         let mut txn = pool.begin().await?;
 
         sqlx::query!("
-            INSERT INTO tcategorias (nombre) 
+            INSERT INTO ltiposevento (nombre) 
             VALUES (?); 
         ",
-            categoria.nombre,
+            tipo_evento.nombre,
         )
         .execute(txn.as_mut())
         .await?;
 
-        let categoria = sqlx::query_as!(
-        Categoria,
+        let tipo_evento = sqlx::query_as!(
+        TipoEvento,
         "
-            SELECT id, nombre FROM tcategorias
+            SELECT id, nombre FROM ltiposevento
             WHERE id = LAST_INSERT_ID();
         ")
         .fetch_one(txn.as_mut())
@@ -53,70 +53,70 @@ impl ControladorCategoria {
 
         txn.commit().await?;
 
-        Ok(categoria)
+        Ok(tipo_evento)
     }
 
-    pub async fn actualizar_categoria(
+    pub async fn actualizar_tipo_evento(
         cm: ControladorModelo, 
-        categoria: CategoriaActualizar
-    ) -> Result<Categoria> {
+        tipo_evento: TipoEventoActualizar
+    ) -> Result<TipoEvento> {
         let pool = cm.conexion;
         let mut txn = pool.begin().await?;
 
         sqlx::query!("
-            UPDATE tcategorias SET nombre = ?
+            UPDATE ltiposevento SET nombre = ?
             WHERE id = ?
         ",
-            categoria.nombre,
-            categoria.id
+            tipo_evento.nombre,
+            tipo_evento.id
         )
         .execute(txn.as_mut())
         .await?;
 
-        let categoria = sqlx::query_as!(
-        Categoria,
+        let tipo_evento = sqlx::query_as!(
+        TipoEvento,
         "
-            SELECT id, nombre FROM tcategorias
+            SELECT id, nombre FROM ltiposevento
             WHERE id = ?;
         ",
-            categoria.id
+            tipo_evento.id
         )
         .fetch_one(txn.as_mut())
         .await?;
 
         txn.commit().await?;
 
-        Ok(categoria)
+        Ok(tipo_evento)
     }
 
-    pub async fn listar_categorias(
+    pub async fn listar_tipos_evento(
         ctx: Ctx,
         cm: ControladorModelo
-    ) -> Result<Vec<Categoria>> {
+    ) -> Result<Vec<TipoEvento>> {
         let pool = cm.conexion;
 
-        let categorias: Vec<Categoria> = sqlx::query_as("
-            SELECT id, nombre FROM tcategorias
+        let tipo_evento: Vec<TipoEvento> = sqlx::query_as("
+            SELECT id, nombre FROM ltiposevento
         ")
         .fetch_all(&pool)
         .await?;
 
-        Ok(categorias)
+        Ok(tipo_evento)
     }
 
-    pub async fn eliminar_categoria(
+    pub async fn eliminar_tipo_evento(
         ctx: Ctx,
         cm: ControladorModelo, 
         id: u32
-    ) -> Result<Categoria> {
+    ) -> Result<TipoEvento> {
         let pool = cm.conexion;
         let mut txn = pool.begin().await?;
 
-        let categoria = sqlx::query_as!(
-        Categoria,
+        let tipo_evento = sqlx::query_as!(
+        TipoEvento,
         "
             SELECT id, nombre
-            FROM tcategorias WHERE id = ?;
+            FROM ltiposevento WHERE id = ?;
         ",
             id
         )
@@ -126,7 +126,7 @@ impl ControladorCategoria {
 
         sqlx::query!(
         "
-            DELETE FROM tcategorias WHERE id = ?
+            DELETE FROM ltiposevento WHERE id = ?
         ",
             id
         )
@@ -135,16 +135,16 @@ impl ControladorCategoria {
 
         txn.commit().await?;
 
-        Ok(categoria)
+        Ok(tipo_evento)
     }
 
-    pub async fn categoria_id(cm: ControladorModelo, id: u32) -> Result<Option<Categoria>> {
+    pub async fn tipo_evento_id(cm: ControladorModelo, id: u32) -> Result<Option<TipoEvento>> {
         let pool = cm.conexion;
 
-        let categoria = sqlx::query_as!(
-        Categoria,
+        let tipo_evento = sqlx::query_as!(
+        TipoEvento,
         "
-            SELECT id, nombre FROM tcategorias
+            SELECT id, nombre FROM ltiposevento
             WHERE id = ?
         ",
             id
@@ -152,6 +152,6 @@ impl ControladorCategoria {
         .fetch_optional(&pool)
         .await?;
 
-        Ok(categoria)
+        Ok(tipo_evento)
     }
 }

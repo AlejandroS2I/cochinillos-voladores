@@ -52,26 +52,14 @@ CREATE TABLE IF NOT EXISTS tequipos (
     PRIMARY KEY(id)
 );
 
-CREATE TABLE IF NOT EXISTS rcompeticionesequipos (
-    idCompeticion MEDIUMINT UNSIGNED,
-    idEquipo MEDIUMINT UNSIGNED,
-    PRIMARY KEY (idCompeticion, idEquipo),
-    CONSTRAINT FK_tcompeticiones_r
-        FOREIGN KEY (idCompeticion)
-        REFERENCES tcompeticiones(id),
-    CONSTRAINT FK_tequipos_r
-        FOREIGN KEY (idEquipo)
-        REFERENCES tequipos(id)
-);
-
 CREATE TABLE IF NOT EXISTS ltiposjugador (
-    id TINYINT UNSIGNED,
+    id TINYINT UNSIGNED AUTO_INCREMENT,
     nombre VARCHAR(255) NOT NULL,
     PRIMARY KEY (id)
 );
 
 CREATE TABLE IF NOT EXISTS tjugadores (
-    id MEDIUMINT UNSIGNED,
+    id MEDIUMINT UNSIGNED AUTO_INCREMENT,
     numero TINYINT UNSIGNED NOT NULL,
     nombre VARCHAR(255) NOT NULL,
     apellido1 VARCHAR(255) NOT NULL,
@@ -90,7 +78,7 @@ CREATE TABLE IF NOT EXISTS tjugadores (
 );
 
 CREATE TABLE IF NOT EXISTS tpartidos (
-    id MEDIUMINT UNSIGNED,
+    id MEDIUMINT UNSIGNED AUTO_INCREMENT,
     fecha DATE NOT NULL,
     lugar VARCHAR(255) NOT NULL,
     idCompeticion MEDIUMINT UNSIGNED NOT NULL,
@@ -109,13 +97,13 @@ CREATE TABLE IF NOT EXISTS tpartidos (
 );
 
 CREATE TABLE IF NOT EXISTS ltiposevento (
-    id TINYINT UNSIGNED,
+    id TINYINT UNSIGNED AUTO_INCREMENT,
     nombre VARCHAR(255) NOT NULL,
     PRIMARY KEY (id)
 );
 
 CREATE TABLE IF NOT EXISTS teventos (
-    id INT UNSIGNED,
+    id INT UNSIGNED AUTO_INCREMENT,
     valor SMALLINT UNSIGNED,
     minuto TIME,
     idTipoEvento TINYINT UNSIGNED NOT NULL,

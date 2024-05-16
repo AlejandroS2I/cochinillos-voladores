@@ -46,6 +46,15 @@
                     cols="10" 
                 ></textarea>
             </div>
+            {% when TipoCampo::SELECT with (valores) %}
+            <div class="campo">
+                <label for="{{ campo.nombre }}">{{ campo.titulo }}:</label>
+                <select name="{{ campo.nombre }}">
+                    {% for (id, nombre) in valores %}
+                    <option value="{{ id }}">{{ nombre }}</option>
+                    {% endfor %}
+                </select>
+            </div>
             {% when TipoCampo::FILE %}
             <div class="campo">
                 <label for="{{ campo.nombre }}">{{ campo.titulo }}:</label>

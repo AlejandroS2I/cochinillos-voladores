@@ -6,46 +6,50 @@ use crate::modelo::ControladorModelo;
 
 
 #[derive(Clone, Debug, sqlx::FromRow)]
-pub struct Categoria {
+pub struct Equipo {
     pub id: u32,
     pub nombre: String,
+    pub lugar: String
 }
 
 #[derive(Deserialize)]
-pub struct CategoriaCrear {
+pub struct EquipoCrear {
     pub nombre: String,
+    pub lugar: String
 }
 
 #[derive(Deserialize)]
-pub struct CategoriaActualizar {
+pub struct EquipoActualizar {
     pub id: u32,
     pub nombre: String,
+    pub lugar: String
 }
 
-pub struct ControladorCategoria;
+pub struct ControladorEquipo;
 
 
-impl ControladorCategoria {
-    pub async fn crear_categoria(
+impl ControladorEquipo {
+    pub async fn crear_equipo(
         cm: ControladorModelo, 
-        categoria: CategoriaCrear
-    ) -> Result<Categoria> {
+        equipo: EquipoCrear
+    ) -> Result<Equipo> {
         let pool = cm.conexion;
         let mut txn = pool.begin().await?;
 
         sqlx::query!("
-            INSERT INTO tcategorias (nombre) 
-            VALUES (?); 
+            INSERT INTO tequipos (nombre, lugar) 
+            VALUES (?, ?); 
         ",
-            categoria.nombre,
+            equipo.nombre,
+            equipo.lugar,
         )
         .execute(txn.as_mut())
         .await?;
 
-        let categoria = sqlx::query_as!(
-        Categoria,
+        let equipo = sqlx::query_as!(
+        Equipo,
         "
-            SELECT id, nombre FROM tcategorias
+            SELECT id, nombre, lugar FROM tequipos
             WHERE id = LAST_INSERT_ID();
         ")
         .fetch_one(txn.as_mut())
@@ -53,70 +57,71 @@ impl ControladorCategoria {
 
         txn.commit().await?;
 
-        Ok(categoria)
+        Ok(equipo)
     }
 
-    pub async fn actualizar_categoria(
+    pub async fn actualizar_equipo(
         cm: ControladorModelo, 
-        categoria: CategoriaActualizar
-    ) -> Result<Categoria> {
+        equipo: EquipoActualizar
+    ) -> Result<Equipo> {
         let pool = cm.conexion;
         let mut txn = pool.begin().await?;
 
         sqlx::query!("
-            UPDATE tcategorias SET nombre = ?
+            UPDATE tequipos SET nombre = ?, lugar = ?
             WHERE id = ?
         ",
-            categoria.nombre,
-            categoria.id
+            equipo.nombre,
+            equipo.lugar,
+            equipo.id
         )
         .execute(txn.as_mut())
         .await?;
 
-        let categoria = sqlx::query_as!(
-        Categoria,
+        let equipo = sqlx::query_as!(
+        Equipo,
         "
-            SELECT id, nombre FROM tcategorias
+            SELECT id, nombre, lugar FROM tequipos
             WHERE id = ?;
         ",
-            categoria.id
+            equipo.id
         )
         .fetch_one(txn.as_mut())
         .await?;
 
         txn.commit().await?;
 
-        Ok(categoria)
+        Ok(equipo)
     }
 
-    pub async fn listar_categorias(
+    pub async fn listar_equipos(
         ctx: Ctx,
         cm: ControladorModelo
-    ) -> Result<Vec<Categoria>> {
+    ) -> Result<Vec<Equipo>> {
         let pool = cm.conexion;
 
-        let categorias: Vec<Categoria> = sqlx::query_as("
-            SELECT id, nombre FROM tcategorias
+        let equipos: Vec<Equipo> = sqlx::query_as("
+            SELECT id, nombre, lugar FROM tequipos
         ")
         .fetch_all(&pool)
         .await?;
 
-        Ok(categorias)
+        Ok(equipos)
     }
 
-    pub async fn eliminar_categoria(
+    pub async fn eliminar_equipo(
         ctx: Ctx,
         cm: ControladorModelo, 
         id: u32
-    ) -> Result<Categoria> {
+    ) -> Result<Equipo> {
         let pool = cm.conexion;
         let mut txn = pool.begin().await?;
 
-        let categoria = sqlx::query_as!(
-        Categoria,
+        let equipo = sqlx::query_as!(
+        Equipo,
         "
-            SELECT id, nombre
-            FROM tcategorias WHERE id = ?;
+            SELECT id, nombre, lugar
+            FROM tequipos WHERE id = ?;
         ",
             id
         )
@@ -126,7 +131,7 @@ impl ControladorCategoria {
 
         sqlx::query!(
         "
-            DELETE FROM tcategorias WHERE id = ?
+            DELETE FROM tequipos WHERE id = ?
         ",
             id
         )
@@ -135,16 +140,16 @@ impl ControladorCategoria {
 
         txn.commit().await?;
 
-        Ok(categoria)
+        Ok(equipo)
     }
 
-    pub async fn categoria_id(cm: ControladorModelo, id: u32) -> Result<Option<Categoria>> {
+    pub async fn equipo_id(cm: ControladorModelo, id: u32) -> Result<Option<Equipo>> {
         let pool = cm.conexion;
 
-        let categoria = sqlx::query_as!(
-        Categoria,
+        let equipo = sqlx::query_as!(
+        Equipo,
         "
-            SELECT id, nombre FROM tcategorias
+            SELECT id, nombre, lugar FROM tequipos
             WHERE id = ?
         ",
             id
@@ -152,6 +157,6 @@ impl ControladorCategoria {
         .fetch_optional(&pool)
         .await?;
 
-        Ok(categoria)
+        Ok(equipo)
     }
 }

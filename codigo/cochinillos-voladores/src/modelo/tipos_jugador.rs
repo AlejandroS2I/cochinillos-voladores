@@ -6,46 +6,46 @@ use crate::modelo::ControladorModelo;
 
 
 #[derive(Clone, Debug, sqlx::FromRow)]
-pub struct Categoria {
+pub struct TipoJugador {
     pub id: u32,
     pub nombre: String,
 }
 
 #[derive(Deserialize)]
-pub struct CategoriaCrear {
+pub struct TipoJugadorCrear {
     pub nombre: String,
 }
 
 #[derive(Deserialize)]
-pub struct CategoriaActualizar {
+pub struct TipoJugadorActualizar {
     pub id: u32,
     pub nombre: String,
 }
 
-pub struct ControladorCategoria;
+pub struct ControladorTipoJugador;
 
 
-impl ControladorCategoria {
-    pub async fn crear_categoria(
+impl ControladorTipoJugador {
+    pub async fn crear_tipo_jugador(
         cm: ControladorModelo, 
-        categoria: CategoriaCrear
-    ) -> Result<Categoria> {
+        tipo_jugador: TipoJugadorCrear
+    ) -> Result<TipoJugador> {
         let pool = cm.conexion;
         let mut txn = pool.begin().await?;
 
         sqlx::query!("
-            INSERT INTO tcategorias (nombre) 
+            INSERT INTO ltiposjugador (nombre) 
             VALUES (?); 
         ",
-            categoria.nombre,
+            tipo_jugador.nombre,
         )
         .execute(txn.as_mut())
         .await?;
 
-        let categoria = sqlx::query_as!(
-        Categoria,
+        let tipo_jugador = sqlx::query_as!(
+        TipoJugador,
         "
-            SELECT id, nombre FROM tcategorias
+            SELECT id, nombre FROM ltiposjugador
             WHERE id = LAST_INSERT_ID();
         ")
         .fetch_one(txn.as_mut())
@@ -53,70 +53,70 @@ impl ControladorCategoria {
 
         txn.commit().await?;
 
-        Ok(categoria)
+        Ok(tipo_jugador)
     }
 
-    pub async fn actualizar_categoria(
+    pub async fn actualizar_tipo_jugador(
         cm: ControladorModelo, 
-        categoria: CategoriaActualizar
-    ) -> Result<Categoria> {
+        tipo_jugador: TipoJugadorActualizar
+    ) -> Result<TipoJugador> {
         let pool = cm.conexion;
         let mut txn = pool.begin().await?;
 
         sqlx::query!("
-            UPDATE tcategorias SET nombre = ?
+            UPDATE ltiposjugador SET nombre = ?
             WHERE id = ?
         ",
-            categoria.nombre,
-            categoria.id
+            tipo_jugador.nombre,
+            tipo_jugador.id
         )
         .execute(txn.as_mut())
         .await?;
 
-        let categoria = sqlx::query_as!(
-        Categoria,
+        let tipo_jugador = sqlx::query_as!(
+        TipoJugador,
         "
-            SELECT id, nombre FROM tcategorias
+            SELECT id, nombre FROM ltiposjugador
             WHERE id = ?;
         ",
-            categoria.id
+            tipo_jugador.id
         )
         .fetch_one(txn.as_mut())
         .await?;
 
         txn.commit().await?;
 
-        Ok(categoria)
+        Ok(tipo_jugador)
     }
 
-    pub async fn listar_categorias(
+    pub async fn listar_tipos_jugador(
         ctx: Ctx,
         cm: ControladorModelo
-    ) -> Result<Vec<Categoria>> {
+    ) -> Result<Vec<TipoJugador>> {
         let pool = cm.conexion;
 
-        let categorias: Vec<Categoria> = sqlx::query_as("
-            SELECT id, nombre FROM tcategorias
+        let tipo_jugador: Vec<TipoJugador> = sqlx::query_as("
+            SELECT id, nombre FROM ltiposjugador
         ")
         .fetch_all(&pool)
         .await?;
 
-        Ok(categorias)
+        Ok(tipo_jugador)
     }
 
-    pub async fn eliminar_categoria(
+    pub async fn eliminar_tipo_jugador(
         ctx: Ctx,
         cm: ControladorModelo, 
         id: u32
-    ) -> Result<Categoria> {
+    ) -> Result<TipoJugador> {
         let pool = cm.conexion;
         let mut txn = pool.begin().await?;
 
-        let categoria = sqlx::query_as!(
-        Categoria,
+        let tipo_jugador = sqlx::query_as!(
+        TipoJugador,
         "
             SELECT id, nombre
-            FROM tcategorias WHERE id = ?;
+            FROM ltiposjugador WHERE id = ?;
         ",
             id
         )
@@ -126,7 +126,7 @@ impl ControladorCategoria {
 
         sqlx::query!(
         "
-            DELETE FROM tcategorias WHERE id = ?
+            DELETE FROM ltiposjugador WHERE id = ?
         ",
             id
         )
@@ -135,16 +135,16 @@ impl ControladorCategoria {
 
         txn.commit().await?;
 
-        Ok(categoria)
+        Ok(tipo_jugador)
     }
 
-    pub async fn categoria_id(cm: ControladorModelo, id: u32) -> Result<Option<Categoria>> {
+    pub async fn tipo_jugador_id(cm: ControladorModelo, id: u32) -> Result<Option<TipoJugador>> {
         let pool = cm.conexion;
 
-        let categoria = sqlx::query_as!(
-        Categoria,
+        let tipo_jugador = sqlx::query_as!(
+        TipoJugador,
         "
-            SELECT id, nombre FROM tcategorias
+            SELECT id, nombre FROM ltiposjugador
             WHERE id = ?
         ",
             id
@@ -152,6 +152,6 @@ impl ControladorCategoria {
         .fetch_optional(&pool)
         .await?;
 
-        Ok(categoria)
+        Ok(tipo_jugador)
     }
 }

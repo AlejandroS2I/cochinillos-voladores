@@ -68,7 +68,14 @@ fn app(cm: ControladorModelo, ruta_uploads: String) -> Router {
     let rutas_admin = Router::new()
         .merge(paginas::rutas_gestion::routes(cm.clone()))
         .nest("/api", api::rutas_categorias::routes(cm.clone()))
+        .nest("/api", api::rutas_competiciones::routes(cm.clone()))
+        .nest("/api", api::rutas_partidos::routes(cm.clone()))
+        .nest("/api", api::rutas_eventos::routes(cm.clone()))
         .nest("/api", api::rutas_noticias::routes(cm.clone()))
+        .nest("/api", api::rutas_jugadores::routes(cm.clone()))
+        .nest("/api", api::rutas_equipos::routes(cm.clone()))
+        .nest("/api", api::rutas_tipos_jugador::routes(cm.clone()))
+        .nest("/api", api::rutas_tipos_evento::routes(cm.clone()))
         .route_layer(middleware::from_fn(auth::mw_auth::mw_requerir_admin));
 
     Router::new()

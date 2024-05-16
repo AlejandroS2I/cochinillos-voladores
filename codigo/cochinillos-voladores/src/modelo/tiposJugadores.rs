@@ -6,38 +6,38 @@ use crate::modelo::ControladorModelo;
 
 
 #[derive(Clone, Debug, sqlx::FromRow)]
-pub struct Categoria {
+pub struct TipoJugador {
     pub id: u32,
     pub nombre: String,
 }
 
 #[derive(Deserialize)]
-pub struct CategoriaCrear {
+pub struct TipoJugadorCrear {
     pub nombre: String,
 }
 
 #[derive(Deserialize)]
-pub struct CategoriaActualizar {
+pub struct TipoJugadorActualizar {
     pub id: u32,
     pub nombre: String,
 }
 
-pub struct ControladorCategoria;
+pub struct ControladorTipoJugador;
 
 
-impl ControladorCategoria {
-    pub async fn crear_categoria(
+impl ControladorTipoJugador {
+    pub async fn crear_tipo_jugador(
         cm: ControladorModelo, 
-        categoria: CategoriaCrear
-    ) -> Result<Categoria> {
+        tipo_jugador: TipoJugadorCrear
+    ) -> Result<TipoJugador> {
         let pool = cm.conexion;
         let mut txn = pool.begin().await?;
 
         sqlx::query!("
-            INSERT INTO tcategorias (nombre) 
+            INSERT INTO ttiposjugador (nombre) 
             VALUES (?); 
         ",
-            categoria.nombre,
+            tipo_jugador.nombre,
         )
         .execute(txn.as_mut())
         .await?;

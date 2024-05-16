@@ -3,6 +3,13 @@ mod error;
 pub mod usuario;
 pub mod noticias;
 pub mod categorias;
+pub mod competiciones;
+pub mod partidos;
+pub mod eventos;
+pub mod equipos;
+pub mod jugadores;
+pub mod tipos_jugador;
+pub mod tipos_evento;
 pub mod login;
 pub mod pwd;
 

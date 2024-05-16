@@ -84,6 +84,15 @@
                         disabled
                     >{% if let Some(valor) = campo.valor %}{{ valor }}{% endif %}</textarea>
                 </div>
+                {% when TipoCampo::SELECT with (valores) %}
+                <div class="campo">
+                    <label for="{{ campo.nombre }}">{{ campo.titulo }}:</label>
+                    <select name="{{ campo.nombre }}" disabled>
+                        {% for (id, nombre) in valores %}
+                        <option value="{{ id }}" {% if let Some(valor) = campo.valor %}{% if id == valor %}selected{% endif %}{% endif %}>{{ nombre }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
                 {% when TipoCampo::FILE %}
                 <div class="campo">
                     <label for="{{ campo.nombre }}">{{ campo.titulo }}:</label>
@@ -177,6 +186,10 @@
                 _campo.disabled = !_modificar;
             });
         [...document.getElementById('datos').getElementsByTagName('textarea')]
+            .forEach((_campo) => {
+                _campo.disabled = !_modificar;
+            });
+        [...document.getElementById('datos').getElementsByTagName('select')]
             .forEach((_campo) => {
                 _campo.disabled = !_modificar;
             });

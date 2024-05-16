@@ -95,7 +95,7 @@ dialog[open] div.acciones * {
 }
 
 /* Formularios */
-input, button, textarea {
+input, button, textarea, select {
     width: 100%;
 
     padding: 10px 20px;
@@ -108,15 +108,16 @@ textarea {
     resize: vertical;
 }
 
-input:focus-visible, textarea:focus-visible {
+input:focus-visible, textarea:focus-visible, select:focus-visible {
     outline: none;
 }
 
-input:disabled, textarea:disabled {
+input:disabled, textarea:disabled, select:disabled {
     border-color: var(--gray-color);
 }
 
-input[type=submit]:hover, input[type=button]:hover, button:hover {
+input[type=submit]:not(:disabled):hover, input[type=button]:not(:disabled):hover, button:not(:disabled):hover, select:not(:disabled):hover,
+input[type=submit]:not(:disabled):focus-visible, input[type=button]:not(:disabled):focus-visible, button:not(:disabled):focus-visible, select:not(:disabled):focus-visible {
     cursor: pointer;
 
     color: var(--bg-color);
@@ -184,7 +185,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
     border-color: var(--aqua-color) !important;
 }
 
-.confirmar:hover {
+.confirmar:not(:disabled):hover, .confirmar:not(:disabled):focus-visible {
     background-color: var(--aqua-color) !important;
 }
 
@@ -193,7 +194,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
     border-color: var(--red-color) !important;
 }
 
-.cancelar:hover {
+.cancelar:not(:disabled):hover, .cancelar:not(:disabled):focus-visible {
     background-color: var(--red-color) !important;
 }
 

@@ -373,6 +373,8 @@ article#noticias div#contenedorNoticias div.noticia div.cuerpo div.imagen img {
 }
 
 article#noticias div#contenedorNoticias div.noticia div.cuerpo div.texto {
+    height: 30vh;
+
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -389,9 +391,10 @@ article#noticias div#contenedorNoticias div.noticia div.cuerpo div.texto h4 {
     font-weight: 900;
 }
 
-article#noticias div#contenedorNoticias div.noticia div.cuerpo div.texto p {
+article#noticias div#contenedorNoticias div.noticia div.cuerpo div.texto pre {
     width: 100%;
     flex: 1 1 auto;
+    overflow: auto;
 }
 
 /* Conócenos */
@@ -465,6 +468,8 @@ article#conocenos div#trabajadores div.trabajador div.cuerpo {
     gap: 10px;
 
     padding: 20px;
+}
+article#conocenos div#trabajadores div.trabajador div.cuerpo ul {
     overflow: auto;
 }
 
@@ -477,12 +482,15 @@ article#conocenos div#trabajadores div.trabajador div.cuerpo p {
     article#conocenos div#trabajadores div.trabajador {
         min-height: 60vh;
         max-height: 60vh;
-        min-width: 50vw;
-        max-width: 50vw;
+        min-width: 70vw;
+        max-width: 70vw;
 
         flex-direction: column;
     }
     article#conocenos div#trabajadores div.trabajador div.imagen {
         max-height: 20vh;
+    }
+    article#conocenos div#trabajadores div.trabajador div.cuerpo {
+        max-height: 40vh;
     }
 }

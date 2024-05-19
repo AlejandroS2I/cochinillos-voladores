@@ -254,7 +254,7 @@ impl ControladorEvento {
         let goles_contra = sqlx::query!(
         "
             SELECT COUNT(*) as `goles_contra: u32` FROM teventos
-            WHERE teventos.id = 5 AND 
+            WHERE idTipoEvento = 5 AND 
                 idPartido IN (SELECT id FROM tpartidos WHERE 
                     idEquipoCasa=(SELECT idEquipo FROM tjugadores WHERE id=?) OR idEquipoVisitante=(SELECT idEquipo FROM tjugadores WHERE id=?))
                 AND idJugador != ?

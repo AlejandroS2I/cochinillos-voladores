@@ -95,7 +95,6 @@ impl ControladorEquipo {
     }
 
     pub async fn listar_equipos(
-        ctx: Ctx,
         cm: ControladorModelo
     ) -> Result<Vec<Equipo>> {
         let pool = cm.conexion;

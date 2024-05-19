@@ -1,0 +1,212 @@
+main {
+    width: 100vw;
+    height: 100vh;
+
+    overflow: hidden;
+}
+
+#contenedor {
+    width: 100%;
+    height: 100%;
+
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(5, 1fr);
+    gap: 20px;
+
+    padding: 5vh 7vw;
+}
+
+@media (max-width: 900px) {
+    #contenedor {
+        display: flex;
+        flex-direction: column;
+        overflow: auto;
+    }
+
+    #contenedor > div {
+        flex: 1 1 auto;
+    }
+}
+
+#contenedor > div {
+    background: var(--bg1-color);
+}
+
+/* resumen */
+#resumen {
+    grid-column: 1 / 4;
+    grid-row: 1 / 3;
+
+    display: flex;
+    justify-items: center;
+}
+
+#resumen div.imagen {
+    flex: 1 1 auto;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+#resumen div.imagen img {
+    height: 100%;
+    width: 100%;
+    object-fit: scale-down;
+}
+
+#resumen div.cuerpo {
+    flex: 1 1 90%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#resumen div.cuerpo h3 {
+    color: var(--red-color);
+    text-transform: uppercase;
+    margin-bottom: 5px;
+}
+
+#resumen div.cuerpo div.estadisticas {
+    width: 100%;
+
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+#resumen div.cuerpo div.estadisticas > * {
+    flex: 1 1 50%;
+}
+
+@media (max-width: 750px) {
+    #resumen {
+        flex-direction: column;
+        justify-items: unset;
+
+        padding: 20px;
+    }
+    
+    #resumen div.imagen {
+        flex: unset;
+        height: 30vh;
+        width: 100%;
+    }
+
+    #resumen div.cuerpo {
+        flex: unset;
+        width: 100%;
+    }
+}
+
+/* jugador */
+#jugador {
+    grid-column: 4 / 6;
+    grid-row: 1 / 3;
+
+    display: flex;
+}
+
+#jugador div.imagen {
+    width: 50%;
+    height: 100%;
+
+    position: relative;
+}
+
+#jugador div.imagen img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+
+#jugador div.imagen p {
+    position: absolute;
+    bottom: 10px;
+    right: 15px;
+
+    font-size: 300%;
+    font-weight: 900;
+    color: var(--bg-color);
+    text-shadow: 2px 0 var(--fg-color), 0 2px var(--fg-color), -2px 0 var(--fg-color), 0 -2px var(--fg-color),
+        1px 1px var(--fg-color), -1px -1px var(--fg-color), -1px 1px var(--fg-color), 1px -1px var(--fg-color);
+}
+
+#jugador div.cuerpo {
+    width: 50%;
+
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+
+    padding: 20px;
+}
+
+#jugador div.cuerpo h3 {
+    color: var(--red-color);
+}
+
+#jugador div.cuerpo div.estadisticas {
+    flex: 1 1 auto;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* Partidos */
+#partidos {
+    grid-column: 1 / 4;
+    grid-row: 3 / 6;
+
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    overflow: auto;
+
+    padding: 10px;
+}
+
+#partidos a {
+    flex: 1 1 auto;
+
+    width: 100%;
+    min-height: 15vh;
+
+    background: var(--bg-color);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+@media (max-width: 900px) {
+    #partidos {
+        min-height: 30vh;
+    }
+}
+
+/* Competiciones */
+#competiciones {
+    grid-column: 4 / 6;
+    grid-row: 3 / 6;
+
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    padding: 10px;
+}
+
+#competiciones a {
+    flex: 1 1 auto;
+    min-height: 10vh;
+
+    background: var(--bg-color);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}

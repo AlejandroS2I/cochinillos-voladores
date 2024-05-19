@@ -83,6 +83,7 @@ fn app(cm: ControladorModelo, ruta_uploads: String) -> Router {
         .merge(paginas::rutas_login::routes(cm.clone()))
         .merge(paginas::rutas_noticias::routes(cm.clone()))
         .merge(paginas::rutas_formulario::routes(cm.clone()))
+        .merge(paginas::rutas_estadisticas::routes(cm.clone()))
         .merge(rutas_admin)
         .nest("/api", api::rutas_login::routes(cm.clone()))
         .nest("/api", rutas_auth)

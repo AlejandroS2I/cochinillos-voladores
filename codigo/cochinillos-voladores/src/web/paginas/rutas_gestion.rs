@@ -378,7 +378,7 @@ async fn lista_categorias(
     State(cm): State<ControladorModelo>,
     ctx: Ctx,
 ) -> Result<ListaGestionTemplate> {
-    let categorias = ControladorCategoria::listar_categorias(ctx, cm).await?;
+    let categorias = ControladorCategoria::listar_categorias(cm).await?;
 
     Ok(ListaGestionTemplate {
         url: format!("categorias"),
@@ -435,7 +435,7 @@ async fn lista_competiciones(
     State(cm): State<ControladorModelo>,
     ctx: Ctx,
 ) -> Result<ListaGestionTemplate> {
-    let competiciones = ControladorCompeticion::listar_competiciones(ctx, cm.clone()).await?;
+    let competiciones = ControladorCompeticion::listar_competiciones(cm.clone()).await?;
 
     Ok(ListaGestionTemplate {
         url: format!("competiciones"),
@@ -475,7 +475,7 @@ async fn gestion_competiciones(
     Path(id): Path<u32>
 ) -> Result<GestionTemplate> {
     let competicion = ControladorCompeticion::competicion_id(cm.clone(), id).await?.ok_or(Error::NoEncontradoPorId)?;
-    let categorias: Vec<(String, String)> = ControladorCategoria::listar_categorias(ctx, cm).await?.iter().map(|categoria| {
+    let categorias: Vec<(String, String)> = ControladorCategoria::listar_categorias(cm).await?.iter().map(|categoria| {
         (categoria.id.clone().to_string(), categoria.nombre.clone())
     }).collect();
 
@@ -516,7 +516,7 @@ async fn crear_competicion(
     State(cm): State<ControladorModelo>,
     ctx: Ctx,
 ) -> Result<CreacionTemplate> {
-    let categorias: Vec<(String, String)> = ControladorCategoria::listar_categorias(ctx, cm).await?.iter().map(|categoria| {
+    let categorias: Vec<(String, String)> = ControladorCategoria::listar_categorias(cm).await?.iter().map(|categoria| {
         (categoria.id.clone().to_string(), categoria.nombre.clone())
     }).collect();
 
@@ -581,10 +581,10 @@ async fn gestion_partidos(
     Path(id): Path<u32>
 ) -> Result<GestionTemplate> {
     let partido = ControladorPartido::partido_id(cm.clone(), id).await?.ok_or(Error::NoEncontradoPorId)?;
-    let competiciones: Vec<(String, String)> = ControladorCompeticion::listar_competiciones(ctx.clone(), cm.clone()).await?.iter().map(|competicion| {
+    let competiciones: Vec<(String, String)> = ControladorCompeticion::listar_competiciones(cm.clone()).await?.iter().map(|competicion| {
         (competicion.id.clone().to_string(), competicion.nombre.clone())
     }).collect();
-    let equipos: Vec<(String, String)> = ControladorEquipo::listar_equipos(ctx.clone(), cm.clone()).await?.iter().map(|equipo| {
+    let equipos: Vec<(String, String)> = ControladorEquipo::listar_equipos(cm.clone()).await?.iter().map(|equipo| {
         (equipo.id.clone().to_string(), equipo.nombre.clone())
     }).collect();
 
@@ -631,10 +631,10 @@ async fn crear_partido(
     State(cm): State<ControladorModelo>,
     ctx: Ctx,
 ) -> Result<CreacionTemplate> {
-    let competiciones: Vec<(String, String)> = ControladorCompeticion::listar_competiciones(ctx.clone(), cm.clone()).await?.iter().map(|competicion| {
+    let competiciones: Vec<(String, String)> = ControladorCompeticion::listar_competiciones(cm.clone()).await?.iter().map(|competicion| {
         (competicion.id.clone().to_string(), competicion.nombre.clone())
     }).collect();
-    let equipos: Vec<(String, String)> = ControladorEquipo::listar_equipos(ctx.clone(), cm.clone()).await?.iter().map(|equipo| {
+    let equipos: Vec<(String, String)> = ControladorEquipo::listar_equipos(cm.clone()).await?.iter().map(|equipo| {
         (equipo.id.clone().to_string(), equipo.nombre.clone())
     }).collect();
 
@@ -829,7 +829,7 @@ async fn lista_equipos(
     State(cm): State<ControladorModelo>,
     ctx: Ctx,
 ) -> Result<ListaGestionTemplate> {
-    let equipos = ControladorEquipo::listar_equipos(ctx, cm).await?;
+    let equipos = ControladorEquipo::listar_equipos(cm).await?;
 
     Ok(ListaGestionTemplate {
         url: format!("equipos"),
@@ -934,7 +934,7 @@ async fn gestion_jugadores(
     let tipos_jugador: Vec<(String, String)> = ControladorTipoJugador::listar_tipos_jugador(ctx.clone(), cm.clone()).await?.iter().map(|tipo_jugador| {
         (tipo_jugador.id.clone().to_string(), tipo_jugador.nombre.clone())
     }).collect();
-    let equipos: Vec<(String, String)> = ControladorEquipo::listar_equipos(ctx, cm).await?.iter().map(|equipo| {
+    let equipos: Vec<(String, String)> = ControladorEquipo::listar_equipos(cm).await?.iter().map(|equipo| {
         (equipo.id.clone().to_string(), equipo.nombre.clone())
     }).collect();
 
@@ -1002,7 +1002,7 @@ async fn crear_jugador(
     let tipos_jugador: Vec<(String, String)> = ControladorTipoJugador::listar_tipos_jugador(ctx.clone(), cm.clone()).await?.iter().map(|tipo_jugador| {
         (tipo_jugador.id.clone().to_string(), tipo_jugador.nombre.clone())
     }).collect();
-    let equipos: Vec<(String, String)> = ControladorEquipo::listar_equipos(ctx, cm).await?.iter().map(|equipo| {
+    let equipos: Vec<(String, String)> = ControladorEquipo::listar_equipos(cm).await?.iter().map(|equipo| {
         (equipo.id.clone().to_string(), equipo.nombre.clone())
     }).collect();
 

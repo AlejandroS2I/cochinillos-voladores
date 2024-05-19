@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{%- import "componentes/nav.html" as navegacion -%}
+
+{% block titulo %}Estadísticas{% endblock %}
+
+{% block meta %}
+<link rel="stylesheet" href="/assets/css/estadisticas.css">
+{% endblock %}
+
+{% block nav %}{% call navegacion::nav(posicion="derecha", mostrarCuenta=true, mostrarAtras=false, mostrarDashboard=true) %}{% endblock %}
+
+{% block contenido %}
+<div id="contenedor">
+    <div id="resumen">
+        <div class="imagen">
+            <img src="/assets/img/logo.png" alt="Logo">
+        </div>
+        <div class="cuerpo">
+            <h3>Cochinillos voladores</h3>
+            <div class="estadisticas">
+                <p><b>Lugar:</b> {{ cochinillos.lugar }}</p>
+                <p><b>Jugadores:</b> {{ jugadores_cochinillos }}</p>
+                <p><b>Partidos ganados:</b> {{ partidos_ganados }}</p>
+                <p><b>Partidos perdidos:</b> {{ partidos_perdidos }}</p>
+            </div>
+        </div>
+    </div>
+    <div id="jugador">
+        <div class="imagen">
+            {% if let Some(url) = jugador_cochinillos.fotoURL %}
+            <img src="/uploads/{{ url }}" alt="Jaime Matesanz">
+            {% else %}
+            <img src="/assets/img/logo.png" alt="Jaime Matesanz">
+            {% endif %}
+            <p>{{ jugador_cochinillos.numero }}</p>
+        </div>
+        <div class="cuerpo">
+            <h3>{{ jugador_cochinillos.apellido1 }} {{ jugador_cochinillos.apellido2 }}, {{ jugador_cochinillos.nombre }}</h3>
+            {% match jugador_cochinillos.idTipoJugador %}
+            {% when 2 %}
+            <div class="estadisticas">
+                <p><b>Goles contra:</b> {{ estadisticas_jugador.goles_contra }}</p>
+                <p><b>% parada:</b> {{ estadisticas_jugador.porcentaje_parada }}%</p>
+                <p><b>Tiros recibidos:</b> {{ estadisticas_jugador.tiros_recibidos }}</p>
+                <p><b>Faltas:</b> {{ estadisticas_jugador.faltas }}</p>
+                <p><b>M. sanción:</b> {{ estadisticas_jugador.minutos_sancion }}</p>
+            </div>
+            {% when _ %}
+            <div class="estadisticas">
+                <p><b>Goles:</b> {{ estadisticas_jugador.goles }}</p>
+                <p><b>Asistencias:</b> {{ estadisticas_jugador.asistencias }}</p>
+                <p><b>Puntos:</b> {{ estadisticas_jugador.puntos }}</p>
+                <p><b>Faltas:</b> {{ estadisticas_jugador.faltas }}</p>
+                <p><b>M. sanción:</b> {{ estadisticas_jugador.minutos_sancion }}</p>
+            </div>
+            {% endmatch %}
+        </div>
+    </div>
+    <div id="partidos">
+        {% for partido in partidos %}
+        <a>
+            <p>{{ partido.equipoCasa.nombre }} - {{ partido.equipoVisitante.nombre }}</p>
+            <p>{{ partido.competicion.nombre }}</p>
+            <p>{{ partido.fecha }}</p>
+            <p>{{ partido.resultado.0 }} - {{ partido.resultado.1 }}</p>
+        </a>
+        {% endfor %}
+    </div>
+    <div id="competiciones">
+        {% for competicion in competiciones %}
+        <a><h3>{{ competicion.nombre }}</h3></a>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

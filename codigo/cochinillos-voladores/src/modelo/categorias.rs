@@ -90,7 +90,6 @@ impl ControladorCategoria {
     }
 
     pub async fn listar_categorias(
-        ctx: Ctx,
         cm: ControladorModelo
     ) -> Result<Vec<Categoria>> {
         let pool = cm.conexion;

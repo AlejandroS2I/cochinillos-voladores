@@ -118,7 +118,95 @@ impl ControladorPartido {
 
         let partidos: Vec<Partido> = sqlx::query_as("
             SELECT id, fecha, lugar, idCompeticion, idEquipoCasa, idEquipoVisitante FROM tpartidos
+            ORDER BY fecha DESC
         ")
+        .fetch_all(&pool)
+        .await?;
+
+        Ok(partidos)
+    }
+
+    pub async fn listar_partidos_equipo(
+        cm: ControladorModelo,
+        idEquipo: u32
+    ) -> Result<Vec<Partido>> {
+        let pool = cm.conexion;
+
+        let partidos = sqlx::query_as!(
+            Partido,
+            "
+                SELECT id, fecha, lugar, idCompeticion, idEquipoCasa, idEquipoVisitante FROM tpartidos
+                WHERE idEquipoCasa = ? OR idEquipoVisitante = ?
+            ",
+            idEquipo,
+            idEquipo
+        )
+        .fetch_all(&pool)
+        .await?;
+
+        Ok(partidos)
+    }
+
+    pub async fn listar_partidos_ganados_equipo(
+        cm: ControladorModelo,
+        idEquipo: u32
+    ) -> Result<Vec<Partido>> {
+        let pool = cm.conexion;
+
+        // 2 es el código para el evento "Gol"
+        let partidos = sqlx::query_as!(
+            Partido,
+            "
+                SELECT id, fecha, lugar, idCompeticion, idEquipoCasa, idEquipoVisitante FROM tpartidos as tp
+                WHERE (
+                      (SELECT COUNT(*) FROM teventos 
+                            WHERE idTipoEvento=2 AND
+                            idPartido=tp.id AND idJugador IN 
+                                  (SELECT id FROM tjugadores WHERE idEquipo=?)
+                      ) >
+                      (SELECT COUNT(*) FROM teventos 
+                            WHERE idTipoEvento=2 AND idPartido=tp.id AND 
+                            idJugador NOT IN 
+                                  (SELECT id FROM tjugadores WHERE idEquipo=?)
+                      )
+                );
+            ",
+            idEquipo,
+            idEquipo
+        )
+        .fetch_all(&pool)
+        .await?;
+
+        Ok(partidos)
+    }
+
+    pub async fn listar_partidos_perdidos_equipo(
+        cm: ControladorModelo,
+        idEquipo: u32
+    ) -> Result<Vec<Partido>> {
+        let pool = cm.conexion;
+
+        // 2 es el código para el evento "Gol"
+        let partidos = sqlx::query_as!(
+            Partido,
+            "
+                SELECT id, fecha, lugar, idCompeticion, idEquipoCasa, idEquipoVisitante FROM tpartidos as tp
+                WHERE (
+                      (SELECT COUNT(*) FROM teventos 
+                            WHERE idTipoEvento=2 AND
+                            idPartido=tp.id AND idJugador IN 
+                                  (SELECT id FROM tjugadores WHERE idEquipo=?)
+                      ) <
+                      (SELECT COUNT(*) FROM teventos 
+                            WHERE idTipoEvento=2 AND idPartido=tp.id AND 
+                            idJugador NOT IN 
+                                  (SELECT id FROM tjugadores WHERE idEquipo=?)
+                      )
+                );
+            ",
+            idEquipo,
+            idEquipo
+        )
         .fetch_all(&pool)
         .await?;
 

@@ -106,7 +106,6 @@ impl ControladorCompeticion {
     }
 
     pub async fn listar_competiciones(
-        ctx: Ctx,
         cm: ControladorModelo
     ) -> Result<Vec<Competicion>> {
         let pool = cm.conexion;

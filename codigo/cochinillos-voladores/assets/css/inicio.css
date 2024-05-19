@@ -394,7 +394,8 @@ article#noticias div#contenedorNoticias div.noticia div.cuerpo div.texto h4 {
 article#noticias div#contenedorNoticias div.noticia div.cuerpo div.texto pre {
     width: 100%;
     flex: 1 1 auto;
-    overflow: auto;
+    overflow-y: auto;
+    white-space: pre-line;
 }
 
 /* Conócenos */

@@ -112,7 +112,7 @@ impl ControladorPartido {
 
     pub async fn listar_partidos(
         ctx: Ctx,
-        cm: ControladorModelo
+        cm: ControladorModelo,
     ) -> Result<Vec<Partido>> {
         let pool = cm.conexion;
 
@@ -128,21 +128,40 @@ impl ControladorPartido {
 
     pub async fn listar_partidos_equipo(
         cm: ControladorModelo,
-        idEquipo: u32
+        idEquipo: u32,
+        idCompeticion: Option<u32>
     ) -> Result<Vec<Partido>> {
         let pool = cm.conexion;
 
-        let partidos = sqlx::query_as!(
-            Partido,
-            "
-                SELECT id, fecha, lugar, idCompeticion, idEquipoCasa, idEquipoVisitante FROM tpartidos
-                WHERE idEquipoCasa = ? OR idEquipoVisitante = ?
-            ",
-            idEquipo,
-            idEquipo
-        )
-        .fetch_all(&pool)
-        .await?;
+        let partidos = match idCompeticion {
+            Some(competicion) => {
+                sqlx::query_as!(
+                    Partido,
+                    "
+                        SELECT id, fecha, lugar, idCompeticion, idEquipoCasa, idEquipoVisitante FROM tpartidos
+                        WHERE (idEquipoCasa = ? OR idEquipoVisitante = ?) AND idCompeticion = ?
+                    ",
+                    idEquipo,
+                    idEquipo,
+                    competicion
+                )
+                .fetch_all(&pool)
+                .await?
+            },
+            None => {
+                sqlx::query_as!(
+                    Partido,
+                    "
+                        SELECT id, fecha, lugar, idCompeticion, idEquipoCasa, idEquipoVisitante FROM tpartidos
+                        WHERE idEquipoCasa = ? OR idEquipoVisitante = ?
+                    ",
+                    idEquipo,
+                    idEquipo
+                )
+                .fetch_all(&pool)
+                .await?
+            }
+        };
 
         Ok(partidos)
     }

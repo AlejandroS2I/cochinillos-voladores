@@ -24,6 +24,7 @@ lazy-regex = "3"
 async-trait = "0.1"
 strum_macros = "0.26"
 axum-htmx = "0.5"
+axum-extra = { version = "0.9", features = ["query"]}
 bcrypt = "0.15"
 lettre = { version = "0.11", features = ["builder", "tokio1-native-tls"]}
 futures = "0.3"

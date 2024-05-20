@@ -1,0 +1,13 @@
+{% for partido in partidos %}
+<a
+    hx-get="estadisticas/partidos/{{ partido.id }}"
+    hx-swap="outerHTML"
+    hx-push-url="true"
+    hx-target="#root"
+>
+    <p>{{ partido.equipoCasa.nombre }} - {{ partido.equipoVisitante.nombre }}</p>
+    <p>{{ partido.competicion.nombre }}</p>
+    <p>{{ partido.fecha }}</p>
+    <p>{{ partido.resultado.0 }} - {{ partido.resultado.1 }}</p>
+</a>
+{% endfor %}

@@ -1,10 +1,12 @@
 use axum::extract::{Path, State};
+use axum_extra::extract::OptionalQuery;
 use axum::http::StatusCode;
 use axum::routing::{delete, get, post};
 use axum::{Form, Router};
 use axum::response::{IntoResponse, Response};
 use askama::Template;
 use futures::future;
+use serde::Deserialize;
 use time::{Date, Time};
 
 use crate::ctx::Ctx;
@@ -21,7 +23,8 @@ use crate::{Result, Error};
 pub fn routes(cm: ControladorModelo) -> Router {
     Router::new()
         .route("/estadisticas", get(estadisticas))
-        .route("/estadisticas/partido/:id", get(partido))
+        .route("/estadisticas/partidos", get(partidos))
+        .route("/estadisticas/partidos/:id", get(partido))
         .with_state(cm)
 }
 
@@ -34,8 +37,7 @@ struct EstadisticasTemplate {
     partidos_ganados: usize,
     partidos_perdidos: usize,
     estadisticas_jugador: EstadisticasJugador,
-    competiciones: Vec<Competicion>,
-    partidos: Vec<PartidoMostrar>
+    competiciones: Vec<Competicion>
 }
 
 #[derive(Clone, Debug)]
@@ -60,7 +62,36 @@ async fn estadisticas(
     let partidos_perdidos = ControladorPartido::listar_partidos_perdidos_equipo(cm.clone(), 1).await?.len();
     let estadisticas_jugador = ControladorEvento::estadisticas_jugador_id(cm.clone(), jugador_cochinillos.id).await?;
     let competiciones = ControladorCompeticion::listar_competiciones(cm.clone()).await?;
-    let mut partidos: Vec<PartidoMostrar> = future::try_join_all(ControladorPartido::listar_partidos_equipo(cm.clone(), 1).await?
+
+    Ok(EstadisticasTemplate { 
+        cochinillos, 
+        jugador_cochinillos, 
+        jugadores_cochinillos, 
+        partidos_ganados,
+        partidos_perdidos,
+        estadisticas_jugador,
+        competiciones,
+    })
+}
+
+#[derive(Template)]
+#[template(path = "componentes/partidos_estadisticas.html")]
+struct PartidosEstadisticasTemplate {
+    partidos: Vec<PartidoMostrar>
+}
+
+#[derive(Deserialize)]
+struct PartidosEstadisticasParams {
+    competicion: u32
+}
+
+async fn partidos(
+    State(cm): State<ControladorModelo>,
+    ctx: Option<Ctx>,
+    OptionalQuery(params): OptionalQuery<PartidosEstadisticasParams>
+) -> Result<PartidosEstadisticasTemplate> {
+    let idCompeticion = params.map(|params| params.competicion);
+    let mut partidos: Vec<PartidoMostrar> = future::try_join_all(ControladorPartido::listar_partidos_equipo(cm.clone(), 1, idCompeticion).await?
         .iter().map(|partido| async {
         let competicion = ControladorCompeticion::competicion_id(cm.clone(), partido.idCompeticion).await?.ok_or(Error::NoEncontradoPorId)?;
         let equipoCasa = ControladorEquipo::equipo_id(cm.clone(), partido.idEquipoCasa).await?.ok_or(Error::NoEncontradoPorId)?;
@@ -79,14 +110,7 @@ async fn estadisticas(
 
     partidos.sort_by(|a, b| b.fecha.cmp(&a.fecha));
 
-    Ok(EstadisticasTemplate { 
-        cochinillos, 
-        jugador_cochinillos, 
-        jugadores_cochinillos, 
-        partidos_ganados,
-        partidos_perdidos,
-        estadisticas_jugador,
-        competiciones,
+    Ok(PartidosEstadisticasTemplate { 
         partidos
     })
 }

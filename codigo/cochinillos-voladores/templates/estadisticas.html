@@ -56,24 +56,29 @@
             {% endmatch %}
         </div>
     </div>
-    <div id="partidos">
-        {% for partido in partidos %}
-        <a
-            hx-get="estadisticas/partido/{{ partido.id }}"
-            hx-swap="outerHTML"
-            hx-push-url="true"
-            hx-target="#root"
-        >
-            <p>{{ partido.equipoCasa.nombre }} - {{ partido.equipoVisitante.nombre }}</p>
-            <p>{{ partido.competicion.nombre }}</p>
-            <p>{{ partido.fecha }}</p>
-            <p>{{ partido.resultado.0 }} - {{ partido.resultado.1 }}</p>
-        </a>
-        {% endfor %}
+    <div 
+        id="partidos"
+        hx-trigger="load"
+        hx-swap="innerHTML"
+        hx-get="/estadisticas/partidos"
+    >
     </div>
     <div id="competiciones">
+        <a
+            id="partidos"
+            hx-trigger="click"
+            hx-swap="innerHTML"
+            hx-target="#partidos"
+            hx-get="/estadisticas/partidos"
+        ><h3>Todas</h3></a>
         {% for competicion in competiciones %}
-        <a><h3>{{ competicion.nombre }}</h3></a>
+        <a
+            id="partidos"
+            hx-trigger="click"
+            hx-swap="innerHTML"
+            hx-target="#partidos"
+            hx-get="/estadisticas/partidos?competicion={{ competicion.id }}"
+        ><h3>{{ competicion.nombre }}</h3></a>
         {% endfor %}
     </div>
 </div>

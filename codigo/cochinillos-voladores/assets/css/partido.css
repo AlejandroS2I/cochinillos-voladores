@@ -1,0 +1,168 @@
+main {
+    width: 100vw;
+    height: 100vh;
+
+    overflow: hidden;
+
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 20px;
+
+    padding: 5vh 7vw;
+}
+
+@media (max-width: 900px) {
+    main {
+        display: flex;
+        flex-direction: column;
+    }
+    
+    #cabecera {
+        flex: 1 1 20%;
+    }
+    
+    #jugadores {
+        flex: 1 1 40%;
+    }
+    
+    #eventos {
+        flex: 1 1 40%;
+    }
+}
+
+#cabecera {
+    grid-column: 1 / 3;
+    grid-row: 1 / 2;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    gap: 20px;
+
+    background: var(--bg1-color);
+    padding: 20px;
+}
+
+#cabecera div.equipos {
+    flex: 1 1 auto;
+
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+#cabecera div.equipos * {
+    text-align: center;
+    font-size: 3vw;
+    font-weight: 900;
+}
+
+#cabecera div.equipos div {
+    display: flex;
+    gap: 10px;
+}
+
+#cabecera div.datos {
+    width: 100%;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+@media (max-width: 900px) {
+    #cabecera div.equipos * {
+        font-size: 4vw;
+    }
+}
+
+/* Eventos */
+#eventos {
+    grid-column: 3 / 4;
+    grid-row: 1 / 4;
+
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    padding: 20px;
+    overflow: auto;
+
+    background: var(--bg1-color);
+}
+
+#eventos div.evento {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    padding: 10px 20px;
+
+    background: var(--bg-color);
+}
+
+#eventos div.evento div.cabeza {
+    width: 100%;
+
+    display: flex;
+    justify-content: space-between;
+
+    font-weight: 900;
+}
+
+/* Jugadores */
+#jugadores {
+    grid-column: 1 / 3;
+    grid-row: 2 / 4;
+    
+    padding: 20px;
+
+    background: var(--bg1-color);
+}
+
+#jugadores > div {
+    width: 100%;
+    height: 50%;
+
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#jugadores > div > div {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    overflow: auto;
+}
+
+#jugadores div.jugador {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+
+    padding: 10px 20px;
+
+    background: var(--bg-color);
+}
+
+#jugadores div.jugador div.identificacion {
+    flex: 1 1 auto;
+    display: flex;
+    gap: 10px;
+
+    font-weight: 900;
+}
+
+#jugadores div.jugador div.estadisticas {
+    flex: 1 1 auto;
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}

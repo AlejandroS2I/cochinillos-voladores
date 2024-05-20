@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+{%- import "componentes/nav.html" as navegacion -%}
+
+{% block titulo %}Estadísticas partido{% endblock %}
+
+{% block meta %}
+<link rel="stylesheet" href="/assets/css/partido.css">
+{% endblock %}
+
+{% block nav %}{% call navegacion::nav(posicion="derecha", mostrarCuenta=true, mostrarAtras=true, mostrarDashboard=true) %}{% endblock %}
+
+{% block contenido %}
+<div id="cabecera">
+    <div class="datos">
+        <p><b>Competición:</b> {{ partido.competicion.nombre }}</p>
+        <p><b>Lugar:</b> {{ partido.lugar }}</p>
+        <p><b>Fecha:</b> {{ partido.fecha }}</p>
+    </div>
+    <div class="equipos">
+        <div class="equipoCasa">
+            <p>{{ partido.equipoCasa.nombre }}</p>
+            <p>{{ partido.resultado.0 }}</p>
+        </div>
+        <p>-</p>
+        <div class="equipoVisitante">
+            <p>{{ partido.resultado.1 }}</p>
+            <p>{{ partido.equipoVisitante.nombre }}</p>
+        </div>
+    </div>
+</div>
+<div id="jugadores">
+    <div clase="casa">
+        <h3>{{ partido.equipoCasa.nombre }}</h3>
+        <div>
+            {% for jugador in jugadores_casa %}
+            <div class="jugador">
+                <div class="identificacion">
+                    <p>{{ jugador.jugador.numero }}</p>
+                    <p>{{ jugador.jugador.apellido1 }} {{ jugador.jugador.apellido2 }}, {{ jugador.jugador.nombre }}</p>
+                </div>
+                <div class="estadisticas">
+                    {% match jugador.jugador.idTipoJugador %}
+                    {% when 2 %}
+                    <p><b>Goles en contra:</b> {{ jugador.estadisticas_jugador.goles_contra }}</p>
+                    <p><b>Tiros recibidos:</b> {{ jugador.estadisticas_jugador.tiros_recibidos }}</p>
+                    <p><b>% parada:</b> {{ jugador.estadisticas_jugador.porcentaje_parada }}%</p>
+                    {% when _ %}
+                    <p><b>Goles:</b> {{ jugador.estadisticas_jugador.goles }}</p>
+                    <p><b>Asistencias:</b> {{ jugador.estadisticas_jugador.asistencias }}</p>
+                    <p><b>Puntos:</b> {{ jugador.estadisticas_jugador.puntos }}</p>
+                    <p><b>Faltas:</b> {{ jugador.estadisticas_jugador.faltas }}</p>
+                    {% endmatch %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div clase="visitante">
+        <h3>{{ partido.equipoVisitante.nombre }}</h3>
+        <div>
+            {% for jugador in jugadores_visitante %}
+            <div class="jugador">
+                <div class="identificacion">
+                    <p>{{ jugador.jugador.numero }}</p>
+                    <p>{{ jugador.jugador.apellido1 }} {{ jugador.jugador.apellido2 }}, {{ jugador.jugador.nombre }}</p>
+                </div>
+                <div class="estadisticas">
+                    {% match jugador.jugador.idTipoJugador %}
+                    {% when 2 %}
+                    <p><b>Goles en contra:</b> {{ jugador.estadisticas_jugador.goles_contra }}</p>
+                    <p><b>Tiros recibidos:</b> {{ jugador.estadisticas_jugador.tiros_recibidos }}</p>
+                    <p><b>% parada:</b> {{ jugador.estadisticas_jugador.porcentaje_parada }}%</p>
+                    {% when _ %}
+                    <p><b>Goles:</b> {{ jugador.estadisticas_jugador.goles }}</p>
+                    <p><b>Asistencias:</b> {{ jugador.estadisticas_jugador.asistencias }}</p>
+                    <p><b>Puntos:</b> {{ jugador.estadisticas_jugador.puntos }}</p>
+                    <p><b>Faltas:</b> {{ jugador.estadisticas_jugador.faltas }}</p>
+                    {% endmatch %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+<div id="eventos">
+    {% for evento in eventos %}
+    <div class="evento">
+        <div class="cabeza">
+            {% if let Some(minuto) = evento.minuto %}
+            <p>{{ minuto }}</p>
+            {% endif %}
+            <p>{{ evento.tipoEvento.nombre }}</p>
+        </div>
+        <p>{{ evento.jugador.apellido1 }} {{ evento.jugador.apellido2 }}, {{ evento.jugador.nombre }}</p>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

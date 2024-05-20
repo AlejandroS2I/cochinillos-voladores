@@ -58,7 +58,12 @@
     </div>
     <div id="partidos">
         {% for partido in partidos %}
-        <a>
+        <a
+            hx-get="estadisticas/partido/{{ partido.id }}"
+            hx-swap="outerHTML"
+            hx-push-url="true"
+            hx-target="#root"
+        >
             <p>{{ partido.equipoCasa.nombre }} - {{ partido.equipoVisitante.nombre }}</p>
             <p>{{ partido.competicion.nombre }}</p>
             <p>{{ partido.fecha }}</p>

@@ -182,6 +182,26 @@ impl ControladorJugador {
         Ok(jugadores)
     }
 
+    pub async fn listar_jugadores_partido(
+        cm: ControladorModelo,
+        idPartido: u32
+    ) -> Result<Vec<Jugador>> {
+        let pool = cm.conexion;
+
+        let jugadores = sqlx::query_as!(
+            Jugador,
+            "
+                SELECT id, numero, nombre, apellido1, apellido2, nacimiento, fotoURL, idTipoJugador, idEquipo FROM tjugadores
+                WHERE id IN (SELECT idJugador FROM teventos WHERE idTipoEvento = 1 AND idPartido = ?)
+            ",
+            idPartido
+        )
+        .fetch_all(&pool)
+        .await?;
+
+        Ok(jugadores)
+    }
+
     pub async fn eliminar_jugador(
         ctx: Ctx,
         cm: ControladorModelo, 

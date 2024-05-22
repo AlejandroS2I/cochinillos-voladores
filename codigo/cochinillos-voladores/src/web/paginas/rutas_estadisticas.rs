@@ -157,7 +157,7 @@ async fn partido(
         equipoVisitante,
         resultado
     };
-    let jugadores = future::try_join_all(ControladorJugador::listar_jugadores_partido(cm.clone(), partido.id).await?
+    let mut jugadores = future::try_join_all(ControladorJugador::listar_jugadores_partido(cm.clone(), partido.id).await?
         .iter().map(|jugador| async {
             let estadisticas_jugador = ControladorEvento::estadisticas_jugador_partido_id(cm.clone(), jugador.id, partido.id).await?;
             Ok::<JugadorMostrar, Error>(JugadorMostrar {
@@ -177,6 +177,8 @@ async fn partido(
                 jugador
             })
         })).await?;
+
+    jugadores.sort_by(|a, b| a.jugador.numero.cmp(&b.jugador.numero));
 
     let jugadores_casa = jugadores.iter().filter(|jugador| jugador.jugador.idEquipo == partido.equipoCasa.id).map(|jugador| jugador.to_owned()).collect();
     let jugadores_visitante = jugadores.iter().filter(|jugador| jugador.jugador.idEquipo == partido.equipoVisitante.id).map(|jugador| jugador.to_owned()).collect();

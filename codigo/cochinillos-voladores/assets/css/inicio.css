@@ -111,6 +111,7 @@ article#quienesSomos section.cuerpo h2 {
 }
 
 article#quienesSomos section.cuerpo p {
+    font-size: 125%;
     text-align: justify;
 }
 

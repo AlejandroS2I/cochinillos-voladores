@@ -18,9 +18,6 @@ un blog donde publicar noticias.
   - [Partidos](#partidos)
     - [Listado](#listadoPartidos)
     - [Detalles](#detallesPartidos)
-  - [Plantilla](#plantilla)
-    - [Listado](#listadoPlantilla)
-    - [Detalles](#detallesPlantilla)
 - [Formulario](#formulario)
 - [Blog](#blog)
 
@@ -82,13 +79,6 @@ posiciones.
   fecha y hora, lugar, equipos enfrentados, resultado, listado de eventos,
   con tipo, jugador y minuto, y listado de jugadores, con su número, apellidos, nombre y estadísticas.
 
-### Plantilla
-
-- **Listado.**<a name="listadoPlantilla"></a> En este se mostrará un listado de todos los jugadores del
-    equipo con su imagen, número, apellidos, nombre y estadísticas.
-- **Detalles.**<a name="detallesPlantilla"></a> En este se mostrará la imagen del jugador, su número
-    sus apellidos, su nombre, y sus estadísticas dependiendo de si es jugador o portero.
-
 Posibles estadísticas:
 
 - General
@@ -121,7 +111,7 @@ campos pedidos serán:
 - Email
 - Teléfono
 
-## Blog
+## Noticias
 
-El blog consistirá en una plantilla en la que se listen las entradas,
+Las noticias consistirá en una plantilla en la que se listen las entradas,
 estas podrán ser gestionadas por los administradores.

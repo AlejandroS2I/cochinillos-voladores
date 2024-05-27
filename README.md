@@ -11,3 +11,5 @@ La explicación, diseño y archivos de la base de datos podrán ser encontrados 
 
 ## Diseño web
 El [diseño web](https://www.figma.com/file/YrMHBDjdA8WNVgud9xMRyD/Cochinillos-voladores?type=design&node-id=0%3A1&mode=design&t=9MgojHQaGJ25esLB-1) ha sido realizado en la herramienta "Figma"
+
+Proyecto realizado por Alejandro Yuste para el instituto IES María Moliner.
